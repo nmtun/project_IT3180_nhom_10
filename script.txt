@@ -1,0 +1,18 @@
+Cấu trúc thư mục dự án: 
+back-end/
+|---src/
+|   |---config/         (Cấu hình DB)
+|   |---controllers/    (Xử lý request API)
+|   |---routes/         (Quản lý API routes)
+|   |---services/       (Chứa business logic)
+|   |---models/         (ORM models)
+|   |---utils/          (Hàm helper, xử lý chung)
+|   |---views/          (Nếu dùng .ejs)
+|---test/               (Testing)
+|---docs/               (Tài liệu dự án)
+|---scripts/            (...)
+|---.env                (Biến môi trường)
+|---package.json        (Thông tin dependencies)
+|---README.md           (Tài liệu hướng dẫn)
+|---CHANGELOG           (Liệt kê tính năng mới, phiên bản sửa đổi,...)
+|---LICENSE             (...)
