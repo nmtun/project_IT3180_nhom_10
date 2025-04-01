@@ -4,7 +4,7 @@ back-end/
 |   |---config/         (Cấu hình DB)
 |   |---controllers/    (Xử lý request API)
 |   |---routes/         (Quản lý API routes)
-|   |---services/       (Chứa business logic)
+|   |---services/       (Chứa các method xử lý logic)
 |   |---models/         (ORM models)
 |   |---utils/          (Hàm helper, xử lý chung)
 |   |---views/          (Nếu dùng .ejs)
