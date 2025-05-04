@@ -34,7 +34,7 @@ app.use("/api/users", UserRoutes);
 // Tạo bảng và chạy server
 (async () => {
   try {
-    await sequelize.sync({ alter: true }); // Tạo bảng nếu chưa có
+    await sequelize.sync(); 
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);
     });
@@ -42,3 +42,4 @@ app.use("/api/users", UserRoutes);
     console.error("Lỗi khởi động server:", error);
   }
 })();
+
