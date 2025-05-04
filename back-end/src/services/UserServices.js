@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 
 export const getAllUsers = async () => {
   return await User.findAll();
@@ -24,4 +25,8 @@ export const deleteUser = async (id) => {
   if (!user) return null;
   await user.destroy();
   return true;
+};
+
+export const findUserByUsername = async (username) => {
+  return await User.findOne({ where: { Username: username } });
 };
