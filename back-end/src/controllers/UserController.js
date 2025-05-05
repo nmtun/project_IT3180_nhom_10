@@ -30,7 +30,8 @@ export const createUser = async (req, res) => {
     // băm mật khẩu
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(Password, saltRounds);
-  
+    
+    // gửi thông tin về service
     const newUser = await userService.createUser({
       Username,
       Password: hashedPassword,
