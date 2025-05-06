@@ -24,8 +24,8 @@ export const deleteUser = async (id) => {
   if (!user) return null;
   await user.destroy();
   return true;
-};
+}; 
 
 export const findUserByUsername = async (username) => {
   return await User.findOne({ where: { Username: username } });
-};
+}; 
