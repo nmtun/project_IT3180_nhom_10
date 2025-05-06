@@ -1,7 +1,7 @@
 import * as userService from "../services/UserServices.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+ 
 // lấy tất cả người dùng
 export const getAllUsers = async (req, res) => {
   const users = await userService.getAllUsers();
@@ -27,7 +27,7 @@ export const createUser = async (req, res) => {
     if (!PhoneNumber) return res.status(400).json({ message: "Phone number is required" });
     if (!Role) return res.status(400).json({ message: "Role is required" });
 
-    // băm mật khẩu
+    // băm mật khẩu 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(Password, saltRounds);
     
