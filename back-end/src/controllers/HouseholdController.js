@@ -30,9 +30,9 @@ export const createHousehold = async (req, res) => {
     }
 
     const newHousehold = await householdService.createHousehold({RoomNumber, Type, Members, Notes});
-    res.status(201).json(newHousehold);
+    res.status(201).json({ error: false, newHousehold} );
   } catch (error) {
-    res.status(500).json({ message: 'Error creating household', error });
+    res.status(500).json({ error: true, message: 'Error creating household', error });
   }
 };
 
