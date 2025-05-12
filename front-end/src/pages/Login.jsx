@@ -31,14 +31,6 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Test login với dữ liệu mẫu
-      if (formData.username === 'admin' && formData.password === 'admin') {
-        // Giả lập response thành công
-        localStorage.setItem('token', 'test-token');
-        navigate('/home');
-        return;
-      }
-
       const response = await fetch('http://localhost:3000/api/users/login', {
         method: 'POST',
         headers: {
