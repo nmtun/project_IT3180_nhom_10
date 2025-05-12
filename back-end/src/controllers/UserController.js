@@ -63,25 +63,35 @@ export const deleteUser = async (req, res) => {
  
 // đăng nhập
 export const login = async (req, res) => {
-  try{
-    const {Username, Password} = req.body;
-    if(!Username) return res.status(400).json({ message: "Username is required" });
-    if(!Password) return res.status(400).json({ message: "Password is required" });
+  try {
+    const { username, password } = req.body;
+    if (!username) return res.status(400).json({ message: "Username is required" });
+    if (!password) return res.status(400).json({ message: "Password is required" });
 
-    const user = await userService.findUserByUsername(Username);
-    if(!user) return res.status(404).json({ message: "User not found" });
+    const user = await userService.findUserByUsername(username);
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    const isMatch = await bcrypt.compare(Password, user.Password);
+    const isMatch = await bcrypt.compare(password, user.Password);
     if (!isMatch) return res.status(401).json({ message: "Invalid password" });
 
     const token = jwt.sign(
       { id: user.id, role: user.Role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'your_jwt_secret',
       { expiresIn: '1d' }
     );
-    return res.status(200).json({ message: "Login successful", token });
 
-  } catch(err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(200).json({ 
+      message: "Login successful", 
+      token,
+      user: {
+        id: user.id,
+        username: user.Username,
+        role: user.Role
+      }
+    });
+
+  } catch (err) {
+    console.error('Login error:', err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
