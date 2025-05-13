@@ -4,9 +4,9 @@ import * as householdService from '../services/HouseholdServices.js';
 export const getAllHouseholds = async (req, res) => {
   try {
     const households = await householdService.getAllHouseholds();
-    res.status(200).json(households);
+    res.status(200).json({error: false, households});
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving households', error });
+    res.status(500).json({ error: true, message: 'Error retrieving households', error });
   }
 };
 
@@ -14,10 +14,10 @@ export const getAllHouseholds = async (req, res) => {
 export const getHouseholdById = async (req, res) => {
   try {
     const household = await householdService.getHouseholdById(req.params.id);
-    if (!household) return res.status(404).json({ message: 'Household not found' });
+    if (!household) return res.status(404).json({  error: true, message: 'Household not found' });
     res.status(200).json(household);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving household', error });
+    res.status(500).json({ error: false, message: 'Error retrieving household', error });
   }
 };
 
@@ -40,10 +40,10 @@ export const createHousehold = async (req, res) => {
 export const updateHousehold = async (req, res) => {
   try {
     const updatedHousehold = await householdService.updateHousehold(req.params.id, req.body);
-    if (!updatedHousehold) return res.status(404).json({ message: 'Household not found' });
+    if (!updatedHousehold) return res.status(404).json({ error: true, message: 'Household not found' });
     res.status(200).json(updatedHousehold);
   } catch (error) {
-    res.status(500).json({ message: 'Error updating household', error });
+    res.status(500).json({ error: false, message: 'Error updating household', error });
   }
 };
 
@@ -62,9 +62,9 @@ export const deleteHousehold = async (req, res) => {
 export const findHouseholdByRoomNumber = async (req, res) => {
   try {
     const household = await householdService.findHouseholdByRoomNumber(req.params.roomNumber);
-    if (!household) return res.status(404).json({ message: 'Household not found' });
+    if (!household) return res.status(404).json({ error: true, message: 'Household not found' });
     res.status(200).json(household);
   } catch (error) {
-    res.status(500).json({ message: 'Error finding household', error });
+    res.status(500).json({ error: false, message: 'Error finding household' });
   }
 };

@@ -5,14 +5,14 @@ import jwt from "jsonwebtoken";
 // lấy tất cả người dùng
 export const getAllUsers = async (req, res) => {
   const users = await userService.getAllUsers();
-  res.json(users);
+  res.json({error: false, users});
 };
 
 // lấy người dùng theo id
 export const getUserById = async (req, res) => {
   const user = await userService.getUserById(req.params.id);
-  if (!user) return res.status(404).json({ message: "User not found" });
-  res.json(user);
+  if (!user) return res.status(404).json({ error: true, message: "User not found" });
+  res.json({error: false, user});
 };
 
 // thêm người dùng mới
@@ -26,11 +26,11 @@ export const createUser = async (req, res) => {
     if (!Email) return res.status(400).json({ message: "Email is required" });
     if (!PhoneNumber) return res.status(400).json({ message: "Phone number is required" });
     if (!Role) return res.status(400).json({ message: "Role is required" });
-
+    
     // băm mật khẩu 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(Password, saltRounds);
-    
+  
     // gửi thông tin về service
     const newUser = await userService.createUser({
       Username,
@@ -40,26 +40,41 @@ export const createUser = async (req, res) => {
       PhoneNumber,
       Role,
     });
-    return res.status(201).json(newUser);
+    return res.status(201).json({ error: false, newUser });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: true, message: "Internal server error"});
   }
 };
   
-// cập nhật thông tin người dùng
+// cập nhật thông tin, tài khoản ban quản lý
 export const updateUser = async (req, res) => {
-  const updatedUser = await userService.updateUser(req.params.id, req.body);
-  if (!updatedUser) return res.status(404).json({ message: "User not found" });
-  res.json(updatedUser);
+  // const updatedUser = await userService.updateUser(req.params.id, req.body);
+  // if (!updatedUser) return res.status(404).json({ error: true, message: "User not found" });
+  // res.json({error: false, updatedUser});
+  try {
+    const data = {...req.body};
+
+    if(data.Password){
+      const saltRounds = 10;
+      data.Password = await bcrypt.hash(data.Password, saltRounds);
+    }
+
+    const updateUser = await userService.updateUser(req.params.id, userService.updateUser);
+
+    if(!updateUser) return res.status(404).json({error: true, message: "User not found"});
+
+    return res.status(200).json({error: false, updateUser, message: "Updated successfully"});
+  } catch (err) {
+    return res.status(500).json({error: true, message: "Inernal server error"});
+  }
 };
 
 // xóa
 export const deleteUser = async (req, res) => {
   const result = await userService.deleteUser(req.params.id);
-  if (!result) return res.status(404).json({ message: "User not found" });
-  res.json({ message: "User deleted successfully" });
+  if (!result) return res.status(404).json({ error: true, message: "User not found" });
+  res.json({ error: false, message: "User deleted successfully" });
 };
-
  
 // đăng nhập
 export const login = async (req, res) => {
@@ -79,9 +94,10 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
-    return res.status(200).json({ message: "Login successful", token });
+    return res.status(200).json({ error: false, message: "Login successful", token });
 
   } catch(err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: true, message: "Internal server error"});
   }
 };
+
