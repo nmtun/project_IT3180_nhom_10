@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import loginImage from '../assets/v5.jpg';
+import axiosInstance from '../untils/axiosIntance'; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,25 +32,28 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
+      if(!formData.username) {
+        setError('Vui lòng nhập tên đăng nhập');
+        return;
+      }
+      
+      if(!formData.password) {
+        setError('Vui lòng nhập mật khẩu'); 
+        return;
+      }
+
+      const response = await axiosInstance.post('/users/login', {
+        username: formData.username,
+        password: formData.password
       });
 
-      const data = await response.json();
+      const data = await response.data;
 
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        navigate('/home');
-      } else {
-        setError(data.message || 'Đăng nhập thất bại');
-      }
+      localStorage.setItem('token', data.token);
+      navigate('/home');
     } catch (err) {
-      console.error('Lỗi khi đăng nhập:', err);
-      setError('Không thể kết nối đến server. Vui lòng thử lại sau.');
+      const msg = err.response?.data?.message || 'Đăng nhập thất bại';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -77,7 +81,7 @@ const Login = () => {
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="Nhập tên đăng nhập"
-                required
+                //required
                 disabled={loading}
               />
             </div>
@@ -91,7 +95,7 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Nhập mật khẩu"
-                  required
+                  //required
                   disabled={loading}
                 />
                 <button
