@@ -4,17 +4,21 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
 
 .login-container {
-  display: flex;
-  height: 100vh;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
   width: 100vw;
-  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  z-index: 999;
 }
 
 .login-left {
@@ -139,7 +143,7 @@ body {
 }
 
 .login-button {
-  background-color: #000;
+  background-color: #102eb4;
   color: white;
   padding: 0.75rem;
   border: none;
@@ -150,7 +154,7 @@ body {
 }
 
 .login-button:hover {
-  background-color: #333;
+  background-color: #051974;
   transform: translateY(-1px);
 }
 

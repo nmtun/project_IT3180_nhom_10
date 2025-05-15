@@ -1,0 +1,25 @@
+.navbar {
+  background-color: #38c256;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #e0e0e0;   /* Đổi border-bottom thành border-top */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin: 0;                      /* Đảm bảo không có margin */
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-text {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+}
