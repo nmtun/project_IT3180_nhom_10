@@ -7,12 +7,17 @@ import './App.css';
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Navigate to="/login" />} />
-     
-      </Routes>
+      <div className="app">
+        <main className="main-content">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+          </Routes>
+
+
+        </main>
+      </div>
     </Router>
   );
 };
