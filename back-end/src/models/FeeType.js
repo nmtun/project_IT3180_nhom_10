@@ -1,32 +1,43 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/dbsetup.js";
 
-const FeeType = sequelize.define("FeeType", {
-  FeeTypeID: { 
-    type: DataTypes.INTEGER, 
-    primaryKey: true, 
-    autoIncrement: true 
+const FeeType = sequelize.define(
+  "FeeType",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    category: {
+      type: DataTypes.ENUM("Bắt buộc", "Tự nguyện"),
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    unit: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   },
-  FeeTypeName: { 
-    type: DataTypes.STRING(100), 
-    allowNull: false  
-  },
-  Description: { 
-    type: DataTypes.TEXT 
-  },
-  Category: { 
-    type: DataTypes.ENUM('Bắt buộc', 'Tự nguyện'), 
-    allowNull: false 
-  },
-  UnitPrice: { 
-    type: DataTypes.DECIMAL(10, 2) 
-  },
-  Unit: { 
-    type: DataTypes.STRING(20) 
-  }
-}, {
+  {
     tableName: "FeeTypes",
-    timestamps: false
-});
+    timestamps: true,
+  }
+);
 
 export default FeeType;

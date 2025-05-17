@@ -18,6 +18,7 @@ import Change from "./src/models/Change.js";
 // routes
 import UserRoutes from "./src/routes/UserRoutes.js";
 import HouseholdRoutes from "./src/routes/HouseholdRoutes.js";
+import FeeTypeRoutes from "./src/routes/FeeTypeRoutes.js";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 app.use(helmet());
 app.use(morgan("dev"));
 
@@ -38,13 +39,14 @@ app.get("/", (req, res) => {
 // Route
 app.use("/api/users", UserRoutes);
 app.use("/api/households", HouseholdRoutes);
+app.use("/api/fee-types", FeeTypeRoutes);
 
 // Tạo bảng và chạy server
 (async () => {
   try {
     //await sequelize.sync(); // tạo bảng nếu chưa có
     //await sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
-    
+
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);
     });
@@ -52,4 +54,3 @@ app.use("/api/households", HouseholdRoutes);
     console.error("Lỗi khởi động server:", error);
   }
 })();
-
