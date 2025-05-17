@@ -1,19 +1,17 @@
 import React from 'react';
-import '../styles/Home.css';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import '../styles/Vehicle.css';
 
-const Home = () => {
-
-
+const Vehicle = () => {
   return (
-    <div className="home-container">
-      <Header />
-      <Sidebar />
-      <Navbar />
+    <div className="vehicle-container">
+        <Header />
+        <Sidebar />
+        <Navbar />
     </div>
   );
 };
 
-export default Home; 
+export default Vehicle;
