@@ -1,10 +1,9 @@
-/* front-end/src/App.css */
-.app {
+/* .app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-top: 70px; /* Chiều cao của header */
-    padding-bottom: 50px; /* Chiều cao của navbar */
+    padding-top: 70px; 
+    padding-bottom: 50px; 
   }
   
   .main-content {
@@ -13,4 +12,4 @@
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-  }
+  } */
