@@ -1,19 +1,17 @@
 import React from 'react';
-import '../styles/Home.css';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import '../styles/Household.css';
 
-const Home = () => {
-
-
+const Household = () => {
   return (
-    <div className="home-container">
-      <Header />
-      <Sidebar />
-      <Navbar />
+    <div className="household-container">
+        <Header />
+        <Sidebar />
+        <Navbar />
     </div>
   );
 };
 
-export default Home; 
+export default Household;

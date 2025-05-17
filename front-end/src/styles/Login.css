@@ -121,7 +121,7 @@ html, body {
   border: none;
   cursor: pointer;
   padding: 0;
-  color: #666666;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,7 +159,7 @@ html, body {
 }
 
 .login-button:disabled {
-  background-color: #666;
+  background-color: #3033e0;
   cursor: not-allowed;
   transform: none;
 }
