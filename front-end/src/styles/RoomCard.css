@@ -1,0 +1,28 @@
+.custom-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 24px;
+  margin: 16px 0;
+  transition: box-shadow 0.2s;
+  width: 200px;
+  height: 150px;
+}
+
+.custom-card:hover {
+  box-shadow: 0 4px 24px rgba(25, 27, 36, 0.12);
+}
+
+.custom-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #102eb4;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.custom-card-body {
+  font-size: 1rem;
+  color: #222;
+  text-align: center;
+}   
