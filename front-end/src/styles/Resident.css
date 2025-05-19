@@ -1,0 +1,49 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.resident-container {
+  background: #fff;
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.resident-body {
+  display: flex;
+  min-height: calc(100vh - 65px - 90px); /* Trừ chiều cao header (65px) và navbar (90px) */
+}
+
+.resident-content {
+  flex-grow: 1;
+  background-color: #fff;
+  padding: 32px 24px 24px 24px;
+  transition: margin-left 0.3s ease;
+  overflow-x: hidden;
+  margin-top: 65px;    /* Đẩy xuống dưới Header */
+  margin-bottom: -120px; /* Để trên Navbar */
+}
+
+.resident-content h1 {
+  font-size: 2rem;
+  color: #102eb4;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Khi sidebar mở */
+.resident-content.sidebar-open {
+  margin-left: 220px; /* width của sidebar khi open */
+}
+
+/* Khi sidebar đóng */
+.resident-content.sidebar-closed {
+  margin-left: 60px; /* width của sidebar khi closed */
+}

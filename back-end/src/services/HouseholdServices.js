@@ -28,5 +28,5 @@ export const deleteHousehold = async (id) => {
 };
 
 export const findHouseholdByRoomNumber = async (roomNumber) => {
-  return await Household.findOne({ where: { Name: roomNumber } });
+  return await Household.findOne({ where: { RoomNumber: roomNumber } });
 };

@@ -38,7 +38,8 @@ const Resident = sequelize.define("Resident", {
   },
   ResidencyStatus: { 
     type: DataTypes.ENUM('Thường trú', 'Tạm trú', 'Tạm vắng', 'Đã chuyển đi'), 
-    allowNull: false 
+    allowNull: false,
+    defaultValue: 'Tạm trú' 
   },
   RegistrationDate: { 
     type: DataTypes.DATEONLY 
