@@ -61,10 +61,15 @@ export const deleteHousehold = async (req, res) => {
 // Tìm hộ gia đình theo số phòng
 export const findHouseholdByRoomNumber = async (req, res) => {
   try {
-    const household = await householdService.findHouseholdByRoomNumber(req.params.roomNumber);
-    if (!household) return res.status(404).json({ error: true, message: 'Household not found' });
+    const roomNumber = req.body.roomNumber || req.query.roomNumber;
+    if (!roomNumber) {
+      return res.status(400).json({ error: true, message: 'roomNumber is required' });
+    }
+    const household = await householdService.findHouseholdByRoomNumber(roomNumber);
+    if (!household)
+      return res.status(404).json({ error: true, message: 'Household not found' });
     res.status(200).json(household);
   } catch (error) {
-    res.status(500).json({ error: false, message: 'Error finding household' });
+    res.status(500).json({ error: true, message: 'Error finding household', error });
   }
 };

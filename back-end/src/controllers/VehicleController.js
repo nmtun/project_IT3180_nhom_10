@@ -24,14 +24,17 @@ export const getVehicleById = async (req, res) => {
 // Thêm phương tiện mới
 export const createVehicle = async (req, res) => {
   try {
-    const { LicensePlate, Type, OwnerId, Description } = req.body;
-    if (!LicensePlate || !Type || !OwnerId) {
+    const { HouseholdID, LicensePlate, VehicleType, RegistrationDate, Status } = req.body;
+    if (!HouseholdID || !VehicleType || !LicensePlate || !RegistrationDate || !Status) {
       return res.status(400).json({ error: true, message: 'Missing required fields' });
     }
-    const newVehicle = await vehicleService.createVehicle({ LicensePlate, Type, OwnerId, Description });
+    const newVehicle = await vehicleService.createVehicle(req.body);
     res.status(201).json({ error: false, vehicle: newVehicle });
   } catch (error) {
-    res.status(500).json({ error: true, message: 'Error creating vehicle', error });
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: true, message: 'Error creating vehicle', detail: error.message });
   }
 };
 
