@@ -16,6 +16,10 @@ const Household = sequelize.define("Household", {
     type: DataTypes.ENUM('Đơn', 'Đôi'), 
     allowNull: false 
   },
+  HouseholdHead: {
+    type: DataTypes.STRING(50), 
+    allowNull: false 
+  },
   Members: { 
     type: DataTypes.INTEGER, 
     defaultValue: 0 
