@@ -15,9 +15,15 @@ import FeeType from "./src/models/FeeType.js";
 import Resident from "./src/models/Resident.js";
 import Change from "./src/models/Change.js";
 
-// routes
+// import routes
 import UserRoutes from "./src/routes/UserRoutes.js";
 import HouseholdRoutes from "./src/routes/HouseholdRoutes.js";
+import ResidentRoutes from "./src/routes/ResidentRoutes.js";
+import FeeTypeRoutes from "./src/routes/FeeTypeRoutes.js";
+import FeeDetailRoutes from "./src/routes/FeeDetailRoutes.js";
+import FeeColectionRoutes from "./src/routes/FeeColectionRoutes.js";
+import VehicleRoutes from "./src/routes/VehicleRoutes.js";  
+import ChangeRoutes from "./src/routes/ChangeRoutes.js";
 
 dotenv.config();
 
@@ -42,9 +48,15 @@ app.get("/", (req, res) => {
   res.json({ data: "API is running..." });
 });
 
-// Route
+// Routes 
 app.use("/api/users", UserRoutes);
 app.use("/api/households", HouseholdRoutes);
+app.use("/api/residents", ResidentRoutes);
+app.use("/api/fee-type", FeeTypeRoutes);
+app.use("/api/fee-detail", FeeDetailRoutes);
+app.use("/api/fee-collection", FeeColectionRoutes);
+app.use("/api/vehicle", VehicleRoutes);
+app.use("/api/change", ChangeRoutes);
 
 // Tạo bảng và chạy server
 (async () => {

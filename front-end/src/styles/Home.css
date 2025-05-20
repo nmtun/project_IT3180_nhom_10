@@ -4,13 +4,127 @@ html, body {
   margin: 0;
   padding: 0;
   background: #fff;
+  overflow: hidden; /* Không cho scroll toàn trang */
 }
 
 .home-container {
-  background: #fff;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   width: 100vw;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  background: #fff;
+  overflow: hidden;
+}
+
+.home-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.home-content {
+  flex-grow: 1;
+  background-color: #fff;
+  padding: 32px 24px 24px 24px;
+  transition: margin-left 0.3s ease;
+  overflow: hidden;
+  margin-top: 65px; /* Header cố định */
+  margin-bottom: -120px; /* Dành chỗ cho navbar */
+  height: calc(100vh - 65px - 50px);
+  display: flex;
+  flex-direction: column;
+}
+
+.home-content.sidebar-open {
+  margin-left: 220px;
+}
+
+.home-content.sidebar-closed {
+  margin-left: 60px;
+}
+
+.floor-select-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.floor-arrow {
+  background: #fff;
+  border: 1px solid #1972bb;
+  color: #1972bb;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.2s, color 0.2s;
+}
+.floor-arrow:hover {
+  background: #1972bb;
+  color: #fff;
+}
+
+.floor-select {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #1972bb #eee;
+  padding-bottom: 4px;
+  flex: 1;
+}
+.floor-select::-webkit-scrollbar {
+  height: 6px;
+}
+.floor-select::-webkit-scrollbar-thumb {
+  background: #1972bb;
+  border-radius: 3px;
+}
+.floor-select button {
+  min-width: 90px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #1972bb;
+  background: #fff;
+  color: #1972bb;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1rem;
+}
+.floor-select button.selected,
+.floor-select button:hover {
+  background: #1972bb;
+  color: #fff;
+}
+
+.home-cards {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 8px;
+}
+
+/* Scrollbar đẹp */
+.home-cards::-webkit-scrollbar {
+  width: 8px;
+}
+.home-cards::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.room-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 }
