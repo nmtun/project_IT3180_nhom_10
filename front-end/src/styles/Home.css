@@ -4,22 +4,21 @@ html, body {
   margin: 0;
   padding: 0;
   background: #fff;
-  overflow: hidden; /* Không cho scroll toàn trang */
 }
 
 .home-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100vw;
   background: #fff;
-  overflow: hidden;
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .home-body {
   display: flex;
-  flex: 1;
-  overflow: hidden;
+  min-height: calc(100vh - 65px - 90px); /* Trừ chiều cao header (65px) và navbar (90px) */
 }
 
 .home-content {
@@ -27,104 +26,71 @@ html, body {
   background-color: #fff;
   padding: 32px 24px 24px 24px;
   transition: margin-left 0.3s ease;
-  overflow: hidden;
-  margin-top: 65px; /* Header cố định */
-  margin-bottom: -120px; /* Dành chỗ cho navbar */
-  height: calc(100vh - 65px - 50px);
-  display: flex;
-  flex-direction: column;
+  overflow-x: hidden;
+  margin-top: 65px;    /* Đẩy xuống dưới Header */
+  margin-bottom: -120px; /* Để trên Navbar */
 }
 
+.home-content h1 {
+  font-size: 2rem;
+  color: #102eb4;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Khi sidebar mở */
 .home-content.sidebar-open {
-  margin-left: 220px;
+  margin-left: 220px; /* width của sidebar khi open */
 }
 
+/* Khi sidebar đóng */
 .home-content.sidebar-closed {
-  margin-left: 60px;
+  margin-left: 60px; /* width của sidebar khi closed */
 }
 
-.floor-select-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.floor-arrow {
-  background: #fff;
-  border: 1px solid #1972bb;
-  color: #1972bb;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: background 0.2s, color 0.2s;
-}
-.floor-arrow:hover {
-  background: #1972bb;
-  color: #fff;
-}
-
-.floor-select {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #1972bb #eee;
-  padding-bottom: 4px;
-  flex: 1;
-}
-.floor-select::-webkit-scrollbar {
-  height: 6px;
-}
-.floor-select::-webkit-scrollbar-thumb {
-  background: #1972bb;
-  border-radius: 3px;
-}
-.floor-select button {
-  min-width: 90px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid #1972bb;
-  background: #fff;
-  color: #1972bb;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  font-size: 1rem;
-}
-.floor-select button.selected,
-.floor-select button:hover {
-  background: #1972bb;
-  color: #fff;
-}
-
-.home-cards {
-  flex-grow: 1;
-  overflow-y: auto;
+/* -------- Dashboard layout -------- */
+.dashboard {
+  margin-top: 36px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-right: 8px;
+  gap: 36px;
+  max-height: 70vh;;
+  margin-left: 36px;
+  margin-right: 36px;
 }
 
-/* Scrollbar đẹp */
-.home-cards::-webkit-scrollbar {
-  width: 8px;
-}
-.home-cards::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.room-row {
+/* Hàng 3 khối nhỏ */
+.dashboard-top {
   display: flex;
-  flex-direction: row;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+/* Hàng 2 khối lớn */
+.dashboard-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+/* Card cơ bản */
+.card {
+  background: #f1f5ff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  color: #102eb4;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Kích thước khối */
+.small-card {
+  flex: 1;
+  min-height: 200px;
+}
+
+.large-card {
+  flex: 1;
+  min-height: 400px;
 }
