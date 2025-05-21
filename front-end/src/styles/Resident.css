@@ -47,3 +47,63 @@ html, body {
 .resident-content.sidebar-closed {
   margin-left: 60px; /* width của sidebar khi closed */
 }
+.resident-search {
+  margin-bottom: 20px;
+}
+.resident-search input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.resident-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+/* Mỗi dòng nhân khẩu */
+
+
+  .resident-row {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: center;
+  gap: 12px;
+  }
+
+
+/* Các hành động (sửa, xóa) */
+.resident-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.icon-action {
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.icon-action.edit {
+  color: #3498db;
+}
+
+.icon-action.edit:hover {
+  color: #1d6fa5;
+}
+
+.icon-action.delete {
+  color: #e74c3c;
+}
+
+.icon-action.delete:hover {
+  color: #c0392b;
+}
