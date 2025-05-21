@@ -260,19 +260,6 @@ html, body {
   background-color: #096dd9;
 }
 
-.add-button {
-  background-color: #52c41a;
-  color: white;
-}
-
-.add-button:hover {
-  background-color: #73d13d;
-}
-
-.add-button:active {
-  background-color: #389e0d;
-}
-
 @media (max-width: 768px) {
   .header-actions {
     flex-direction: column;
@@ -437,6 +424,9 @@ html, body {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s;
+  width: 90px;
+  height: 36px;
+  margin-top: 15px;
 }
 
 .delete-button:hover {
@@ -537,4 +527,20 @@ html, body {
   .cancel-delete-button {
     width: 100%;
   }
+}
+
+.search-input,
+.search-type-select {
+  background: #fff;
+  color: #222;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 8px 12px;
+  transition: all 0.3s;
+}
+
+.search-input::placeholder {
+  color: #888;
+  opacity: 1;
 }
