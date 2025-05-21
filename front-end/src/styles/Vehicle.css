@@ -50,6 +50,25 @@ html, body {
 
 .vehicle-list {
   padding: 20px;
+  max-height: 80vh; 
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.vehicle-list::-webkit-scrollbar {
+  width: 8px;
+  background: #f0f4fa;
+  border-radius: 8px;
+}
+
+.vehicle-list::-webkit-scrollbar-thumb {
+  background: #1972bb;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.vehicle-list::-webkit-scrollbar-thumb:hover {
+  background: #125299;
 }
 
 .vehicle-grid {
