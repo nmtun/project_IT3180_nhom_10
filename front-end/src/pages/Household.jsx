@@ -107,10 +107,13 @@ const Household = () => {
         <Sidebar open={open} setOpen={setOpen} />
         <div className={`household-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
           <div className="household-search">
-            <SearchBar
-              placeholder="Tìm kiếm hộ gia đình"
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="household-title"><h1>Danh sách hộ gia đình: </h1></div>
+            <div className="search-bar">
+              <SearchBar
+                placeholder="Tìm kiếm hộ gia đình"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
           <div className="household-list">
             {filteredHouseholds.map((item, idx) => (

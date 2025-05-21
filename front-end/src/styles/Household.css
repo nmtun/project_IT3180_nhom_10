@@ -50,8 +50,16 @@ html, body {
 
 .household-search {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+}
+
+.household-title h1{
+  color: #000;
+  justify-content: left;
+}
+
+.search-bar {
+  justify-content: right;
 }
 
 .household-list {
