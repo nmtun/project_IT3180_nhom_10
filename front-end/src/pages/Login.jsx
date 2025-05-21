@@ -72,7 +72,7 @@ const Login = () => {
         <div className="login-form-container">
           <h2>Quản lý chung cư</h2>
           <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
+            <div className="login-form-group">
               <label htmlFor="username">Tên đăng nhập</label>
               <input
                 type="text"
@@ -85,7 +85,7 @@ const Login = () => {
                 disabled={loading}
               />
             </div>
-            <div className="form-group">
+            <div className="login-form-group">
               <label htmlFor="password">Mật khẩu</label>
               <div className="password-input-container">
                 <input

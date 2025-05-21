@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import axiosIntance from '../untils/axiosIntance';
 
 import '../styles/Vehicle.css';
+import AddButton from '../components/AddButton';
 
 const Vehicle = () => {
   // State để lưu trữ danh sách xe
@@ -396,12 +397,7 @@ const Vehicle = () => {
                     Tìm kiếm
                   </button>
                 </form>
-                <button 
-                  className="add-button"
-                  onClick={handleAddClick}
-                >
-                  Thêm xe mới
-                </button>
+                <AddButton onClick={handleAddClick} />
               </div>
             </div>
             {vehicles.length > 0 ? (
