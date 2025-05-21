@@ -16,6 +16,10 @@
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
 }
 
+.modal h2 {
+  color: #000;
+}
+
 .add-household-form .form-group {
   margin-bottom: 18px;
   display: flex;

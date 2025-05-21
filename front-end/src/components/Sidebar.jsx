@@ -20,8 +20,20 @@ const menuItems = [
   { icon: <FaCog />, label: 'Cài đặt', path: '/settings' },
 ];
 
+
 const Sidebar = ({ open, setOpen }) => {
   const navigate = useNavigate();
+  //const role = localStorage.getItem('role');
+
+  // Tạo bản sao menuItems, thêm mục Account nếu là Tổ trưởng
+  // const sidebarMenu = [...menuItems];
+  // if (role === 'Tổ trưởng') {
+  //   sidebarMenu.push({
+  //     icon: <FaUserFriends />,
+  //     label: 'Quản lý tài khoản',
+  //     path: '/account',
+  //   });
+  // }
 
   return (
     <div className={`sidebar ${open ? 'open' : 'closed'}`}>

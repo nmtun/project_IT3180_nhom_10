@@ -56,6 +56,7 @@ html, body {
 .household-title h1{
   color: #000;
   justify-content: left;
+  font-size: 30px;
 }
 
 .search-bar {
