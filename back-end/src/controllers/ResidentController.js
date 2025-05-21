@@ -33,8 +33,7 @@ export const createResident = async (req, res) => {
         message: "HouseholdID, FullName, Sex và Relationship là bắt buộc."
       });
     }
-
-    // Tạo Resident với toàn bộ dữ liệu nhận từ client
+    
     const newResident = await residentServices.createResident(req.body);
 
     return res.status(201).json(newResident);
