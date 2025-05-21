@@ -49,12 +49,13 @@ html, body {
 }
 .resident-search {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .resident-search input {
-  width: 100%;
-  padding: 12px;
+  padding: 8px;
   border-radius: 8px;
-  border: 1px solid #ccc;
   font-size: 16px;
 }
 
@@ -72,9 +73,10 @@ html, body {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   align-items: center;
   gap: 12px;
+  min-width: 0;
   }
 
 

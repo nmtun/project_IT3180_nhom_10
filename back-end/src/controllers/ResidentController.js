@@ -35,7 +35,7 @@ export const createResident = async (req, res) => {
     }
 
     // Tạo Resident với toàn bộ dữ liệu nhận từ client
-    const newResident = await residentServices.createResident({ HouseholdID, FullName, Sex, Relationship });
+    const newResident = await residentServices.createResident(req.body);
 
     return res.status(201).json(newResident);
   } catch (error) {
