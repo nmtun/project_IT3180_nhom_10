@@ -55,7 +55,7 @@ const Home = () => {
                 <span className="card-title">🏡 Thường trú: <strong>40</strong></span>
                 <span className="card-title">🏡 Tạm trú: <strong>10</strong></span>
                 <span className="card-title">🏡 Mói chuyển đến: <strong>5</strong></span>
-                <span className="card-title">🏡 Mới chueyenr đi: <strong>2</strong></span>
+                <span className="card-title">🏡 Mới chuyển đi: <strong>2</strong></span>
               </div>
             </div>
             {/* Hàng dưới - 2 khối biểu đồ lớn */}

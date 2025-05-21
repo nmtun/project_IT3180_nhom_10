@@ -48,6 +48,7 @@ const Household = () => {
         Members: data.members,
         Notes: data.notes,
       });
+      // eslint-disable-next-line no-unused-vars
       const newHousehold = response.data.newHousehold || response.data;
       //setHouseholds((prev) => [...prev, newHousehold]);
       await fetchHouseholds();
