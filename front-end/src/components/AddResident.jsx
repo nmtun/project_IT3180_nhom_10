@@ -32,7 +32,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
   });
 
   useEffect(() => {
-    if (initialData) {
+    if (initialData && Object.keys(initialData).length > 0) {
       setForm({
         fullName: initialData.FullName || '',
         dateOfBirth: initialData.DateOfBirth || '',
@@ -45,8 +45,22 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
         registrationDate: initialData.RegistrationDate || '',
         householdId: initialData.HouseholdID || ''
       });
-    }
-  }, [initialData]);
+    }else {
+        // reset về form trống nếu không có dữ liệu chỉnh sửa
+        setForm({
+          fullName: '',
+          dateOfBirth: '',
+          sex: 'Nam',
+          relationship: 'Vợ/Chồng',
+          phoneNumber: '',
+          educationLevel: '',
+          occupation: '',
+          residencyStatus: 'Tạm trú',
+          registrationDate: '',
+          householdId: ''
+        });
+      }
+  }, [initialData, open]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

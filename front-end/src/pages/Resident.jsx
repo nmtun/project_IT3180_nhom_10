@@ -24,6 +24,7 @@ const Resident = () => {
   const [editResident, setEditResident] = React.useState(null);
   const [selectedResident, setSelectedResident] = React.useState(null);
   const [search, setSearch] = React.useState('');
+  const [searchInput, setSearchInput] = React.useState('');
 
   React.useEffect(() => {
     fetchResidents();
@@ -88,7 +89,14 @@ const Resident = () => {
           <div className="resident-search">
             <SearchBar
               placeholder="Tìm kiếm nhân khẩu"
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setSearch(searchInput);
+                }
+              }}
+              onSearch={() => setSearch(searchInput)} // callback cho icon tìm kiếm
             />
           </div>
           <div className="resident-list">
@@ -105,13 +113,13 @@ const Resident = () => {
                 <span><b>SĐT: </b>{item.PhoneNumber}</span>
                 {/* <span><b>Mã hộ: </b>{item.HouseholdID}</span> */}
                 <span className="resident-actions">
-                  <button
+                  {/* <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedResident(item);
                     }}
                   >
-                    Details                 </button>
+                    Details                 </button> */}
                   <FaEdit
                     className="icon-action edit"
                     title="Sửa"
