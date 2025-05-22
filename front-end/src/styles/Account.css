@@ -27,7 +27,7 @@ html, body {
   padding: 32px 24px 24px 24px;
   transition: margin-left 0.3s ease;
   overflow-x: hidden;
-  margin-top: 65px;    /* Đẩy xuống dưới Header */
+  margin-top: 40px;    /* Đẩy xuống dưới Header */
   margin-bottom: -120px; /* Để trên Navbar */
 }
 
@@ -46,4 +46,19 @@ html, body {
 /* Khi sidebar đóng */
 .account-content.sidebar-closed {
   margin-left: 60px; /* width của sidebar khi closed */
+}
+
+.account-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.account-title h1 {
+  color: #000;
+  justify-content: left;
+  font-size: 30px;
+}
+
+.account-search {
+  justify-content: right;
 }

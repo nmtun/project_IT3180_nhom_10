@@ -3,6 +3,7 @@ import '../styles/Account.css';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import SearchBar from '../components/SearchBar';
 
 const Account = () => {
   // Khởi tạo state open từ localStorage
@@ -15,16 +16,27 @@ const Account = () => {
     localStorage.setItem('sidebarOpen', JSON.stringify(open));
   }, [open]);
 
+  const [search, setSearch] = React.useState('');
+
   return (
     <div className="account-container">
-      <Header />
+      <Header />x
       <div className="account-body">
-        {/* Truyền open và setOpen vào Sidebar */}
         <Sidebar open={open} setOpen={setOpen} />
-
-        {/* home-content sẽ có class thay đổi để margin-left phù hợp */}
         <div className={`account-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
-          <h1>Đây là trang quản lý tài khoản</h1>
+          <div className="account-title">
+            <h1 className="account-title-text">Đanh sách tài khoản:</h1>
+            <div className="account-search">
+              <SearchBar 
+                placeholder={"Tìm kiếm tài khoản..."}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="account-list">
+            
+          </div>
         </div>
       </div>
       <Navbar />
