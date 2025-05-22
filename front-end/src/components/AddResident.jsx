@@ -1,12 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/AddResident.css'; // Bạn cần CSS riêng cho form popup
+import React from 'react';
+import{ useState, useEffect } from 'react';
+import '../styles/AddResident.css'; 
+import axiosInstance from '../untils/axiosIntance';
 
 const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
+  const [households, setHouseholds] = React.useState([]);
+  React.useEffect(() => {
+    const fetchHouseholds = async () => {
+      try {
+        const response = await axiosInstance.get('/households/get-all-households'); // API trả về danh sách hộ
+        setHouseholds(response.data.households || response.data); // tuỳ theo cấu trúc backend
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách hộ:", error);
+      }
+    };
+
+    fetchHouseholds();
+  }, []);
+
   const [form, setForm] = useState({
     fullName: '',
     dateOfBirth: '',
     sex: 'Nam',
-    relationship: 'Chủ hộ',
+    relationship: 'Vợ/Chồng',
     phoneNumber: '',
     educationLevel: '',
     occupation: '',
@@ -21,7 +37,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
         fullName: initialData.FullName || '',
         dateOfBirth: initialData.DateOfBirth || '',
         sex: initialData.Sex || 'Nam',
-        relationship: initialData.Relationship || 'Chủ hộ',
+        relationship: initialData.Relationship || 'Vợ/Chồng',
         phoneNumber: initialData.PhoneNumber || '',
         educationLevel: initialData.EducationLevel || '',
         occupation: initialData.Occupation || '',
@@ -37,27 +53,37 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   onSubmit(form);
-  // };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formattedForm = {
-      ...form,
-      householdId: Number(form.householdId)  // ép kiểu ở đây
-    };  
+    if (!form.fullName.trim()) {
+      alert('Vui lòng nhập họ tên');
+      return;
+    }
+    if (!form.householdId) {
+      alert('Vui lòng chọn hộ gia đình');
+      return;
+    }
 
+    const formattedForm = {
+      HouseholdID: Number(form.householdId),
+      FullName: form.fullName.trim(),
+      Sex: form.sex,
+      Relationship: form.relationship,
+      ...(form.residencyStatus && { ResidencyStatus: form.residencyStatus }),
+      ...(form.dateOfBirth && { DateOfBirth: form.dateOfBirth }),
+      ...(form.phoneNumber?.trim() && { PhoneNumber: form.phoneNumber.trim() }),
+      ...(form.educationLevel?.trim() && { EducationLevel: form.educationLevel.trim() }),
+      ...(form.occupation?.trim() && { Occupation: form.occupation.trim() }),
+      ...(form.registrationDate && { RegistrationDate: form.registrationDate })
+    };
+    
+    console.log('Data being sent:', formattedForm);
     onSubmit(formattedForm);
   };
 
-  
-
   if (!open) return null;
   
-
   return (
     <div className="modal-overlay">
       <div className="modal-form">
@@ -73,7 +99,6 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
           </select>
 
           <select name="relationship" value={form.relationship} onChange={handleChange}>
-            <option value="Chủ hộ">Chủ hộ</option>
             <option value="Vợ/chồng">Vợ/chồng</option>
             <option value="Con">Con</option>
             <option value="Cha/mẹ">Cha/mẹ</option>
@@ -95,7 +120,14 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
 
           <input type="date" name="registrationDate" value={form.registrationDate} onChange={handleChange} placeholder="Ngày đăng ký" />
 
-          <input type="text" name="householdId" value={form.householdId} onChange={handleChange} placeholder="Mã hộ gia đình" required />
+          <select name="householdId" value={form.householdId} onChange={handleChange} required>
+            <option value="">-- Chọn hộ gia đình --</option>
+            {households.map(h => (
+              <option key={h.HouseholdID} value={h.HouseholdID}>
+                {`Hộ ID ${h.HouseholdID} - ${h.HouseholdHead || 'Chưa có tên'}`}
+              </option>
+            ))}
+          </select>
 
           <div className="form-actions">
             <button type="submit">Lưu</button>
