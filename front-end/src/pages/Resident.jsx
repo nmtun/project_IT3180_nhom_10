@@ -51,51 +51,20 @@ const Resident = () => {
   };
 
   const handleEditResident = async (data) => {
-    try {
-      const updatedFields = {};
-
-      const map = {
-        FullName: 'fullName',
-        DateOfBirth: 'dateOfBirth',
-        Sex: 'sex',
-        Relationship: 'relationship',
-        PhoneNumber: 'phoneNumber',
-        HouseholdID: 'householdId',
-        EducationLevel: 'educationLevel',
-        Occupation: 'occupation',
-        ResidencyStatus: 'residencyStatus',
-        RegistrationDate: 'registrationDate'
-      };
-
-      for (const [key, formKey] of Object.entries(map)) {
-        const newValue = data[formKey];
-        const oldValue = editResident?.[key] ?? '';
-        if (String(newValue) !== String(oldValue)) {
-          updatedFields[key] = newValue;
-        }
-      }
-
-      const response = await axiosIntance.put(
-        `/residents/update-resident/${editResident.ResidentID}`,
-        updatedFields
-      );
-      const updatedResident = response.data.resident || response.data;
-      
-      console.log('Updated resident:', updatedResident);
+  try {
+    const response = await axiosIntance.put(`/residents/update-resident/${editResident.ResidentID}`, data);
+    
+    const updatedResident = response.data.newResident || response.data;
       setResidents((prev) =>
-        prev.map((r) =>
-          r.ResidentID === updatedResident.ResidentID ? updatedResident : r
-        )
+        prev.map((h) => (h.ResidentID === updatedResident.ResidentID ? updatedResident : h))
       );
-      await fetchResidents();
-      setEditResident(null);
-    } catch (error) {
-      console.error("Lỗi khi cập nhật:", error?.response?.data || error);
-      alert('Cập nhật nhân khẩu thất bại!');
-    }
-  };
-
-  
+    await fetchResidents(); // Tùy ý: nếu bạn chắc response mới nhất thì có thể bỏ
+    setEditResident(null);
+  } catch (error) {
+    console.error("Lỗi khi cập nhật resident:", error?.response?.data || error);
+    alert("Cập nhật nhân khẩu thất bại!");
+  }
+};
 
   const handleDeleteResident = async (id) => {
     try {
