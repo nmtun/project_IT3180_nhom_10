@@ -53,7 +53,6 @@ const Household = () => {
       //setHouseholds((prev) => [...prev, newHousehold]);
       await fetchHouseholds();
       setShowAddHousehold(false);
-    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert('Thêm hộ gia đình thất bại!');
     }
