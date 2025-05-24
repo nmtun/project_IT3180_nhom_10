@@ -50,8 +50,17 @@ html, body {
 
 .household-search {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+}
+
+.household-title h1{
+  color: #000;
+  justify-content: left;
+  font-size: 30px;
+}
+
+.search-bar {
+  justify-content: right;
 }
 
 .household-list {
@@ -64,8 +73,18 @@ html, body {
 
 .household-list::-webkit-scrollbar {
   width: 8px;
-  background: #406294;
+  background: #d3d8e0;
   border-radius: 8px;
+}
+
+.household-list::-webkit-scrollbar-thumb {
+  background: #1972bb;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.household-list::-webkit-scrollbar-thumb:hover {
+  background: #125299;
 }
 
 .household-row {

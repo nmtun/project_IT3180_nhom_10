@@ -50,7 +50,7 @@ html, body {
 .resident-search {
   margin-bottom: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
 }
 .resident-search input {
@@ -60,50 +60,79 @@ html, body {
 }
 
 .resident-list {
-  display: flex;
+  margin-top: 36px;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 8px;
 }
+.resident-list::-webkit-scrollbar {
+  width: 8px;
+  background: #d3d8e0;
+  border-radius: 8px;
+}
+
+.resident-list::-webkit-scrollbar-thumb {
+  background: #1972bb;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.resident-list::-webkit-scrollbar-thumb:hover {
+  background: #125299;
+}
 /* Mỗi dòng nhân khẩu */
 
-
   .resident-row {
-  background-color: #ffffff;
-  padding: 16px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    height: 48px;
+  display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  color: #000;
+  padding: 12px 0;
   }
 
+.resident-row > span {
+  min-width: 120px;
+  flex: 1 1 0;
+  /* Có thể căn chỉnh text cho đẹp */
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+}
+
+.resident-row > span b {
+  margin-right: 4px;
+}
 
 /* Các hành động (sửa, xóa) */
 .resident-actions {
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
+  gap: 16px;
   align-items: center;
+  margin-left: 0;
+  justify-content: flex-end;
+  flex: 0 0 90px; /* Đảm bảo cố định chiều rộng cho icon */
 }
 
 .icon-action {
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.2rem;
   transition: color 0.2s;
 }
 
 .icon-action.edit {
-  color: #3498db;
+  color: #1972bb;
 }
 
 .icon-action.edit:hover {
-  color: #1d6fa5;
+  color: #125299;
 }
 
 .icon-action.delete {
@@ -111,7 +140,7 @@ html, body {
 }
 
 .icon-action.delete:hover {
-  color: #c0392b;
+  color: #b71c1c;
 }
 
 /* Overlay mờ nền */
