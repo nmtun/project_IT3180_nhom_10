@@ -72,3 +72,20 @@ textarea::placeholder {
   font-size: 14px;
   color: #999; 
 }
+.add-resident-submit, /* hoặc class của nút thêm nếu bạn đặt tên khác */
+button[type="submit"] {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-resident-submit:hover,
+button[type="submit"]:hover {
+  background: #125ea7;
+}

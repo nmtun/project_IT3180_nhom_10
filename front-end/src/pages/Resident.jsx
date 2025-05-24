@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
@@ -43,6 +44,7 @@ const Resident = () => {
 
   const handleAddResident = async (data) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axiosIntance.post('/residents/create-resident', data);
       await fetchResidents();
       setShowAddResident(false);
@@ -87,6 +89,7 @@ const Resident = () => {
         <Sidebar open={open} setOpen={setOpen} />
         <div className={`resident-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
           <div className="resident-search">
+            <div className="resident-title"><h1>Danh sách nhân khẩu:</h1></div>
             <SearchBar
               placeholder="Tìm kiếm nhân khẩu"
               value={searchInput}
@@ -148,7 +151,7 @@ const Resident = () => {
                 <p><strong>Họ tên:</strong> {selectedResident.FullName}</p>
                 <p><strong>Giới tính:</strong> {selectedResident.Sex}</p>
                 <p><strong>Ngày sinh:</strong> {selectedResident.DateOfBirth}</p>
-                <p><strong>Quan hệ:</strong> {selectedResident.Relationship}</p>
+                <p><strong>Quan hệ với chủ hộ:</strong> {selectedResident.Relationship}</p>
                 <p><strong>SĐT:</strong> {selectedResident.PhoneNumber}</p>
                 <p><strong>Trình độ học vấn:</strong> {selectedResident.EducationLevel}</p>
                 <p><strong>Nghề nghiệp:</strong> {selectedResident.Occupation}</p>

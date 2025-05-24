@@ -177,7 +177,9 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
           </div>
           <div>
             <div className="form-actions">
-              <button type="submit">Lưu</button>
+              <button type="submit">
+                {initialData && Object.keys(initialData).length > 0 ? 'Cập nhật' : 'Thêm'}
+              </button>
               <button type="button" onClick={onClose}>Hủy</button>
             </div>
           </div>

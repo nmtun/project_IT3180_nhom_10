@@ -53,6 +53,23 @@ html, body {
   justify-content: right;
   align-items: center;
 }
+
+.resident-title {
+  text-align: left;
+}
+
+.resident-title h1{
+  color: #000;
+  justify-content: left;
+  font-size: 30px;
+  text-align: left
+}
+
+.resident-search {
+  display: flex;
+  justify-content: space-between;
+}
+
 .resident-search input {
   padding: 8px;
   border-radius: 8px;

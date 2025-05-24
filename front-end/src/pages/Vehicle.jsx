@@ -112,6 +112,7 @@ const Vehicle = () => {
   };
 
   // Hàm lấy thông tin một xe theo ID
+  // eslint-disable-next-line no-unused-vars
   const fetchVehicleById = async (id) => {
     try {
       setLoading(true);
