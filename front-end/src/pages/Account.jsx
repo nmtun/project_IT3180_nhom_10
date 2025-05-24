@@ -5,9 +5,9 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import SearchBar from '../components/SearchBar';
 import AddButton from '../components/AddButton';
-import AddAccount from '../components/AddAccount'; // Thêm dòng này
-import axiosIntance from '../untils/axiosIntance'; // Nếu dùng API
-import { FaEdit, FaTrash } from 'react-icons/fa'; // Nếu cần biểu tượng chỉnh sửa/xoá
+import AddAccount from '../components/AddAccount'; 
+import axiosIntance from '../untils/axiosIntance'; 
+import { FaEdit, FaTrash } from 'react-icons/fa'; 
 
 const Account = () => {
   const [open, setOpen] = React.useState(() => {
