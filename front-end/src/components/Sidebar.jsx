@@ -7,6 +7,7 @@ import {
   FaCar,
   FaCog,
   FaBars,
+  FaUser
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Sidebar.css';
@@ -20,8 +21,21 @@ const menuItems = [
   { icon: <FaCog />, label: 'Cài đặt', path: '/settings' },
 ];
 
+
 const Sidebar = ({ open, setOpen }) => {
   const navigate = useNavigate();
+  const userRole = localStorage.getItem('role');
+
+  // Tạo bản sao menuItems, thêm mục Account nếu là Tổ trưởng
+  const sidebarMenu = [...menuItems];
+  if (userRole === 'Tổ trưởng') {
+    const settingsIndex = sidebarMenu.findIndex(item => item.label === 'Cài đặt');
+    sidebarMenu.splice(settingsIndex, 0, {
+      icon: <FaUser />,
+      label: 'Quản lý tài khoản',
+      path: '/account',
+    });
+  }
 
   return (
     <div className={`sidebar ${open ? 'open' : 'closed'}`}>
@@ -34,7 +48,7 @@ const Sidebar = ({ open, setOpen }) => {
         {open && <span className="sidebar-label">MENU</span>}
       </div>
       <ul className="sidebar-menu">
-        {menuItems.map((item, idx) => (
+        {sidebarMenu.map((item, idx) => (
           <li
             key={idx}
             onClick={() => navigate(item.path)}

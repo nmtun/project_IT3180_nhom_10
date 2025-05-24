@@ -544,3 +544,22 @@ html, body {
   color: #888;
   opacity: 1;
 }
+
+input,
+select,
+textarea {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 8px 12px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #888;
+  opacity: 1;
+}

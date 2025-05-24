@@ -1,0 +1,93 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 8px;
+  padding: 32px 24px 24px 24px;
+  min-width: 350px;
+  max-width: 95vw;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.add-account-form .form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-account-form label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.add-account-form input,
+.add-account-form select,
+.add-account-form textarea {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.add-account-form input:focus,
+.add-account-form select:focus,
+.add-account-form textarea:focus {
+  border-color: #1976d2;
+}
+
+.account-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.account-modal-submit {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.account-modal-submit:hover {
+  background: #125ea7;
+}
+
+.account-modal-cancel {
+  background: #eee;
+  color: #333;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.account-modal-cancel:hover {
+  background: #ccc;
+}
+
+@media (max-width: 500px) {
+  .modal {
+    min-width: 90vw;
+    padding: 16px 8px;
+  }
+}

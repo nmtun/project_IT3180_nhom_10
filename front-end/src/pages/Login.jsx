@@ -50,6 +50,8 @@ const Login = () => {
       const data = await response.data;
 
       localStorage.setItem('token', data.token);
+      localStorage.setItem('role', data.role);
+      console.log(localStorage.getItem('role'));
       navigate('/home');
     } catch (err) {
       const msg = err.response?.data?.message || 'Đăng nhập thất bại';

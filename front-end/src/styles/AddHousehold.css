@@ -16,6 +16,10 @@
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
 }
 
+.modal h2 {
+  color: #000;
+}
+
 .add-household-form .form-group {
   margin-bottom: 18px;
   display: flex;
@@ -37,14 +41,14 @@
   color: #000;
 }
 
-.modal-actions {
+.household-modal-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
   margin-top: 12px;
 }
 
-.modal-submit {
+.household-modal-submit {
   background: #1972bb;
   color: #fff;
   border: none;
@@ -53,7 +57,7 @@
   cursor: pointer;
 }
 
-.modal-cancel {
+.household-modal-cancel {
   background: #eee;
   color: #333;
   border: none;

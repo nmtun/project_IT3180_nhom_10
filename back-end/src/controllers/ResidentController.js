@@ -1,4 +1,5 @@
 import * as residentServices from '../services/ResidentServices.js';
+//import Resident from '../models/Resident.js';
 
 // Lấy tất cả cư dân
 export const getAllResidents = async (req, res) => {
@@ -24,14 +25,24 @@ export const getResidentById = async (req, res) => {
 // Thêm cư dân mới
 export const createResident = async (req, res) => {
   try {
-    const { FullName, DateOfBirth, Sex, Address, Phone, IdentityNumber } = req.body;
-    if (!FullName || !DateOfBirth || !Sex) {
-      return res.status(400).json({ error: true, message: 'Missing required fields' });
+    const { HouseholdID, FullName, Sex, Relationship } = req.body;
+
+    // Kiểm tra các trường bắt buộc theo model
+    if (!HouseholdID || !FullName || !Sex || !Relationship) {
+      return res.status(400).json({
+        message: "HouseholdID, FullName, Sex và Relationship là bắt buộc."
+      });
     }
-    const newResident = await residentServices.createResident({ FullName, DateOfBirth, Sex, Address, Phone, IdentityNumber });
-    res.status(201).json({ error: false, resident: newResident });
+    
+    const newResident = await residentServices.createResident(req.body);
+
+    return res.status(201).json(newResident);
   } catch (error) {
-    res.status(500).json({ error: true, message: 'Error creating resident', error });
+    console.error("Error creating resident:", error);
+    return res.status(500).json({
+      message: "Lỗi khi tạo cư dân",
+      error: error.message
+    });
   }
 };
 

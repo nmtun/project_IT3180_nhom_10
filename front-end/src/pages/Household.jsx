@@ -21,6 +21,7 @@ const Household = () => {
 
   React.useEffect(() => {
     fetchHouseholds();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [showAddHousehold, setShowAddHousehold] = React.useState(false);
@@ -48,10 +49,12 @@ const Household = () => {
         Members: data.members,
         Notes: data.notes,
       });
+      // eslint-disable-next-line no-unused-vars
       const newHousehold = response.data.newHousehold || response.data;
       //setHouseholds((prev) => [...prev, newHousehold]);
       await fetchHouseholds();
       setShowAddHousehold(false);
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert('Thêm hộ gia đình thất bại!');
     }
@@ -72,6 +75,7 @@ const Household = () => {
       );
       await fetchHouseholds();
       setEditHousehold(null);
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert('Cập nhật hộ gia đình thất bại!');
     }
@@ -95,6 +99,7 @@ const Household = () => {
       await axiosIntance.delete(`/households/delete-household/${id}`);
       setHouseholds((prev) => prev.filter((h) => h.HouseholdID !== id));
       await fetchHouseholds();
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert('Xóa hộ gia đình thất bại!');
     }
@@ -137,6 +142,9 @@ const Household = () => {
                 </span>
               </div>
             ))}
+            {filteredHouseholds.length === 0 && (
+              <div className="household-row">Không có hộ gia đình nào.</div>
+            )}
           </div>
           <AddButton onClick={() => setShowAddHousehold(true)} />
           <AddHousehold

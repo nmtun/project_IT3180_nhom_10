@@ -7,6 +7,7 @@ import Fee from './pages/Fee';
 import Settings from './pages/Settings';
 import Resident from './pages/Resident';
 import Vehicle from './pages/Vehicle';
+import Account from './pages/Account';
 import './App.css';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/settings" element={<Settings />} />
             <Route path="/resident" element={<Resident />} />
             <Route path="/vehicle" element={<Vehicle />} />
+            <Route path="/account" element={<Account />} />
           </Routes>
 
 

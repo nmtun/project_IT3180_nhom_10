@@ -6,7 +6,7 @@ html, body {
   background: #fff;
 }
 
-.household-container {
+.account-container {
   background: #fff;
   min-height: 100vh;
   width: 100vw;
@@ -16,22 +16,22 @@ html, body {
   position: relative;
 }
 
-.household-body {
+.account-body {
   display: flex;
   min-height: calc(100vh - 65px - 90px); /* Trừ chiều cao header (65px) và navbar (90px) */
 }
 
-.household-content {
+.account-content {
   flex-grow: 1;
   background-color: #fff;
   padding: 32px 24px 24px 24px;
   transition: margin-left 0.3s ease;
   overflow-x: hidden;
-  margin-top: 65px;    /* Đẩy xuống dưới Header */
+  margin-top: 60px;    /* Đẩy xuống dưới Header */
   margin-bottom: -120px; /* Để trên Navbar */
 }
 
-.household-content h1 {
+.account-content h1 {
   font-size: 2rem;
   color: #102eb4;
   font-weight: 600;
@@ -39,31 +39,31 @@ html, body {
 }
 
 /* Khi sidebar mở */
-.household-content.sidebar-open {
+.account-content.sidebar-open {
   margin-left: 220px; /* width của sidebar khi open */
 }
 
 /* Khi sidebar đóng */
-.household-content.sidebar-closed {
+.account-content.sidebar-closed {
   margin-left: 60px; /* width của sidebar khi closed */
 }
 
-.household-search {
+.account-title {
   display: flex;
   justify-content: space-between;
 }
 
-.household-title h1{
+.account-title h1 {
   color: #000;
   justify-content: left;
   font-size: 30px;
 }
 
-.search-bar {
+.account-search {
   justify-content: right;
 }
 
-.household-list {
+.account-list {
   margin-top: 36px;
   max-height: 70vh;      /* hoặc giá trị phù hợp, ví dụ 400px, 70vh,... */
   overflow-y: auto;
@@ -71,23 +71,23 @@ html, body {
   padding-right: 8px; 
 }
 
-.household-list::-webkit-scrollbar {
+.account-list::-webkit-scrollbar {
   width: 8px;
   background: #d3d8e0;
   border-radius: 8px;
 }
 
-.household-list::-webkit-scrollbar-thumb {
+.account-list::-webkit-scrollbar-thumb {
   background: #1972bb;
   border-radius: 8px;
   min-height: 40px;
 }
 
-.household-list::-webkit-scrollbar-thumb:hover {
+.account-list::-webkit-scrollbar-thumb:hover {
   background: #125299;
 }
 
-.household-row {
+.account-row {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
@@ -97,7 +97,7 @@ html, body {
   /* Sử dụng grid hoặc flex-grow cho các cột */
 }
 
-.household-row > span {
+.account-row > span {
   min-width: 120px;
   flex: 1 1 0;
   /* Có thể căn chỉnh text cho đẹp */
@@ -108,11 +108,11 @@ html, body {
   text-overflow: ellipsis;
 }
 
-.household-row > span b {
+.account-row > span b {
   margin-right: 4px;
 }
 
-.household-actions {
+.account-actions {
   display: flex;
   gap: 16px;
   align-items: center;
@@ -142,3 +142,99 @@ html, body {
 .icon-action.delete:hover {
   color: #b71c1c;
 }
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal box */
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 95vw;
+  padding: 32px 28px 24px 28px;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+  position: relative;
+  animation: modalShow 0.25s;
+}
+
+@keyframes modalShow {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 1.5rem;
+  color: #102eb4;
+  font-weight: 600;
+  text-align: center;
+}
+
+.modal p {
+  margin: 8px 0;
+  font-size: 1.08rem;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal p b {
+  min-width: 120px;
+  display: inline-block;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.modal-cancel {
+  margin-top: 18px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background 0.2s;
+}
+
+.modal-cancel:hover {
+  background: #0d47a1;
+}
+
+@media (max-width: 500px) {
+  .modal {
+    min-width: 90vw;
+    padding: 16px 8px;
+  }
+  .modal h2 {
+    font-size: 1.1rem;
+  }
+  .modal p {
+    font-size: 0.98rem;
+  }
+}
+
+.status-active {
+  color: #219653;
+  font-weight: 600;
+}
+
+.status-inactive {
+  color: #e53935;
+  font-weight: 600;
+}
+
