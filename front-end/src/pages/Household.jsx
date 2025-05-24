@@ -21,6 +21,7 @@ const Household = () => {
 
   React.useEffect(() => {
     fetchHouseholds();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [showAddHousehold, setShowAddHousehold] = React.useState(false);
@@ -53,6 +54,7 @@ const Household = () => {
       //setHouseholds((prev) => [...prev, newHousehold]);
       await fetchHouseholds();
       setShowAddHousehold(false);
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       alert('Thêm hộ gia đình thất bại!');
     }
@@ -140,6 +142,9 @@ const Household = () => {
                 </span>
               </div>
             ))}
+            {filteredHouseholds.length === 0 && (
+              <div className="household-row">Không có hộ gia đình nào.</div>
+            )}
           </div>
           <AddButton onClick={() => setShowAddHousehold(true)} />
           <AddHousehold

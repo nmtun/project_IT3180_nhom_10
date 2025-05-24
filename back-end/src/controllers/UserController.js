@@ -20,12 +20,12 @@ export const createUser = async (req, res) => {
   try {
     const { Username, Password, FullName, Email, PhoneNumber, Role } = req.body;
 
-    if (!Username) return res.status(400).json({ message: "Username is required" });
-    if (!Password) return res.status(400).json({ message: "Password is required" });
-    if (!FullName) return res.status(400).json({ message: "Full name is required" });
-    if (!Email) return res.status(400).json({ message: "Email is required" });
-    if (!PhoneNumber) return res.status(400).json({ message: "Phone number is required" });
-    if (!Role) return res.status(400).json({ message: "Role is required" });
+    if (!Username) return res.status(400).json({ error: true, message: "Username is required" });
+    if (!Password) return res.status(400).json({ error: true, message: "Password is required" });
+    if (!FullName) return res.status(400).json({ error: true, message: "FullName is required" });
+    if (!Email) return res.status(400).json({ error: true, message: "Email is required" });
+    if (!PhoneNumber) return res.status(400).json({ error: true, message: "PhoneNumber is required" });
+    if (!Role) return res.status(400).json({ error: true, message: "Role is required" });
     
     // băm mật khẩu 
     const saltRounds = 10;
@@ -59,7 +59,7 @@ export const updateUser = async (req, res) => {
       data.Password = await bcrypt.hash(data.Password, saltRounds);
     }
 
-    const updateUser = await userService.updateUser(req.params.id, userService.updateUser);
+    const updateUser = await userService.updateUser(req.params.id, data);
 
     if(!updateUser) return res.status(404).json({error: true, message: "User not found"});
 
