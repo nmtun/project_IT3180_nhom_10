@@ -26,15 +26,47 @@ const Resident = () => {
   const [selectedResident, setSelectedResident] = React.useState(null);
   const [search, setSearch] = React.useState('');
   const [searchInput, setSearchInput] = React.useState('');
+  const [households, setHouseholds] = React.useState([]);
+  const [roomNumbers, setRoomNumbers] = React.useState({});
 
   React.useEffect(() => {
     fetchResidents();
   }, []);
 
+  // Lấy danh sách households khi load trang
+  React.useEffect(() => {
+    const fetchHouseholds = async () => {
+      const res = await axiosIntance.get('/households/get-all-households');
+      setHouseholds(res.data.households || res.data);
+    };
+    fetchHouseholds();
+  }, []);
+
+  // Tạo map HouseholdID -> RoomNumber
+  React.useEffect(() => {
+    const map = {};
+    households.forEach(h => {
+      map[String(h.HouseholdID)] = h.RoomNumber;
+    });
+    setRoomNumbers(map);
+  }, [households]);
+
   const filteredResidents = residents.filter(item =>
     item.FullName.toLowerCase().includes(search.toLowerCase()) ||
     item.PhoneNumber.toLowerCase().includes(search.toLowerCase())
   );
+
+  const sortedResidents = [...filteredResidents].sort((a, b) => {
+    const roomA = roomNumbers[String(a.HouseholdID)] || '';
+    const roomB = roomNumbers[String(b.HouseholdID)] || '';
+    // Nếu là số, so sánh số; nếu là chuỗi, so sánh chuỗi
+    const numA = parseInt(roomA, 10);
+    const numB = parseInt(roomB, 10);
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB;
+    }
+    return roomA.localeCompare(roomB);
+  });
 
   const fetchResidents = async () => {
     const response = await axiosIntance.get('/residents/get-all-residents');
@@ -44,7 +76,6 @@ const Resident = () => {
 
   const handleAddResident = async (data) => {
     try {
-      // eslint-disable-next-line no-unused-vars
       const response = await axiosIntance.post('/residents/create-resident', data);
       await fetchResidents();
       setShowAddResident(false);
@@ -103,13 +134,14 @@ const Resident = () => {
             />
           </div>
           <div className="resident-list">
-            {filteredResidents.map((item, idx) => (
+            {sortedResidents.map((item, idx) => (
               <div
                 className="resident-row"
                 key={item.ResidentID || idx}
                 onClick={() => setSelectedResident(item)}
                 style={{ cursor: 'pointer' }}
               >
+                <span><b>Phòng: </b>{roomNumbers[String(item.HouseholdID)] || '---'}</span>
                 <span><b>Họ tên: </b>{item.FullName}</span>
                 <span><b>Giới tính: </b>{item.Sex}</span>
                 <span><b>Quan hệ với chủ hộ: </b>{item.Relationship}</span>
@@ -155,6 +187,9 @@ const Resident = () => {
                 <p><strong>SĐT:</strong> {selectedResident.PhoneNumber}</p>
                 <p><strong>Trình độ học vấn:</strong> {selectedResident.EducationLevel}</p>
                 <p><strong>Nghề nghiệp:</strong> {selectedResident.Occupation}</p>
+                <p>
+                  <strong>Phòng:</strong> {roomNumbers[String(selectedResident.HouseholdID)] || '---'}
+                </p>
                 <p><strong>Tình trạng cư trú:</strong> {selectedResident.ResidencyStatus}</p>
                 <p><strong>Ngày đăng ký:</strong> {selectedResident.RegistrationDate}</p>
                 <button className="close-detail-btn" onClick={() => setSelectedResident(null)}>Đóng</button>

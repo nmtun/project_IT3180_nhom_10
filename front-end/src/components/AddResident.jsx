@@ -35,32 +35,31 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
   useEffect(() => {
     if (initialData && Object.keys(initialData).length > 0) {
       setForm({
-        fullName: initialData.FullName || '',
-        dateOfBirth: initialData.DateOfBirth || '',
-        sex: initialData.Sex || 'Nam',
-        relationship: initialData.Relationship || 'Vợ/Chồng',
-        phoneNumber: initialData.PhoneNumber || '',
-        educationLevel: initialData.EducationLevel || '',
-        occupation: initialData.Occupation || '',
-        residencyStatus: initialData.ResidencyStatus || 'Tạm trú',
-        registrationDate: initialData.RegistrationDate || '',
-        householdId: initialData.HouseholdID || ''
+        fullName: initialData.fullName || initialData.FullName || '',
+        dateOfBirth: initialData.dateOfBirth || initialData.DateOfBirth || '',
+        sex: initialData.sex || initialData.Sex || 'Nam',
+        relationship: initialData.relationship || initialData.Relationship || 'Vợ/Chồng',
+        phoneNumber: initialData.phoneNumber || initialData.PhoneNumber || '',
+        educationLevel: initialData.educationLevel || initialData.EducationLevel || '',
+        occupation: initialData.occupation || initialData.Occupation || '',
+        residencyStatus: initialData.residencyStatus || initialData.ResidencyStatus || 'Tạm trú',
+        registrationDate: initialData.registrationDate || initialData.RegistrationDate || '',
+        householdId: initialData.householdId || initialData.HouseholdID || ''
       });
-    }else {
-        // reset về form trống nếu không có dữ liệu chỉnh sửa
-        setForm({
-          fullName: '',
-          dateOfBirth: '',
-          sex: 'Nam',
-          relationship: 'Vợ/Chồng',
-          phoneNumber: '',
-          educationLevel: '',
-          occupation: '',
-          residencyStatus: 'Tạm trú',
-          registrationDate: '',
-          householdId: ''
-        });
-      }
+    } else {
+      setForm({
+        fullName: '',
+        dateOfBirth: '',
+        sex: 'Nam',
+        relationship: 'Vợ/Chồng',
+        phoneNumber: '',
+        educationLevel: '',
+        occupation: '',
+        residencyStatus: 'Tạm trú',
+        registrationDate: '',
+        householdId: ''
+      });
+    }
   }, [initialData, open]);
 
   const handleChange = (e) => {
@@ -123,7 +122,14 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
               </div>
               <div className="form-group">
                 <label>Quan hệ với chủ hộ</label>
-                <select name="relationship" value={form.relationship} onChange={handleChange}>
+                <select
+                  name="relationship"
+                  value={form.relationship}
+                  onChange={handleChange}
+                >
+                  {form.relationship === "Chủ hộ" && (
+                    <option value="Chủ hộ">Chủ hộ</option>
+                  )}
                   <option value="Vợ/chồng">Vợ/chồng</option>
                   <option value="Con">Con</option>
                   <option value="Cha/mẹ">Cha/mẹ</option>
@@ -166,7 +172,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
                   <option value="">-- Chọn hộ gia đình --</option>
                   {households.map(h => (
                     <option key={h.HouseholdID} value={h.HouseholdID}>
-                      {`Hộ ID ${h.HouseholdID} - ${h.HouseholdHead || 'Chưa có tên'}`}
+                      {`Phòng số ${h.RoomNumber} - ${h.HouseholdHead || 'Chưa có tên'}`}
                     </option>
                   ))}
                 </select>
