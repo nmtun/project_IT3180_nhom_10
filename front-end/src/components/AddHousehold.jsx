@@ -102,11 +102,11 @@ const AddHousehold = ({ open, onClose, onSubmit, initialData }) => {
               placeholder="Ghi chú (nếu có)"
             />
           </div>
-          <div className="modal-actions">
-            <button type="submit" className="modal-submit">
+          <div className="household-modal-actions">
+            <button type="submit" className="household-modal-submit">
               {initialData ? 'Cập nhật' : 'Thêm'}
             </button>
-            <button type="button" className="modal-cancel" onClick={onClose}>
+            <button type="button" className="household-modal-cancel" onClick={onClose}>
               Hủy
             </button>
           </div>

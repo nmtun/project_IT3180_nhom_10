@@ -86,6 +86,10 @@ export const login = async (req, res) => {
     const user = await userService.findUserByUsername(username);
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    if (user.Status === 'Đã nghỉ việc') {
+      return res.status(403).json({ message: "User has resigned" });
+    }
+
     const isMatch = await bcrypt.compare(password, user.Password);
     if (!isMatch) return res.status(401).json({ message: "Invalid password" });
 

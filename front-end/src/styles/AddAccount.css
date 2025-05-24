@@ -49,14 +49,14 @@
   border-color: #1976d2;
 }
 
-.modal-actions {
+.account-modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   margin-top: 10px;
 }
 
-.modal-submit {
+.account-modal-submit {
   background: #1976d2;
   color: #fff;
   border: none;
@@ -67,11 +67,11 @@
   transition: background 0.2s;
 }
 
-.modal-submit:hover {
+.account-modal-submit:hover {
   background: #125ea7;
 }
 
-.modal-cancel {
+.account-modal-cancel {
   background: #eee;
   color: #333;
   border: none;
@@ -81,7 +81,7 @@
   transition: background 0.2s;
 }
 
-.modal-cancel:hover {
+.account-modal-cancel:hover {
   background: #ccc;
 }
 

@@ -41,14 +41,14 @@
   color: #000;
 }
 
-.modal-actions {
+.household-modal-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
   margin-top: 12px;
 }
 
-.modal-submit {
+.household-modal-submit {
   background: #1972bb;
   color: #fff;
   border: none;
@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
-.modal-cancel {
+.household-modal-cancel {
   background: #eee;
   color: #333;
   border: none;

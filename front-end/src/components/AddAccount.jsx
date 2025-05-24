@@ -8,7 +8,8 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
     fullname: '',
     email: '',
     phoneNumber: '',
-    role: 'Tổ phó', // hoặc giá trị mặc định hợp lệ
+    role: 'Tổ phó',
+    status: 'Đang hoạt động',
   });
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
         email: initialData.email || '',
         phoneNumber: initialData.phoneNumber || '',
         role: initialData.role || 'Tổ phó',
+        status: initialData.status || 'Đang hoạt động',
       });
     } else {
       setForm({
@@ -28,7 +30,8 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
         fullname: '',
         email: '',
         phoneNumber: '',
-        role: 'Tổ phó', // hoặc giá trị mặc định hợp lệ
+        role: 'Tổ phó',
+        status: 'Đang hoạt động',
       });
     }
   }, [initialData, open]);
@@ -56,6 +59,7 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
         email: '',
         phoneNumber: '',
         role: 'Tổ trưởng', // hoặc giá trị mặc định hợp lệ
+        status: 'Đang hoạt động', // hoặc giá trị mặc định hợp lệ
     });  };
 
   if (!open) return null;
@@ -121,6 +125,19 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
               <option value="Thủ quỹ">Thủ quỹ</option>
             </select>
           </div>
+          {initialData && (
+            <div className="form-group">
+              <label>Trạng thái</label>
+              <select
+                name="status"
+                value={form.status || 'Đang hoạt động'}
+                onChange={handleChange}
+              >
+                <option value="Đang hoạt động">Đang hoạt động</option>
+                <option value="Đã nghỉ việc">Đã nghỉ việc</option>
+              </select>
+            </div>
+          )}
           <div className="form-group">
             <label>Mật khẩu {initialData && <span style={{fontWeight: 400, fontSize: 13}}>(Để trống nếu không đổi)</span>}</label>
             <input
@@ -132,11 +149,11 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
               // required={!initialData} // Không bắt buộc khi sửa
             />
           </div>
-          <div className="modal-actions">
-            <button type="submit" className="modal-submit">
+          <div className="account-modal-actions">
+            <button type="submit" className="account-modal-submit">
               {initialData ? 'Cập nhật' : 'Thêm'}
             </button>
-            <button type="button" className="modal-cancel" onClick={onClose}>
+            <button type="button" className="account-modal-cancel" onClick={onClose}>
               Hủy
             </button>
           </div>
