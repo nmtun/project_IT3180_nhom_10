@@ -181,6 +181,21 @@ html, body {
   cursor: pointer;
   float: right;
 }
+.resident-detail-modal h3 {
+  text-align: center;
+  color: #102eb4;
+  margin-bottom: 16px;
+}
+.resident-detail-modal p {
+  margin-bottom: 12px; /* Giãn khoảng cách giữa các dòng */
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.resident-detail-modal p strong {
+  color: #1972bb; /* Màu xanh blue cho tên trường */
+  margin-right: 4px;
+}
 
 /* Animation popup */
 @keyframes popup-fade {

@@ -12,9 +12,9 @@
 }
 
 .modal-form {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 15px;
   width: 90%;
   max-width: 500px;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -22,6 +22,8 @@
 
 .modal-form h2 {
   margin-bottom: 20px;
+  text-align: center;
+  color: #102eb4;
 }
 
 .modal-form form {
@@ -34,7 +36,7 @@
 .modal-form select {
   padding: 10px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
 }
 
 .form-actions {
