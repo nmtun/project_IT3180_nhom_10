@@ -51,10 +51,14 @@ const Resident = () => {
     setRoomNumbers(map);
   }, [households]);
 
-  const filteredResidents = residents.filter(item =>
-    item.FullName.toLowerCase().includes(search.toLowerCase()) ||
-    item.PhoneNumber.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredResidents = residents.filter(item => {
+    const room = roomNumbers[String(item.HouseholdID)] || '';
+    return (
+      item.FullName.toLowerCase().includes(search.toLowerCase()) ||
+      item.PhoneNumber.toLowerCase().includes(search.toLowerCase()) ||
+      room.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   const sortedResidents = [...filteredResidents].sort((a, b) => {
     const roomA = roomNumbers[String(a.HouseholdID)] || '';
