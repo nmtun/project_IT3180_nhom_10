@@ -15,11 +15,21 @@
   background: #ffffff;
   padding: 18px;
   border-radius: 15px;
-  width: 90%;
-  max-width: 500px;
+  width: 80%;
+  max-width: 800px;
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
+.add-ressident-form .form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
 
+.modal-form label {
+  font-weight: 400;
+  font-size: 18px;
+  
+}
 .modal-form h2 {
   margin-bottom: 20px;
   text-align: center;
@@ -43,4 +53,22 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+  max-width: 800px;
+  margin: 0 25px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+input::placeholder,
+textarea::placeholder {
+  font-size: 14px;
+  color: #999; 
 }

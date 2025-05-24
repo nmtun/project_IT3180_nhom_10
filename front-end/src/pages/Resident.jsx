@@ -52,20 +52,20 @@ const Resident = () => {
   };
 
   const handleEditResident = async (data) => {
-  try {
-    const response = await axiosIntance.put(`/residents/update-resident/${editResident.ResidentID}`, data);
-    
-    const updatedResident = response.data.newResident || response.data;
-      setResidents((prev) =>
-        prev.map((h) => (h.ResidentID === updatedResident.ResidentID ? updatedResident : h))
-      );
-    await fetchResidents(); // Tùy ý: nếu bạn chắc response mới nhất thì có thể bỏ
-    setEditResident(null);
-  } catch (error) {
-    console.error("Lỗi khi cập nhật resident:", error?.response?.data || error);
-    alert("Cập nhật nhân khẩu thất bại!");
-  }
-};
+    try {
+      const response = await axiosIntance.put(`/residents/update-resident/${editResident.ResidentID}`, data);
+      
+      const updatedResident = response.data.newResident || response.data;
+        setResidents((prev) =>
+          prev.map((h) => (h.ResidentID === updatedResident.ResidentID ? updatedResident : h))
+        );
+      await fetchResidents(); // Tùy ý: nếu bạn chắc response mới nhất thì có thể bỏ
+      setEditResident(null);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật resident:", error?.response?.data || error);
+      alert("Cập nhật nhân khẩu thất bại!");
+    }
+  };
 
   const handleDeleteResident = async (id) => {
     try {
