@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/dbsetup.js";
-import FeeCollection from "./FeeColection.js";
+import FeeCollection from "./FeeCollection.js";
 import Household from "./Household.js";
 
 const FeeDetail = sequelize.define("FeeDetail", {

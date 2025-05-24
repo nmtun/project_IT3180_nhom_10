@@ -9,7 +9,7 @@ import sequelize from "./src/config/dbsetup.js";
 import User from "./src/models/User.js";
 import Household from "./src/models/Household.js";
 import Vehicle from "./src/models/Vehicle.js";
-import FeeCollection from "./src/models/FeeColection.js";
+import FeeCollection from "./src/models/FeeCollection.js";
 import FeeDetail from "./src/models/FeeDetail.js";
 import FeeType from "./src/models/FeeType.js";
 import Resident from "./src/models/Resident.js";
@@ -21,7 +21,7 @@ import HouseholdRoutes from "./src/routes/HouseholdRoutes.js";
 import ResidentRoutes from "./src/routes/ResidentRoutes.js";
 import FeeTypeRoutes from "./src/routes/FeeTypeRoutes.js";
 import FeeDetailRoutes from "./src/routes/FeeDetailRoutes.js";
-import FeeColectionRoutes from "./src/routes/FeeColectionRoutes.js";
+import FeeCollectionRoutes from "./src/routes/FeeCollectionRoutes.js";
 import VehicleRoutes from "./src/routes/VehicleRoutes.js";  
 import ChangeRoutes from "./src/routes/ChangeRoutes.js";
 
@@ -54,7 +54,7 @@ app.use("/api/households", HouseholdRoutes);
 app.use("/api/residents", ResidentRoutes);
 app.use("/api/fee-type", FeeTypeRoutes);
 app.use("/api/fee-detail", FeeDetailRoutes);
-app.use("/api/fee-collection", FeeColectionRoutes);
+app.use("/api/fee-collection", FeeCollectionRoutes);
 app.use("/api/vehicle", VehicleRoutes);
 app.use("/api/change", ChangeRoutes);
 
@@ -62,7 +62,7 @@ app.use("/api/change", ChangeRoutes);
 (async () => {
   try {
     //await sequelize.sync(); // tạo bảng nếu chưa có
-    //await sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
+    // wait sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
     
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);

@@ -47,3 +47,165 @@ html, body {
 .resident-content.sidebar-closed {
   margin-left: 60px; /* width của sidebar khi closed */
 }
+.resident-search {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.resident-search input {
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.resident-list {
+  margin-top: 36px;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+}
+.resident-list::-webkit-scrollbar {
+  width: 8px;
+  background: #d3d8e0;
+  border-radius: 8px;
+}
+
+.resident-list::-webkit-scrollbar-thumb {
+  background: #1972bb;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.resident-list::-webkit-scrollbar-thumb:hover {
+  background: #125299;
+}
+/* Mỗi dòng nhân khẩu */
+
+  .resident-row {
+    height: 48px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  color: #000;
+  padding: 12px 0;
+  }
+
+.resident-row > span {
+  min-width: 120px;
+  flex: 1 1 0;
+  /* Có thể căn chỉnh text cho đẹp */
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+}
+
+.resident-row > span b {
+  margin-right: 4px;
+}
+
+/* Các hành động (sửa, xóa) */
+.resident-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-left: 0;
+  justify-content: flex-end;
+  flex: 0 0 90px; /* Đảm bảo cố định chiều rộng cho icon */
+}
+
+.icon-action {
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.icon-action.edit {
+  color: #1972bb;
+}
+
+.icon-action.edit:hover {
+  color: #125299;
+}
+
+.icon-action.delete {
+  color: #e74c3c;
+}
+
+.icon-action.delete:hover {
+  color: #b71c1c;
+}
+
+/* Overlay mờ nền */
+.resident-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Popup modal ở giữa màn hình */
+.resident-detail-modal {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 24px 32px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: popup-fade 0.3s ease;
+}
+
+/* Nút đóng */
+.close-detail-btn {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+}
+.resident-detail-modal h3 {
+  text-align: center;
+  color: #102eb4;
+  margin-bottom: 16px;
+}
+.resident-detail-modal p {
+  margin-bottom: 12px; /* Giãn khoảng cách giữa các dòng */
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.resident-detail-modal p strong {
+  color: #1972bb; /* Màu xanh blue cho tên trường */
+  margin-right: 4px;
+}
+
+/* Animation popup */
+@keyframes popup-fade {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
