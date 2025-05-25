@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -21,7 +22,6 @@ const Vehicle = () => {
   const [roomNumbers, setRoomNumbers] = useState({});
   // State để lưu giá trị tìm kiếm
   const [searchId, setSearchId] = useState('');
-  const [searchType, setSearchType] = useState('id'); // 'id' hoặc 'licensePlate'
   // State để lưu xe đang được chỉnh sửa
   const [editingVehicle, setEditingVehicle] = useState(null);
   // State để lưu form data
@@ -44,6 +44,7 @@ const Vehicle = () => {
   const [deletingVehicle, setDeletingVehicle] = useState(null);
   const [toast, setToast] = useState({ message: '', type: 'info' });
 
+
   const vehicleImageLinks = [
     "https://image.luatvietnam.vn/uploaded/twebp/images/original/2024/02/16/boc-dau-xe-may-bi-phat-the-nao_1602162345.jpg", // Xe máy
     "https://s1storage.2banh.vn/image/2014/02/cach-boc-dau-xe-con-5824-1393314980-530c4ca4ddec6.jpg"
@@ -61,6 +62,9 @@ const Vehicle = () => {
   React.useEffect(() => {
     localStorage.setItem('sidebarOpen', JSON.stringify(open));
   }, [open]);
+
+  const getVehicleCountByHousehold = (householdId) =>
+  vehicles.filter(v => String(v.HouseholdID) === String(householdId)).length;
 
   // Hàm lấy thông tin phòng từ HouseholdID
   const fetchRoomNumber = async (householdId) => {
@@ -113,7 +117,6 @@ const Vehicle = () => {
   };
 
   // Hàm lấy thông tin một xe theo ID
-  // eslint-disable-next-line no-unused-vars
   const fetchVehicleById = async (id) => {
     try {
       setLoading(true);
@@ -137,7 +140,8 @@ const Vehicle = () => {
       if (response.data && response.data.households) {
         const roomsData = response.data.households.map(household => ({
           roomNumber: household.RoomNumber,
-          householdId: household.HouseholdID
+          householdId: household.HouseholdID,
+          members: household.Members
         }));
         setRooms(roomsData);
         
@@ -176,46 +180,29 @@ const Vehicle = () => {
       await fetchAllVehicles();
       return;
     }
-
     try {
       setLoading(true);
       setError(null);
-      let response;
-      
-      if (searchType === 'id') {
-        response = await axiosIntance.get(`/vehicle/get-vehicle-by-id/${searchId}`);
-        if (response.data && response.data.vehicle) {
-          setVehicles([response.data.vehicle]);
-          if (response.data.vehicle.HouseholdID) {
-            const roomNumber = await fetchRoomNumber(response.data.vehicle.HouseholdID);
-            setRoomNumbers({ [response.data.vehicle.HouseholdID]: roomNumber });
+      // Tìm kiếm theo biển số xe
+      const allVehicles = await axiosIntance.get('/vehicle/get-all-vehicle');
+      if (allVehicles.data && allVehicles.data.vehicles) {
+        const filteredVehicles = allVehicles.data.vehicles.filter(
+          vehicle => vehicle.LicensePlate.toLowerCase().replace(/-/g, '') === searchId.toLowerCase().replace(/-/g, '')
+        );
+        if (filteredVehicles.length > 0) {
+          setVehicles(filteredVehicles);
+          // Lấy thông tin phòng cho các xe được tìm thấy
+          const roomNumbersData = {};
+          for (const vehicle of filteredVehicles) {
+            if (vehicle.HouseholdID) {
+              const roomNumber = await fetchRoomNumber(vehicle.HouseholdID);
+              roomNumbersData[vehicle.HouseholdID] = roomNumber;
+            }
           }
+          setRoomNumbers(roomNumbersData);
         } else {
           setVehicles([]);
-          setError('Không tìm thấy xe với ID này');
-        }
-      } else {
-        // Tìm kiếm theo biển số xe
-        const allVehicles = await axiosIntance.get('/vehicle/get-all-vehicle');
-        if (allVehicles.data && allVehicles.data.vehicles) {
-          const filteredVehicles = allVehicles.data.vehicles.filter(
-            vehicle => vehicle.LicensePlate.toLowerCase().replace(/-/g, '') === searchId.toLowerCase().replace(/-/g, '')
-          );
-          if (filteredVehicles.length > 0) {
-            setVehicles(filteredVehicles);
-            // Lấy thông tin phòng cho các xe được tìm thấy
-            const roomNumbersData = {};
-            for (const vehicle of filteredVehicles) {
-              if (vehicle.HouseholdID) {
-                const roomNumber = await fetchRoomNumber(vehicle.HouseholdID);
-                roomNumbersData[vehicle.HouseholdID] = roomNumber;
-              }
-            }
-            setRoomNumbers(roomNumbersData);
-          } else {
-            setVehicles([]);
-            setError('Không tìm thấy xe với biển số này');
-          }
+          setError('Không tìm thấy xe với biển số này');
         }
       }
     } catch (err) {
@@ -245,11 +232,20 @@ const Vehicle = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === 'RoomNumber') {
-      // Nếu đang chọn số phòng, lấy HouseholdID tương ứng
+      const householdId = roomToHouseholdMap[value] || '';
+      // Lấy số xe hiện tại của phòng này
+      const vehicleCount = getVehicleCountByHousehold(householdId);
+      // Lấy số member tối đa
+      const room = rooms.find(r => r.roomNumber === value);
+      const maxVehicles = room ? room.members : Infinity;
+      if (vehicleCount >= maxVehicles) {
+        setToast({ message: "Số lượng xe của phòng này đã đạt tối đa!", type: "error" });
+        return;
+      }
       setFormData(prev => ({
         ...prev,
         RoomNumber: value,
-        HouseholdID: roomToHouseholdMap[value] || ''
+        HouseholdID: householdId
       }));
     } else {
       setFormData(prev => ({
@@ -261,6 +257,23 @@ const Vehicle = () => {
 
   // Hàm xử lý khi click vào nút add
   const handleAddClick = () => {
+    // Nếu chưa chọn phòng thì không kiểm tra
+    if (rooms.length === 0) {
+      setFormMode('add');
+      setEditingVehicle(null);
+      setFormData({
+        HouseholdID: '',
+        RoomNumber: '',
+        LicensePlate: '',
+        VehicleType: 'Xe máy',
+        Brand: '',
+        Color: '',
+        RegistrationDate: '',
+        Status: 'Còn hạn đăng ký gửi'
+      });
+      return;
+    }
+    // Nếu đã chọn phòng, kiểm tra số xe
     setFormMode('add');
     setEditingVehicle(null);
     setFormData({
@@ -281,36 +294,41 @@ const Vehicle = () => {
     try {
       setLoading(true);
       setError(null);
-      
-      if (formMode === 'edit') {
-        // Xử lý cập nhật xe
-        const response = await axiosIntance.put(`/vehicle/update-vehicle/${editingVehicle.VehicleID}`, formData);
-        // Khi cập nhật xe thành công
-        if (response.data && response.data.vehicle) {
-          setVehicles(prev => prev.map(vehicle => 
-            vehicle.VehicleID === editingVehicle.VehicleID ? response.data.vehicle : vehicle
-          ));
-          setToast({ message: "Cập nhật xe thành công!", type: "success" });
+
+      if (formMode === 'add') {
+        // Kiểm tra số lượng xe hiện tại của phòng
+        const vehicleCount = getVehicleCountByHousehold(formData.HouseholdID);
+        const room = rooms.find(r => r.householdId === formData.HouseholdID);
+        const maxVehicles = room ? room.members : Infinity;
+        if (vehicleCount >= maxVehicles) {
+          setToast({ message: "Số lượng xe của phòng này đã đạt tối đa!", type: "error" });
+          setLoading(false);
+          return;
         }
-      } else {
-        // Xử lý thêm xe mới
+        // Thêm xe mới
         const response = await axiosIntance.post('/vehicle/create-vehicle', formData);
-        // Khi thêm xe mới thành công
         if (response.data && response.data.vehicle) {
           setVehicles(prev => [...prev, response.data.vehicle]);
           setToast({ message: "Thêm xe thành công!", type: "success" });
         }
+      } else {
+        // Xử lý cập nhật xe
+        const response = await axiosIntance.put(`/vehicle/update-vehicle/${editingVehicle.VehicleID}`, formData);
+        if (response.data && response.data.vehicle) {
+          setVehicles(prev => prev.map(vehicle =>
+            vehicle.VehicleID === editingVehicle.VehicleID ? response.data.vehicle : vehicle
+          ));
+          setToast({ message: "Cập nhật xe thành công!", type: "success" });
+        }
       }
-      
-      // Đóng form sau khi thêm/sửa thành công
+
       setEditingVehicle(null);
       setFormMode('edit');
     } catch (err) {
-      setError(formMode === 'edit' ? 
+      setError(formMode === 'edit' ?
         'Lỗi khi cập nhật thông tin xe: ' + err.message :
         'Lỗi khi thêm xe mới: ' + err.message
       );
-      // Khi có lỗi
       setToast({ message: 'Lỗi khi thêm xe mới: ' + err.message, type: 'error' });
       console.error('Lỗi:', err);
     } finally {
@@ -394,17 +412,10 @@ const Vehicle = () => {
                 <h2>Danh sách xe:</h2>
                 <div className="header-actions">
                   <form onSubmit={handleSearch} className="search-form">
-                    <select
-                      value={searchType}
-                      onChange={(e) => setSearchType(e.target.value)}
-                      className="search-type-select"
-                    >
-                      <option value="id">Tìm theo ID</option>
-                      <option value="licensePlate">Tìm theo biển số</option>
-                    </select>
+                    {/* Bỏ select, chỉ còn input tìm theo biển số */}
                     <input
                       type="text"
-                      placeholder={searchType === 'id' ? "Nhập ID xe..." : "Nhập biển số xe..."}
+                      placeholder="Nhập biển số xe..."
                       value={searchId}
                       onChange={(e) => setSearchId(e.target.value)}
                       className="search-input"
@@ -438,7 +449,6 @@ const Vehicle = () => {
                       
                       {expandedVehicleId === vehicle.VehicleID && (
                         <div className="vehicle-details">
-                          <p><strong>ID:</strong> {vehicle.VehicleID}</p>
                           <p><strong>Loại xe:</strong> {vehicle.VehicleType}</p>
                           <p><strong>Nhãn hiệu:</strong> {vehicle.Brand}</p>
                           <p><strong>Màu sắc:</strong> {vehicle.Color}</p>
