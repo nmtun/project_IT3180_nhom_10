@@ -4,9 +4,9 @@ import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import axiosIntance from '../untils/axiosIntance';
-
 import '../styles/Vehicle.css';
 import AddButton from '../components/AddButton';
+import Toast from '../components/Toast';
 
 const Vehicle = () => {
   // State để lưu trữ danh sách xe
@@ -42,6 +42,7 @@ const Vehicle = () => {
   const [roomToHouseholdMap, setRoomToHouseholdMap] = useState({});
   // State để lưu xe đang được chọn để xóa
   const [deletingVehicle, setDeletingVehicle] = useState(null);
+  const [toast, setToast] = useState({ message: '', type: 'info' });
 
   const vehicleImageLinks = [
     "https://image.luatvietnam.vn/uploaded/twebp/images/original/2024/02/16/boc-dau-xe-may-bi-phat-the-nao_1602162345.jpg", // Xe máy
@@ -284,16 +285,20 @@ const Vehicle = () => {
       if (formMode === 'edit') {
         // Xử lý cập nhật xe
         const response = await axiosIntance.put(`/vehicle/update-vehicle/${editingVehicle.VehicleID}`, formData);
+        // Khi cập nhật xe thành công
         if (response.data && response.data.vehicle) {
           setVehicles(prev => prev.map(vehicle => 
             vehicle.VehicleID === editingVehicle.VehicleID ? response.data.vehicle : vehicle
           ));
+          setToast({ message: "Cập nhật xe thành công!", type: "success" });
         }
       } else {
         // Xử lý thêm xe mới
         const response = await axiosIntance.post('/vehicle/create-vehicle', formData);
+        // Khi thêm xe mới thành công
         if (response.data && response.data.vehicle) {
           setVehicles(prev => [...prev, response.data.vehicle]);
+          setToast({ message: "Thêm xe thành công!", type: "success" });
         }
       }
       
@@ -305,6 +310,8 @@ const Vehicle = () => {
         'Lỗi khi cập nhật thông tin xe: ' + err.message :
         'Lỗi khi thêm xe mới: ' + err.message
       );
+      // Khi có lỗi
+      setToast({ message: 'Lỗi khi thêm xe mới: ' + err.message, type: 'error' });
       console.error('Lỗi:', err);
     } finally {
       setLoading(false);
@@ -339,14 +346,16 @@ const Vehicle = () => {
       setError(null);
       
       const response = await axiosIntance.delete(`/vehicle/delete-vehicle/${deletingVehicle.VehicleID}`);
-      
+      // Khi xóa xe thành công
       if (response.data && !response.data.error) {
-        // Xóa xe khỏi danh sách
         setVehicles(prev => prev.filter(vehicle => vehicle.VehicleID !== deletingVehicle.VehicleID));
-        setDeletingVehicle(null); // Đóng dialog xác nhận
+        setDeletingVehicle(null);
+        setToast({ message: "Xóa xe thành công!", type: "success" });
       }
     } catch (err) {
       setError('Lỗi khi xóa xe: ' + err.message);
+      // Khi có lỗi
+      setToast({ message: 'Lỗi khi xóa xe: ' + err.message, type: 'error' });
       console.error('Lỗi khi xóa xe:', err);
     } finally {
       setLoading(false);
@@ -359,231 +368,238 @@ const Vehicle = () => {
   };
 
   return (
-    <div className="vehicle-container">
-      <Header />
-      <div className="vehicle-body">
-        {/* Truyền open và setOpen vào Sidebar */}
-        <Sidebar open={open} setOpen={setOpen} />
+    <>
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ ...toast, message: '' })}
+      />
+      <div className="vehicle-container">
+        <Header />
+        <div className="vehicle-body">
+          {/* Truyền open và setOpen vào Sidebar */}
+          <Sidebar open={open} setOpen={setOpen} />
 
-        {/* home-content sẽ có class thay đổi để margin-left phù hợp */}
-        <div className={`vehicle-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
-          <div className="vehicle-header">
-            <h1>Đây là trang quản lý phương tiện</h1>
-          </div>
-          
-          {loading && <p>Đang tải dữ liệu...</p>}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          
-          <div className="vehicle-list">
-            <div className="vehicle-list-header">
-              <h2>Danh sách xe:</h2>
-              <div className="header-actions">
-                <form onSubmit={handleSearch} className="search-form">
-                  <select
-                    value={searchType}
-                    onChange={(e) => setSearchType(e.target.value)}
-                    className="search-type-select"
-                  >
-                    <option value="id">Tìm theo ID</option>
-                    <option value="licensePlate">Tìm theo biển số</option>
-                  </select>
-                  <input
-                    type="text"
-                    placeholder={searchType === 'id' ? "Nhập ID xe..." : "Nhập biển số xe..."}
-                    value={searchId}
-                    onChange={(e) => setSearchId(e.target.value)}
-                    className="search-input"
-                  />
-                  <button type="submit" className="search-button">
-                    Tìm kiếm
-                  </button>
-                </form>
-                <AddButton onClick={handleAddClick} />
-              </div>
+          {/* home-content sẽ có class thay đổi để margin-left phù hợp */}
+          <div className={`vehicle-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
+            <div className="vehicle-header">
+              <h1>Đây là trang quản lý phương tiện</h1>
             </div>
-            {vehicles.length > 0 ? (
-              <div className="vehicle-grid">
-                {vehicles.map((vehicle) => (
-                  <div 
-                    key={vehicle.VehicleID} 
-                    className={`vehicle-box ${expandedVehicleId === vehicle.VehicleID ? 'expanded' : ''}`}
-                    onClick={() => handleVehicleClick(vehicle.VehicleID)}
-                  >
-                    <div className="vehicle-basic-info">
-                      <img 
-                        src={vehicle.VehicleType === 'Xe máy' ? img1 : img2}
-                        alt={vehicle.VehicleType}
-                        className="vehicle-image"
-                      />
-                      <h3>Biển số: {vehicle.LicensePlate}</h3>
-                      <p className={`status ${vehicle.Status === 'Còn hạn đăng ký gửi' ? 'active' : 'inactive'}`}>
-                        {vehicle.Status}
-                      </p>
-                    </div>
-                    
-                    {expandedVehicleId === vehicle.VehicleID && (
-                      <div className="vehicle-details">
-                        <p><strong>ID:</strong> {vehicle.VehicleID}</p>
-                        <p><strong>Loại xe:</strong> {vehicle.VehicleType}</p>
-                        <p><strong>Nhãn hiệu:</strong> {vehicle.Brand}</p>
-                        <p><strong>Màu sắc:</strong> {vehicle.Color}</p>
-                        <p><strong>Ngày đăng ký:</strong> {vehicle.RegistrationDate}</p>
-                        <p><strong>Phòng:</strong> {roomNumbers[vehicle.HouseholdID] || 'Đang tải...'}</p>
-                        <div className="vehicle-actions">
-                          <button 
-                            className="edit-button"
-                            onClick={(e) => handleEditClick(e, vehicle)}
-                          >
-                            Chỉnh sửa
-                          </button>
-                          <button 
-                            className="delete-button"
-                            onClick={(e) => handleDeleteClick(e, vehicle)}
-                          >
-                            Xóa
-                          </button>
+            
+            {loading && <p>Đang tải dữ liệu...</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            
+            <div className="vehicle-list">
+              <div className="vehicle-list-header">
+                <h2>Danh sách xe:</h2>
+                <div className="header-actions">
+                  <form onSubmit={handleSearch} className="search-form">
+                    <select
+                      value={searchType}
+                      onChange={(e) => setSearchType(e.target.value)}
+                      className="search-type-select"
+                    >
+                      <option value="id">Tìm theo ID</option>
+                      <option value="licensePlate">Tìm theo biển số</option>
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={searchType === 'id' ? "Nhập ID xe..." : "Nhập biển số xe..."}
+                      value={searchId}
+                      onChange={(e) => setSearchId(e.target.value)}
+                      className="search-input"
+                    />
+                    <button type="submit" className="search-button">
+                      Tìm kiếm
+                    </button>
+                  </form>
+                  <AddButton onClick={handleAddClick} />
+                </div>
+              </div>
+              {vehicles.length > 0 ? (
+                <div className="vehicle-grid">
+                  {vehicles.map((vehicle) => (
+                    <div 
+                      key={vehicle.VehicleID} 
+                      className={`vehicle-box ${expandedVehicleId === vehicle.VehicleID ? 'expanded' : ''}`}
+                      onClick={() => handleVehicleClick(vehicle.VehicleID)}
+                    >
+                      <div className="vehicle-basic-info">
+                        <img 
+                          src={vehicle.VehicleType === 'Xe máy' ? img1 : img2}
+                          alt={vehicle.VehicleType}
+                          className="vehicle-image"
+                        />
+                        <h3>Biển số: {vehicle.LicensePlate}</h3>
+                        <p className={`status ${vehicle.Status === 'Còn hạn đăng ký gửi' ? 'active' : 'inactive'}`}>
+                          {vehicle.Status}
+                        </p>
+                      </div>
+                      
+                      {expandedVehicleId === vehicle.VehicleID && (
+                        <div className="vehicle-details">
+                          <p><strong>ID:</strong> {vehicle.VehicleID}</p>
+                          <p><strong>Loại xe:</strong> {vehicle.VehicleType}</p>
+                          <p><strong>Nhãn hiệu:</strong> {vehicle.Brand}</p>
+                          <p><strong>Màu sắc:</strong> {vehicle.Color}</p>
+                          <p><strong>Ngày đăng ký:</strong> {vehicle.RegistrationDate}</p>
+                          <p><strong>Phòng:</strong> {roomNumbers[vehicle.HouseholdID] || 'Đang tải...'}</p>
+                          <div className="vehicle-actions">
+                            <button 
+                              className="edit-button"
+                              onClick={(e) => handleEditClick(e, vehicle)}
+                            >
+                              Chỉnh sửa
+                            </button>
+                            <button 
+                              className="delete-button"
+                              onClick={(e) => handleDeleteClick(e, vehicle)}
+                            >
+                              Xóa
+                            </button>
+                          </div>
                         </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>Không có xe nào</p>
+              )}
+            </div>
+
+            {/* Form chỉnh sửa/thêm xe */}
+            {(editingVehicle || formMode === 'add') && (
+              <div className="edit-modal">
+                <div className="edit-modal-content">
+                  <h2>{formMode === 'edit' ? 'Chỉnh sửa thông tin xe' : 'Thêm xe mới'}</h2>
+                  <form onSubmit={handleSubmit}>
+                    {formMode === 'add' && (
+                      <div className="form-group">
+                        <label>Số phòng:</label>
+                        <select
+                          name="RoomNumber"
+                          value={formData.RoomNumber}
+                          onChange={handleInputChange}
+                          required
+                        >
+                          <option value="">Chọn số phòng</option>
+                          {rooms.map(room => (
+                            <option key={room.householdId} value={room.roomNumber}>
+                              Phòng {room.roomNumber}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>Không có xe nào</p>
-            )}
-          </div>
-
-          {/* Form chỉnh sửa/thêm xe */}
-          {(editingVehicle || formMode === 'add') && (
-            <div className="edit-modal">
-              <div className="edit-modal-content">
-                <h2>{formMode === 'edit' ? 'Chỉnh sửa thông tin xe' : 'Thêm xe mới'}</h2>
-                <form onSubmit={handleSubmit}>
-                  {formMode === 'add' && (
                     <div className="form-group">
-                      <label>Số phòng:</label>
+                      <label>Biển số:</label>
+                      <input
+                        type="text"
+                        name="LicensePlate"
+                        value={formData.LicensePlate}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Nhập biển số xe"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Loại xe:</label>
                       <select
-                        name="RoomNumber"
-                        value={formData.RoomNumber}
+                        name="VehicleType"
+                        value={formData.VehicleType}
                         onChange={handleInputChange}
                         required
                       >
-                        <option value="">Chọn số phòng</option>
-                        {rooms.map(room => (
-                          <option key={room.householdId} value={room.roomNumber}>
-                            Phòng {room.roomNumber}
-                          </option>
-                        ))}
+                        <option value="Xe máy">Xe máy</option>
+                        <option value="Ô tô">Ô tô</option>
                       </select>
                     </div>
-                  )}
-                  <div className="form-group">
-                    <label>Biển số:</label>
-                    <input
-                      type="text"
-                      name="LicensePlate"
-                      value={formData.LicensePlate}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Nhập biển số xe"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Loại xe:</label>
-                    <select
-                      name="VehicleType"
-                      value={formData.VehicleType}
-                      onChange={handleInputChange}
-                      required
+                    <div className="form-group">
+                      <label>Nhãn hiệu:</label>
+                      <input
+                        type="text"
+                        name="Brand"
+                        value={formData.Brand}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Nhập nhãn hiệu xe"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Màu sắc:</label>
+                      <input
+                        type="text"
+                        name="Color"
+                        value={formData.Color}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Nhập màu sắc xe"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Ngày đăng ký:</label>
+                      <input
+                        type="date"
+                        name="RegistrationDate"
+                        value={formData.RegistrationDate}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Trạng thái:</label>
+                      <select
+                        name="Status"
+                        value={formData.Status}
+                        onChange={handleInputChange}
+                        required
+                      >
+                        <option value="Còn hạn đăng ký gửi">Còn hạn đăng ký gửi</option>
+                        <option value="Hết hạn đăng ký gửi">Hết hạn đăng ký gửi</option>
+                      </select>
+                    </div>
+                    <div className="form-buttons">
+                      <button type="submit" className="submit-button">
+                        {formMode === 'edit' ? 'Xác nhận' : 'Thêm xe'}
+                      </button>
+                      <button type="button" className="cancel-button" onClick={handleCancel}>
+                        Hủy
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Dialog xác nhận xóa */}
+            {deletingVehicle && (
+              <div className="delete-modal">
+                <div className="delete-modal-content">
+                  <h2>Xác nhận xóa</h2>
+                  <p>Bạn có chắc chắn muốn xóa xe có biển số <strong>{deletingVehicle.LicensePlate}</strong>?</p>
+                  <div className="delete-modal-buttons">
+                    <button 
+                      className="confirm-delete-button"
+                      onClick={handleConfirmDelete}
                     >
-                      <option value="Xe máy">Xe máy</option>
-                      <option value="Ô tô">Ô tô</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>Nhãn hiệu:</label>
-                    <input
-                      type="text"
-                      name="Brand"
-                      value={formData.Brand}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Nhập nhãn hiệu xe"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Màu sắc:</label>
-                    <input
-                      type="text"
-                      name="Color"
-                      value={formData.Color}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Nhập màu sắc xe"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Ngày đăng ký:</label>
-                    <input
-                      type="date"
-                      name="RegistrationDate"
-                      value={formData.RegistrationDate}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Trạng thái:</label>
-                    <select
-                      name="Status"
-                      value={formData.Status}
-                      onChange={handleInputChange}
-                      required
-                    >
-                      <option value="Còn hạn đăng ký gửi">Còn hạn đăng ký gửi</option>
-                      <option value="Hết hạn đăng ký gửi">Hết hạn đăng ký gửi</option>
-                    </select>
-                  </div>
-                  <div className="form-buttons">
-                    <button type="submit" className="submit-button">
-                      {formMode === 'edit' ? 'Xác nhận' : 'Thêm xe'}
+                      Xác nhận xóa
                     </button>
-                    <button type="button" className="cancel-button" onClick={handleCancel}>
+                    <button 
+                      className="cancel-delete-button"
+                      onClick={handleCancelDelete}
+                    >
                       Hủy
                     </button>
                   </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Dialog xác nhận xóa */}
-          {deletingVehicle && (
-            <div className="delete-modal">
-              <div className="delete-modal-content">
-                <h2>Xác nhận xóa</h2>
-                <p>Bạn có chắc chắn muốn xóa xe có biển số <strong>{deletingVehicle.LicensePlate}</strong>?</p>
-                <div className="delete-modal-buttons">
-                  <button 
-                    className="confirm-delete-button"
-                    onClick={handleConfirmDelete}
-                  >
-                    Xác nhận xóa
-                  </button>
-                  <button 
-                    className="cancel-delete-button"
-                    onClick={handleCancelDelete}
-                  >
-                    Hủy
-                  </button>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
+        <Navbar />
       </div>
-      <Navbar />
-    </div>
+    </>
   );
 };
 

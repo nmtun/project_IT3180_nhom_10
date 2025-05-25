@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
@@ -6,9 +7,10 @@ import '../styles/Household.css';
 import SearchBar from '../components/SearchBar';
 import AddButton from '../components/AddButton';
 import AddHousehold from '../components/AddHousehold';
-import AddResident from '../components/AddResident'; // Đảm bảo đã import
+import AddResident from '../components/AddResident'; 
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import axiosIntance from '../untils/axiosIntance';
+import Toast from '../components/Toast';
 
 const Household = () => {
   const [open, setOpen] = React.useState(() => {
@@ -33,6 +35,7 @@ const Household = () => {
   const [newHouseholdId, setNewHouseholdId] = React.useState(null);
   const [selectedHousehold, setSelectedHousehold] = React.useState(null);
   const [residents, setResidents] = React.useState([]);
+  const [toast, setToast] = React.useState({ message: '', type: 'info' });
 
   const filteredHouseholds = households.filter(item =>
     item.RoomNumber.toLowerCase().includes(search.toLowerCase()) ||
@@ -58,20 +61,19 @@ const Household = () => {
       await fetchHouseholds();
       setShowAddHousehold(false);
 
-      // Sau khi thêm hộ, mở form thêm nhân khẩu là chủ hộ, truyền luôn tên chủ hộ
       setNewHouseholdId(newHousehold.HouseholdID);
       setShowAddResident({
         householdId: newHousehold.HouseholdID,
         fullName: newHousehold.HouseholdHead,
         relationship: "Chủ hộ"
       });
-    // eslint-disable-next-line no-unused-vars
+
+      setToast({ message: "Thêm hộ gia đình thành công!", type: "success" });
     } catch (error) {
-      alert('Thêm hộ gia đình thất bại!');
+      setToast({ message: "Thêm hộ gia đình thất bại!", type: "error" });
     }
   };
 
-  // Hàm xử lý thêm nhân khẩu chủ hộ
   const handleAddResident = async (residentData) => {
     try {
       await axiosIntance.post('/residents/create-resident', {
@@ -81,10 +83,9 @@ const Household = () => {
       });
       setShowAddResident(false);
       setNewHouseholdId(null);
-      // Có thể gọi fetchResidents() nếu muốn cập nhật danh sách nhân khẩu
-    // eslint-disable-next-line no-unused-vars
+      setToast({ message: "Thêm nhân khẩu thành công!", type: "success" });
     } catch (error) {
-      alert('Thêm nhân khẩu thất bại!');
+      setToast({ message: "Thêm nhân khẩu thất bại!", type: "error" });
     }
   };
 
@@ -103,9 +104,9 @@ const Household = () => {
       );
       await fetchHouseholds();
       setEditHousehold(null);
-    // eslint-disable-next-line no-unused-vars
+      setToast({ message: "Cập nhật hộ gia đình thành công!", type: "success" });
     } catch (error) {
-      alert('Cập nhật hộ gia đình thất bại!');
+      setToast({ message: "Cập nhật hộ gia đình thất bại!", type: "error" });
     }
   };
 
@@ -127,9 +128,9 @@ const Household = () => {
       await axiosIntance.delete(`/households/delete-household/${id}`);
       setHouseholds((prev) => prev.filter((h) => h.HouseholdID !== id));
       await fetchHouseholds();
-    // eslint-disable-next-line no-unused-vars
+      setToast({ message: "Xóa hộ gia đình thành công!", type: "success" });
     } catch (error) {
-      alert('Xóa hộ gia đình thất bại!');
+      setToast({ message: "Xóa hộ gia đình thất bại!", type: "error" });
     }
   }
 
@@ -143,6 +144,12 @@ const Household = () => {
   }, []);
 
   return (
+    <>
+    <Toast
+      message={toast.message}
+      type={toast.type}
+      onClose={() => setToast({ ...toast, message: '' })}
+    />
     <div className="household-container">
       <Header />
       <div className="household-body">
@@ -240,6 +247,7 @@ const Household = () => {
       </div>
       <Navbar />
     </div>
+    </>
   );
 };
 
