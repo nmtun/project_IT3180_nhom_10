@@ -4,8 +4,8 @@ import * as feeCollectionServices from '../services/FeeCollectionServices.js';
 // Lấy tất cả đợt thu phí
 export const getAllFeeCollections = async (req, res) => {
   try {
-    const feeColllections = await feeCollectionServices.getAllFeeCollections();
-    res.status(200).json({ error: false, feeColllections });
+    const feeCollections = await feeCollectionServices.getAllFeeCollections();
+    res.status(200).json({ error: false, feeCollections });
   } catch (error) {
     res.status(500).json({ error: true, message: 'Error retrieving fee collections', error });
   }

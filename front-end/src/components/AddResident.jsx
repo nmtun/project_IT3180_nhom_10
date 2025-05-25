@@ -2,7 +2,6 @@ import React from 'react';
 import{ useState, useEffect } from 'react';
 import '../styles/AddResident.css'; 
 import axiosInstance from '../untils/axiosIntance';
-import DatePicker from 'react-datepicker';
 
 const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
   const [households, setHouseholds] = React.useState([]);

@@ -10,6 +10,7 @@ const FeeCollection = sequelize.define("FeeCollection", {
   },
   FeeTypeID: { 
     type: DataTypes.INTEGER, 
+    allowNull: false,
     references: { model: FeeType, key: "FeeTypeID" } 
   },
   CollectionName: { 
