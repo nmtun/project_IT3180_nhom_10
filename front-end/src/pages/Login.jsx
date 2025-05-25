@@ -51,7 +51,9 @@ const Login = () => {
 
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.role);
-      console.log(localStorage.getItem('role'));
+      localStorage.setItem('id', data.id);
+      // console.log("id", data.id);
+      // console.log(data);
       navigate('/home');
     } catch (err) {
       const msg = err.response?.data?.message || 'Đăng nhập thất bại';

@@ -7,7 +7,8 @@ import {
   FaCar,
   FaCog,
   FaBars,
-  FaUser
+  FaUser,
+  FaAddressBook
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Sidebar.css';
@@ -18,7 +19,7 @@ const menuItems = [
   { icon: <FaUserFriends />, label: 'Quản lý nhân khẩu', path: '/resident' },
   { icon: <FaMoneyBill />, label: 'Quản lý thu phí', path: '/fee' },
   { icon: <FaCar />, label: 'Quản lý phương tiện', path: '/vehicle' },
-  { icon: <FaCog />, label: 'Cài đặt', path: '/settings' },
+  { icon: <FaAddressBook />, label: 'Thông tin người dùng', path: '/profile' },
 ];
 
 
@@ -29,7 +30,7 @@ const Sidebar = ({ open, setOpen }) => {
   // Tạo bản sao menuItems, thêm mục Account nếu là Tổ trưởng
   const sidebarMenu = [...menuItems];
   if (userRole === 'Tổ trưởng') {
-    const settingsIndex = sidebarMenu.findIndex(item => item.label === 'Cài đặt');
+    const settingsIndex = sidebarMenu.findIndex(item => item.label === 'Profile');
     sidebarMenu.splice(settingsIndex, 0, {
       icon: <FaUser />,
       label: 'Quản lý tài khoản',

@@ -88,10 +88,14 @@ const AddHousehold = ({ open, onClose, onSubmit, initialData }) => {
               type="number"
               name="members"
               min={1}
+              max={form.type === 'Đơn' ? 3 : 6}
               value={form.members}
               onChange={handleChange}
               placeholder="Nhập số người"
             />
+            <span className="input-note" style={{ fontSize: '0.92em', color: '#d32f2f', marginLeft: 6 }}>
+              {form.type === 'Đơn' ? 'Tối đa 3 người' : 'Tối đa 6 người'}
+            </span>
           </div>
           <div className="form-group">
             <label>Ghi chú</label>

@@ -94,11 +94,11 @@ export const login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: "Invalid password" });
 
     const token = jwt.sign(
-      { id: user.id, role: user.Role },
+      { id: user.UserID, role: user.Role },
       process.env.JWT_SECRET || 'your_jwt_secret',
       { expiresIn: '1d' }
     );
-    return res.status(200).json({ message: "Login successful", token, role: user.Role });
+    return res.status(200).json({ message: "Login successful", token, role: user.Role, id: user.UserID });
 
   } catch(err) {
     return res.status(500).json({ error: err.message });

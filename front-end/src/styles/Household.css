@@ -142,3 +142,24 @@ html, body {
 .icon-action.delete:hover {
   color: #b71c1c;
 }
+
+.modal ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 16px 0;
+}
+.modal li {
+  padding: 4px 0;
+}
+
+.household-member-list {
+  margin-bottom: 16px;
+}
+.household-member-item {
+  padding: 6px 0;
+  font-size: 1.08rem;
+  border-bottom: 1px solid #eee;
+}
+.household-member-item:last-child {
+  border-bottom: none;
+}
