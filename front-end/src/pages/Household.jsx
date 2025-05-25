@@ -11,6 +11,7 @@ import AddResident from '../components/AddResident';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import axiosIntance from '../untils/axiosIntance';
 import Toast from '../components/Toast';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 const Household = () => {
   const [open, setOpen] = React.useState(() => {
@@ -36,7 +37,8 @@ const Household = () => {
   const [selectedHousehold, setSelectedHousehold] = React.useState(null);
   const [residents, setResidents] = React.useState([]);
   const [toast, setToast] = React.useState({ message: '', type: 'info' });
-
+  const [deletingHousehold, setDeletingHousehold] = React.useState(null);
+  
   const filteredHouseholds = households.filter(item =>
     item.RoomNumber.toLowerCase().includes(search.toLowerCase()) ||
     item.HouseholdHead.toLowerCase().includes(search.toLowerCase())
@@ -186,7 +188,10 @@ const Household = () => {
                   <FaTrash
                     className="icon-action delete"
                     title="Xóa"
-                    onClick={e => { e.stopPropagation(); handleDeleteHousehold(item.HouseholdID); }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      setDeletingHousehold(item);
+                    }}
                   />
                 </span>
               </div>
@@ -243,6 +248,20 @@ const Household = () => {
               }}
             />
           )}
+          <DeleteConfirmModal
+            open={!!deletingHousehold}
+            title="Xác nhận xóa"
+            message={
+              deletingHousehold
+                ? <>Bạn có chắc chắn muốn xóa hộ gia đình phòng <strong>{deletingHousehold.RoomNumber}</strong>?</>
+                : ""
+            }
+            onConfirm={async () => {
+              await handleDeleteHousehold(deletingHousehold.HouseholdID);
+              setDeletingHousehold(null);
+            }}
+            onCancel={() => setDeletingHousehold(null)}
+          />
         </div>
       </div>
       <Navbar />

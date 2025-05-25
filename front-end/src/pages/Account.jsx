@@ -10,6 +10,7 @@ import AddAccount from '../components/AddAccount';
 import axiosIntance from '../untils/axiosIntance'; 
 import { FaEdit, FaTrash } from 'react-icons/fa'; 
 import Toast from '../components/Toast';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 const Account = () => {
   const [open, setOpen] = React.useState(() => {
@@ -26,9 +27,9 @@ const Account = () => {
   const [editAccount, setEditAccount] = React.useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [toast, setToast] = useState({ message: '', type: 'info' });
+  const [deletingAccount, setDeletingAccount] = useState(null);
 
   const handleDeleteAccount = async (id) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa tài khoản này?')) return;
     try {
       await axiosIntance.delete(`/users/delete-user/${id}`);
       await fetchAccounts();
@@ -167,7 +168,7 @@ const Account = () => {
                     <FaTrash
                       className="icon-action delete"
                       title="Xóa"
-                      onClick={() => handleDeleteAccount(acc.id)}
+                      onClick={() => setDeletingAccount(acc)}
                     />
                   </span>
                 </div>
@@ -211,6 +212,20 @@ const Account = () => {
                 }
               }}
               initialData={editAccount}
+            />
+            <DeleteConfirmModal
+              open={!!deletingAccount}
+              title="Xác nhận xóa tài khoản"
+              message={
+                deletingAccount
+                  ? <>Bạn có chắc chắn muốn xóa tài khoản <strong>{deletingAccount.fullname}</strong>?</>
+                  : ""
+              }
+              onConfirm={async () => {
+                await handleDeleteAccount(deletingAccount.id);
+                setDeletingAccount(null);
+              }}
+              onCancel={() => setDeletingAccount(null)}
             />
           </div>
         </div>

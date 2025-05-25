@@ -10,6 +10,7 @@ import AddResident from '../components/AddResident';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import axiosIntance from '../untils/axiosIntance';
 import Toast from '../components/Toast';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 const Resident = () => {
   const [open, setOpen] = React.useState(() => {
@@ -30,6 +31,7 @@ const Resident = () => {
   const [households, setHouseholds] = React.useState([]);
   const [roomNumbers, setRoomNumbers] = React.useState({});
   const [toast, setToast] = React.useState({ message: '', type: 'info' });
+  const [deletingResident, setDeletingResident] = React.useState(null);
 
   React.useEffect(() => {
     fetchResidents();
@@ -192,7 +194,7 @@ const Resident = () => {
                       title="Xóa"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteResident(item.ResidentID);
+                        setDeletingResident(item);
                       }}
                     />
                   </span>
@@ -234,6 +236,21 @@ const Resident = () => {
                 }
               }}
               initialData={editResident}
+            />
+
+            <DeleteConfirmModal
+              open={!!deletingResident}
+              title="Xác nhận xóa"
+              message={
+                deletingResident
+                  ? <>Bạn có chắc chắn muốn xóa nhân khẩu <strong>{deletingResident.FullName}</strong>?</>
+                  : ""
+              }
+              onConfirm={async () => {
+                await handleDeleteResident(deletingResident.ResidentID);
+                setDeletingResident(null);
+              }}
+              onCancel={() => setDeletingResident(null)}
             />
           </div>
         </div>
