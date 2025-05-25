@@ -76,12 +76,10 @@ const Account = () => {
         //Status: data.status, 
       });
       console.log(response.data);
-      // eslint-disable-next-line no-unused-vars
       const newAccount = response.data.newAccount || response.data;
       await fetchAccounts();
       setShowAddAccount(false);
       setToast({ message: 'Thêm tài khoản thành công!', type: 'success' });
-    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setToast({ message: 'Thêm tài khoản thất bại!', type: 'error' });
     }
@@ -106,7 +104,6 @@ const Account = () => {
       setEditAccount(null);
       await fetchAccounts();
       setToast({ message: 'Cập nhật tài khoản thành công!', type: 'success' });
-    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setToast({ message: 'Cập nhật tài khoản thất bại!', type: 'error' });
     }
