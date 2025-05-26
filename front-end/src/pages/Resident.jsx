@@ -183,7 +183,10 @@ const Resident = () => {
             <div className="resident-list">
               {sortedResidents.map((item, idx) => (
                 <div
-                  className="resident-row"
+                  className={
+                    "resident-row" +
+                    (item.ResidencyStatus === "Đã chuyển đi" ? " resident-row-leaved" : "")
+                  }
                   key={item.ResidentID || idx}
                   onClick={() => setSelectedResident(item)}
                   style={{ cursor: 'pointer' }}

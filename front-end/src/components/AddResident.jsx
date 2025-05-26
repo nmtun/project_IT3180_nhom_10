@@ -160,8 +160,12 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
                 <select name="residencyStatus" value={form.residencyStatus} onChange={handleChange}>
                   <option value="Thường trú">Thường trú</option>
                   <option value="Tạm trú">Tạm trú</option>
-                  {/* <option value="Tạm vắng">Tạm vắng</option>
-                  <option value="Đã chuyển đi">Đã chuyển đi</option> */}
+                  {initialData && Object.keys(initialData).length > 0 && (
+                    <>
+                      <option value="Tạm vắng">Tạm vắng</option>
+                      <option value="Đã chuyển đi">Đã chuyển đi</option>
+                    </>
+                  )}
                 </select>
               </div>
 
