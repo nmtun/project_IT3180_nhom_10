@@ -29,6 +29,8 @@ html, body {
   overflow-x: hidden;
   margin-top: 65px;    /* Đẩy xuống dưới Header */
   margin-bottom: -120px; /* Để trên Navbar */
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
 }
 
 .settings-content h1 {
