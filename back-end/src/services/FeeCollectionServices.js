@@ -1,8 +1,15 @@
 import FeeCollection from "../models/FeeCollection.js";
+import FeeType from "../models/FeeType.js";
 
 // Lấy tất cả đợt thu phí
 export const getAllFeeCollections = async () => {
-  return await FeeCollection.findAll();
+  return await FeeCollection.findAll({
+    include: {
+      model: FeeType,
+      attributes: ['FeeTypeName', 'Category'], // Lấy những gì bạn cần từ FeeType
+    },
+    order: [['StartDate', 'DESC']], // Sắp xếp theo ngày bắt đầu mới nhất
+  });
 };
 
 // Lấy đợt thu phí theo ID

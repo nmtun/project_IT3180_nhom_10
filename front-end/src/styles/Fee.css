@@ -47,3 +47,132 @@ html, body {
 .fee-content.sidebar-closed {
   margin-left: 60px; /* width của sidebar khi closed */
 }
+
+.fee-search {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+.fee-search input {
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.fee-list {
+  margin-top: 36px;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+}
+.fee-list::-webkit-scrollbar {
+  width: 8px;
+  background: #d3d8e0;
+  border-radius: 8px;
+}
+
+.fee-list::-webkit-scrollbar-thumb {
+  background: #1972bb;
+  border-radius: 8px;
+  min-height: 40px;
+}
+
+.fee-list::-webkit-scrollbar-thumb:hover {
+  background: #125299;
+}
+
+.fee-row {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  color: #000;
+  padding: 12px 0;
+  gap: 14px;
+  }
+
+.fee-row > span {
+  min-width: 150px;
+  flex: 1 1 0;
+  /* Có thể căn chỉnh text cho đẹp */
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+}
+
+.fee-row > span b {
+  margin-right: 4px;
+}
+.fee-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-left: auto; /* đẩy nó ra sát phải */
+}
+
+/* Overlay fullscreen mờ */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Modal chung */
+.modal-content {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+/* FeeDetail modal riêng */
+.fee-detail-modal {
+  width: 80vw;
+}
+
+/* Stats modal */
+.stats-modal {
+  width: 400px;
+  margin-top: 16px;
+}
+
+/* Nút đóng modal */
+.btn-close {
+  position: absolute;
+  top: 8px; right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Nút xem thống kê */
+.btn-stats {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-stats:hover {
+  background-color: #0056b3;
+}
