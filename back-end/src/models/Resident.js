@@ -24,7 +24,7 @@ const Resident = sequelize.define("Resident", {
     allowNull: false 
   },
   Relationship: { 
-    type: DataTypes.ENUM( 'Chủ hộ', 'Vợ/chồng', 'Con', 'Cha/mẹ', 'Khác'), 
+    type: DataTypes.ENUM( 'Chủ hộ', 'Vợ', 'Chồng', 'Con', 'Cha', 'Mẹ', 'Anh', 'Chị', 'Em', 'Khác'), 
     allowNull: false 
   },
   PhoneNumber: { 

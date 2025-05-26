@@ -19,7 +19,7 @@ const menuItems = [
   { icon: <FaUserFriends />, label: 'Quản lý nhân khẩu', path: '/resident' },
   { icon: <FaMoneyBill />, label: 'Quản lý thu phí', path: '/fee' },
   { icon: <FaCar />, label: 'Quản lý phương tiện', path: '/vehicle' },
-  { icon: <FaAddressBook />, label: 'Thông tin người dùng', path: '/profile' },
+  { icon: <FaAddressBook />, label: 'Trang cá nhân', path: '/profile' },
 ];
 
 
@@ -33,7 +33,7 @@ const Sidebar = ({ open, setOpen }) => {
     const settingsIndex = sidebarMenu.findIndex(item => item.label === 'Profile');
     sidebarMenu.splice(settingsIndex, 0, {
       icon: <FaUser />,
-      label: 'Quản lý tài khoản',
+      label: 'Quản lý người dùng',
       path: '/account',
     });
   }
