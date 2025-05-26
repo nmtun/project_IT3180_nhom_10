@@ -110,19 +110,20 @@ const Home = () => {
             {/* Hàng trên - 3 khối nhỏ */}
             <div className="dashboard-top">
               <div className="card small-card">
+                <span className="card-title"><strong>Thông tin chung:</strong></span>
                 <span className="card-title">🏠 Tổng số hộ: <strong>{totalHouseholds}/{MAX_HOUSEHOLD}</strong></span>
                 <span className="card-title">🏠 Tổng số nhân khẩu: <strong>{totalResidents}</strong></span>
                 <span className="card-title">🏠 Số phòng đơn còn: <strong>{availableSingleRooms}/{MAX_SINGLE_ROOMS}</strong></span>
                 <span className="card-title">🏠 Số phòng đôi còn: <strong>{availableDoubleRooms}/{MAX_DOUBLE_ROOMS}</strong></span>
               </div>
               <div className="card small-card">
-                <span className="card-title">Thống kê phí tháng 5:</span>
+                <span className="card-title"><strong>Thống kê phí tháng 5:</strong></span>
                 <span className="card-title">💰 Số hộ đã nộp: <strong>12/15</strong></span>
-                <span className="card-title">💰 Tổng phí thu: <strong>20 triệu VNĐ</strong></span>
+                <span className="card-title">💰 Tổng tiền thu: <strong>20 triệu VNĐ</strong></span>
                 <span className="card-title">💰 Tỷ lệ hoàn thành: <strong>80%</strong></span>
               </div>
               <div className="card small-card">
-                <span className="card-title">Trạng thái cư trú:</span>
+                <span className="card-title"><strong>Trạng thái cư trú:</strong></span>
                 <span className="card-title">🏡 Thường trú: <strong>{permanentCount}</strong></span>
                 <span className="card-title">🏡 Tạm trú: <strong>{temporaryCount}</strong></span>
                 <span className="card-title">🏡 Mới chuyển đến: <strong>{newComeCount}</strong></span>

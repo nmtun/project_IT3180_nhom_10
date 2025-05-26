@@ -253,7 +253,7 @@ const Household = () => {
             title="Xác nhận xóa"
             message={
               deletingHousehold
-                ? <>Bạn có chắc chắn muốn xóa hộ gia đình phòng <strong>{deletingHousehold.RoomNumber}</strong>?</>
+                ? <>Các dữ liệu liên quan đến hộ gia đình này sẽ bị xóa hết. Bạn có chắc chắn muốn xóa hộ gia đình phòng <strong>{deletingHousehold.RoomNumber}</strong>?</>
                 : ""
             }
             onConfirm={async () => {
