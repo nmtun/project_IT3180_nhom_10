@@ -13,7 +13,6 @@ import FeeCollection from "./src/models/FeeCollection.js";
 import FeeDetail from "./src/models/FeeDetail.js";
 import FeeType from "./src/models/FeeType.js";
 import Resident from "./src/models/Resident.js";
-import Change from "./src/models/Change.js";
 
 // import routes
 import UserRoutes from "./src/routes/UserRoutes.js";
@@ -23,7 +22,6 @@ import FeeTypeRoutes from "./src/routes/FeeTypeRoutes.js";
 import FeeDetailRoutes from "./src/routes/FeeDetailRoutes.js";
 import FeeCollectionRoutes from "./src/routes/FeeCollectionRoutes.js";
 import VehicleRoutes from "./src/routes/VehicleRoutes.js";  
-import ChangeRoutes from "./src/routes/ChangeRoutes.js";
 
 dotenv.config();
 
@@ -56,7 +54,6 @@ app.use("/api/fee-type", FeeTypeRoutes);
 app.use("/api/fee-detail", FeeDetailRoutes);
 app.use("/api/fee-collection", FeeCollectionRoutes);
 app.use("/api/vehicle", VehicleRoutes);
-app.use("/api/change", ChangeRoutes);
 
 // Tạo bảng và chạy server
 (async () => {

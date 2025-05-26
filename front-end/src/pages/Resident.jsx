@@ -11,6 +11,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import axiosIntance from '../untils/axiosIntance';
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import { validatePhoneNumber } from '../untils/helper';
 
 const Resident = () => {
   const [open, setOpen] = React.useState(() => {
@@ -87,6 +88,12 @@ const Resident = () => {
     const currentCount = getResidentCount(data.HouseholdID);
     const household = households.find(h => h.HouseholdID === data.HouseholdID);
 
+    // Validate số điện thoại
+    if (!validatePhoneNumber(data.PhoneNumber || '')) {
+      setToast({ message: "Số điện thoại phải có 10 số và bắt đầu bằng số 0!", type: "error" });
+      return;
+    }
+
     if (household && currentCount >= household.Members) {
       setToast({ message: "Số nhân khẩu đã đạt tối đa cho phòng này!", type: "error" });
       return;
@@ -103,6 +110,12 @@ const Resident = () => {
   };
 
   const handleEditResident = async (data) => {
+    // Validate số điện thoại
+    if (!validatePhoneNumber(data.PhoneNumber || '')) {
+      setToast({ message: "Số điện thoại phải có 10 số và bắt đầu bằng số 0!", type: "error" });
+      return;
+    }
+
     try {
       const response = await axiosIntance.put(`/residents/update-resident/${editResident.ResidentID}`, data);
       const updatedResident = response.data.newResident || response.data;
@@ -141,6 +154,16 @@ const Resident = () => {
     });
   };
 
+  // Nhóm nhân khẩu theo HouseholdID
+  const residentsByRoom = {};
+  sortedResidents.forEach(resident => {
+    const room = roomNumbers[String(resident.HouseholdID)] || '---';
+    if (!residentsByRoom[room]) {
+      residentsByRoom[room] = [];
+    }
+    residentsByRoom[room].push(resident);
+  });
+
   return (
     <>
       <Toast
@@ -168,38 +191,55 @@ const Resident = () => {
               />
             </div>
             <div className="resident-list">
-              {sortedResidents.map((item, idx) => (
-                <div
-                  className="resident-row"
-                  key={item.ResidentID || idx}
-                  onClick={() => setSelectedResident(item)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <span><b>Phòng: </b>{roomNumbers[String(item.HouseholdID)] || '---'}</span>
-                  <span><b>Họ tên: </b>{item.FullName}</span>
-                  <span><b>Giới tính: </b>{item.Sex}</span>
-                  <span><b>Quan hệ với chủ hộ: </b>{item.Relationship}</span>
-                  <span><b>SĐT: </b>{item.PhoneNumber}</span>
-                  <span className="resident-actions">
-                    <FaEdit
-                      className="icon-action edit"
-                      title="Sửa"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditResident(item);
-                      }}
-                    />
-                    <FaTrash
-                      className="icon-action delete"
-                      title="Xóa"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDeletingResident(item);
-                      }}
-                    />
-                  </span>
-                </div>
-              ))}
+              {Object.entries(residentsByRoom).map(([room, residentsInRoom]) => {
+                // Sắp xếp: nhân khẩu chưa chuyển đi lên trước, đã chuyển đi xuống cuối
+                const sortedInRoom = [...residentsInRoom].sort((a, b) => {
+                  if (a.ResidencyStatus === "Đã chuyển đi" && b.ResidencyStatus !== "Đã chuyển đi") return 1;
+                  if (a.ResidencyStatus !== "Đã chuyển đi" && b.ResidencyStatus === "Đã chuyển đi") return -1;
+                  return 0;
+                });
+                return (
+                  <React.Fragment key={room}>
+                    <div className="resident-room-header">
+                      <b>Phòng: {room}</b>
+                    </div>
+                    {sortedInRoom.map((item, idx) => (
+                      <div
+                        className={
+                          "resident-row" +
+                          (item.ResidencyStatus === "Đã chuyển đi" ? " resident-row-leaved" : "")
+                        }
+                        key={item.ResidentID || idx}
+                        onClick={() => setSelectedResident(item)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <span><b>Họ tên: </b>{item.FullName}</span>
+                        <span><b>Giới tính: </b>{item.Sex}</span>
+                        <span><b>Quan hệ với chủ hộ: </b>{item.Relationship}</span>
+                        <span><b>SĐT: </b>{item.PhoneNumber}</span>
+                        <span className="resident-actions">
+                          <FaEdit
+                            className="icon-action edit"
+                            title="Sửa"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditResident(item);
+                            }}
+                          />
+                          <FaTrash
+                            className="icon-action delete"
+                            title="Xóa"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeletingResident(item);
+                            }}
+                          />
+                        </span>
+                      </div>
+                    ))}
+                  </React.Fragment>
+                );
+              })}
             </div>
 
             {selectedResident && (

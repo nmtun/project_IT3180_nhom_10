@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/AddAccount.css';
 
-const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
+const AddAccount = ({ open, onClose, onSubmit, initialData, mode }) => {
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -13,7 +13,9 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
   });
 
   useEffect(() => {
-    if (initialData) {
+    if (!open) return; // Chỉ chạy khi modal mở
+
+    if (mode === "edit" && initialData) {
       setForm({
         username: initialData.username || '',
         password: '',
@@ -23,7 +25,7 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
         role: initialData.role || 'Tổ phó',
         status: initialData.status || 'Đang hoạt động',
       });
-    } else {
+    } else if (mode === "add") {
       setForm({
         username: '',
         password: '',
@@ -34,7 +36,8 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
         status: 'Đang hoạt động',
       });
     }
-  }, [initialData, open]);
+    // eslint-disable-next-line
+  }, [open]); // Chỉ reset khi open thay đổi (tức là khi modal vừa mở)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,28 +49,20 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Nếu không nhập mật khẩu khi sửa, không gửi trường password
     const submitData = { ...form };
-    if (initialData && !form.password) {
+    if (mode === "edit" && !form.password) {
       delete submitData.password;
     }
     onSubmit(submitData);
-    setForm({
-        username: '',
-        password: '',
-        fullname: '',
-        email: '',
-        phoneNumber: '',
-        role: 'Tổ trưởng', // hoặc giá trị mặc định hợp lệ
-        status: 'Đang hoạt động', // hoặc giá trị mặc định hợp lệ
-    });  };
+    // Không reset form ở đây để giữ lại dữ liệu khi validate lỗi
+  };
 
   if (!open) return null;
 
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h2>{initialData ? 'Cập nhật tài khoản' : 'Thêm mới tài khoản'}</h2>
+        <h2>{mode === "edit" ? 'Cập nhật tài khoản' : 'Thêm mới tài khoản'}</h2>
         <form onSubmit={handleSubmit} className="add-account-form">
           <div className="form-group">
             <label>Tên đăng nhập</label>
@@ -125,7 +120,7 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
               <option value="Thủ quỹ">Thủ quỹ</option>
             </select>
           </div>
-          {initialData && (
+          {mode === "edit" && (
             <div className="form-group">
               <label>Trạng thái</label>
               <select
@@ -139,19 +134,21 @@ const AddAccount = ({ open, onClose, onSubmit, initialData }) => {
             </div>
           )}
           <div className="form-group">
-            <label>Mật khẩu {initialData && <span style={{fontWeight: 400, fontSize: 13}}>(Để trống nếu không đổi)</span>}</label>
+            <label>
+              Mật khẩu {mode === "edit" && <span style={{fontWeight: 400, fontSize: 13}}>(Để trống nếu không đổi)</span>}
+            </label>
             <input
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
               placeholder="Nhập mật khẩu"
-              // required={!initialData} // Không bắt buộc khi sửa
+              // required={mode === "add"}
             />
           </div>
           <div className="account-modal-actions">
-            <button type="submit" className="account-modal-submit">
-              {initialData ? 'Cập nhật' : 'Thêm'}
+            <button type="submit">
+              {mode === "edit" ? "Cập nhật" : "Thêm mới"}
             </button>
             <button type="button" className="account-modal-cancel" onClick={onClose}>
               Hủy

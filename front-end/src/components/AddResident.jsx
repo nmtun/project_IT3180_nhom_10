@@ -22,7 +22,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
     fullName: '',
     dateOfBirth: '',
     sex: 'Nam',
-    relationship: 'Vợ/Chồng',
+    relationship: 'Vợ',
     phoneNumber: '',
     educationLevel: '',
     occupation: '',
@@ -37,7 +37,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
         fullName: initialData.fullName || initialData.FullName || '',
         dateOfBirth: initialData.dateOfBirth || initialData.DateOfBirth || '',
         sex: initialData.sex || initialData.Sex || 'Nam',
-        relationship: initialData.relationship || initialData.Relationship || 'Vợ/Chồng',
+        relationship: initialData.relationship || initialData.Relationship || 'Vợ',
         phoneNumber: initialData.phoneNumber || initialData.PhoneNumber || '',
         educationLevel: initialData.educationLevel || initialData.EducationLevel || '',
         occupation: initialData.occupation || initialData.Occupation || '',
@@ -50,7 +50,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
         fullName: '',
         dateOfBirth: '',
         sex: 'Nam',
-        relationship: 'Vợ/Chồng',
+        relationship: 'Vợ',
         phoneNumber: '',
         educationLevel: '',
         occupation: '',
@@ -129,9 +129,14 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
                   {form.relationship === "Chủ hộ" && (
                     <option value="Chủ hộ">Chủ hộ</option>
                   )}
-                  <option value="Vợ/chồng">Vợ/chồng</option>
+                  <option value="Vợ">Vợ</option>
+                  <option value="Chồng">Chồng</option>
                   <option value="Con">Con</option>
-                  <option value="Cha/mẹ">Cha/mẹ</option>
+                  <option value="Cha">Cha</option>
+                  <option value="Mẹ">Mẹ</option>
+                  <option value="Anh">Anh</option>
+                  <option value="Chị">Chị</option>
+                  <option value="Em">Em</option>
                   <option value="Khác">Khác</option>
                 </select>
               </div>
@@ -155,8 +160,12 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
                 <select name="residencyStatus" value={form.residencyStatus} onChange={handleChange}>
                   <option value="Thường trú">Thường trú</option>
                   <option value="Tạm trú">Tạm trú</option>
-                  {/* <option value="Tạm vắng">Tạm vắng</option>
-                  <option value="Đã chuyển đi">Đã chuyển đi</option> */}
+                  {initialData && Object.keys(initialData).length > 0 && (
+                    <>
+                      <option value="Tạm vắng">Tạm vắng</option>
+                      <option value="Đã chuyển đi">Đã chuyển đi</option>
+                    </>
+                  )}
                 </select>
               </div>
 

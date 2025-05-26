@@ -1,0 +1,42 @@
+.fee-detail-table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.fee-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* font-size: 0.95rem; */
+  margin-top: 12px;
+}
+
+.fee-detail-table th,
+.fee-detail-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  /* text-align: left; */
+}
+
+.fee-detail-table th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.payment-status.paid {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.payment-status.unpaid {
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.fee-detail-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
