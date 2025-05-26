@@ -11,6 +11,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import axiosIntance from '../untils/axiosIntance';
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import { validatePhoneNumber } from '../untils/helper';
 
 const Resident = () => {
   const [open, setOpen] = React.useState(() => {
@@ -87,6 +88,12 @@ const Resident = () => {
     const currentCount = getResidentCount(data.HouseholdID);
     const household = households.find(h => h.HouseholdID === data.HouseholdID);
 
+    // Validate số điện thoại
+    if (!validatePhoneNumber(data.PhoneNumber || '')) {
+      setToast({ message: "Số điện thoại phải có 10 số và bắt đầu bằng số 0!", type: "error" });
+      return;
+    }
+
     if (household && currentCount >= household.Members) {
       setToast({ message: "Số nhân khẩu đã đạt tối đa cho phòng này!", type: "error" });
       return;
@@ -103,6 +110,12 @@ const Resident = () => {
   };
 
   const handleEditResident = async (data) => {
+    // Validate số điện thoại
+    if (!validatePhoneNumber(data.PhoneNumber || '')) {
+      setToast({ message: "Số điện thoại phải có 10 số và bắt đầu bằng số 0!", type: "error" });
+      return;
+    }
+
     try {
       const response = await axiosIntance.put(`/residents/update-resident/${editResident.ResidentID}`, data);
       const updatedResident = response.data.newResident || response.data;

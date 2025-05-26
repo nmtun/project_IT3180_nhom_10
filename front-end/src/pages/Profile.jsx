@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import axiosIntance from '../untils/axiosIntance';
 import Toast from '../components/Toast';
+import { validateEmail, validatePassword, validatePhoneNumber } from '../untils/helper';
 import '../styles/Profile.css';
 
 const Profile = () => {
@@ -49,6 +50,27 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate email
+    if (!validateEmail(editForm.Email || '')) {
+      setToast({ message: 'Email không hợp lệ!', type: 'error' });
+      return;
+    }
+
+    // Validate phone number
+    if (!validatePhoneNumber(editForm.PhoneNumber || '')) {
+      setToast({ message: 'Số điện thoại phải có 10 số và bắt đầu bằng số 0!', type: 'error' });
+      return;
+    }
+
+    // Validate password nếu có nhập
+    if (editForm.Password && editForm.Password.trim() !== '') {
+      if (!validatePassword(editForm.Password)) {
+        setToast({ message: 'Mật khẩu phải tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!', type: 'error' });
+        return;
+      }
+    }
+
     try {
       // Chỉ gửi các trường cần cập nhật
       const updateData = {

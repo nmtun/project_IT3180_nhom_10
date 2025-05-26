@@ -11,6 +11,7 @@ import axiosIntance from '../untils/axiosIntance';
 import { FaEdit, FaTrash } from 'react-icons/fa'; 
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import { validateEmail, validatePassword, validatePhoneNumber } from '../untils/helper';
 
 const Account = () => {
   const [open, setOpen] = React.useState(() => {
@@ -65,6 +66,21 @@ const Account = () => {
 
   // Xử lý thêm tài khoản
   const handleAddAccount = async (data) => {
+    // Validate email
+    if (!validateEmail(data.email || '')) {
+      setToast({ message: 'Email không hợp lệ!', type: 'error' });
+      return;
+    }
+    // Validate số điện thoại
+    if (!validatePhoneNumber(data.phoneNumber || '')) {
+      setToast({ message: 'Số điện thoại phải có 10 số và bắt đầu bằng số 0!', type: 'error' });
+      return;
+    }
+    // Validate mật khẩu
+    if (!validatePassword(data.password || '')) {
+      setToast({ message: 'Mật khẩu phải tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!', type: 'error' });
+      return;
+    }
     try {
       console.log(data);
       const response = await axiosIntance.post('/users/create-user', {
@@ -88,6 +104,23 @@ const Account = () => {
 
   // Xử lý chỉnh sửa tài khoản
   const handleEditAccount = async (data) => {
+    // Validate email
+    if (!validateEmail(data.email || '')) {
+      setToast({ message: 'Email không hợp lệ!', type: 'error' });
+      return;
+    }
+    // Validate số điện thoại
+    if (!validatePhoneNumber(data.phoneNumber || '')) {
+      setToast({ message: 'Số điện thoại phải có 10 số và bắt đầu bằng số 0!', type: 'error' });
+      return;
+    }
+    // Validate mật khẩu nếu có nhập
+    if (data.password && data.password.trim() !== '') {
+      if (!validatePassword(data.password)) {
+        setToast({ message: 'Mật khẩu phải tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt!', type: 'error' });
+        return;
+      }
+    }
     try {
       const payload = {
         Username: data.username,
@@ -97,7 +130,6 @@ const Account = () => {
         Role: data.role,
         Status: data.status, 
       };
-      // Nếu có nhập mật khẩu mới thì gửi lên
       if (data.password) {
         payload.Password = data.password;
       }
@@ -211,7 +243,8 @@ const Account = () => {
                   handleAddAccount(data);
                 }
               }}
-              initialData={editAccount}
+              initialData={editAccount ? editAccount : {}}
+              mode={editAccount ? "edit" : "add"}   // Thêm dòng này
             />
             <DeleteConfirmModal
               open={!!deletingAccount}
