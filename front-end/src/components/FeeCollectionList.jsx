@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const FeeCollectionList = ({ feeCollections, onEdit, onDelete, onSelect }) => {
+const FeeCollectionList = ({ feeCollections, onEdit, onDeleteRequest, onSelect }) => {
   if (!feeCollections || feeCollections.length === 0) {
     return <p>Không có đợt thu phí nào.</p>;
   }
@@ -36,7 +36,7 @@ const FeeCollectionList = ({ feeCollections, onEdit, onDelete, onSelect }) => {
               title="Xóa"
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(item.CollectionID);
+                onDeleteRequest(item);;
               }}
             />
           </span>
