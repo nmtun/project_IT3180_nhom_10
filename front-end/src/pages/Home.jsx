@@ -118,9 +118,10 @@ const Home = () => {
               </div>
               <div className="card small-card">
                 <span className="card-title"><strong>Thống kê phí tháng 5:</strong></span>
-                <span className="card-title">💰 Số hộ đã nộp: <strong>12/15</strong></span>
-                <span className="card-title">💰 Tổng tiền thu: <strong>20 triệu VNĐ</strong></span>
-                <span className="card-title">💰 Tỷ lệ hoàn thành: <strong>80%</strong></span>
+                <span className="card-title">💰 Số loại phí thu trong tháng: <strong>7</strong></span>
+                <span className="card-title">💰 Tổng số tiền đã thu: <strong>20 triệu VNĐ</strong></span>
+                <span className="card-title">💰 Tỷ lệ hoàn thành: <strong>80%</strong></span> 
+                <span className="card-title">💰 Mức độ hoàn thành: <strong>Tốt</strong></span>
               </div>
               <div className="card small-card">
                 <span className="card-title"><strong>Trạng thái cư trú:</strong></span>
