@@ -56,3 +56,4 @@ export const deleteFeeType = async (req, res) => {
     res.status(500).json({ error: true, message: 'Error deleting fee type', error });
   }
 };
+

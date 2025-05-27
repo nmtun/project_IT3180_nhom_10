@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import '../styles/Fee.css';
 import Header from '../components/Header';
@@ -103,18 +104,49 @@ const Fee = () => {
   }
   };
 
-  const handleAddFeeCollection = async (data) => {
-    try {
-      const response = await axiosIntance.post('/fee-collection/create-collection', data);
-      await fetchFeeCollection();
-      setShowAddFeeCollection(false);
-      setToast({ message: "Thêm đợt thu phí thành công!", type: "success" });
-    } catch (error) {
-      // alert('Thêm đợt thu phí thất bại!');
-      setToast({ message: "Thêm đợt thu phí thất bại!", type: "error" });
+  // const handleAddFeeCollection = async (data) => {
+  //   try {
+  //     const response = await axiosIntance.post('/fee-collection/create-collection', data);
+  //     await fetchFeeCollection();
+  //     setShowAddFeeCollection(false);
+  //     setToast({ message: "Thêm đợt thu phí thành công!", type: "success" });
+  //   } catch (error) {
+  //     // alert('Thêm đợt thu phí thất bại!');
+  //     setToast({ message: "Thêm đợt thu phí thất bại!", type: "error" });
 
-    }
-  };
+  //   }
+  // };
+const handleAddFeeCollection = async (data) => {
+  try {
+    const response = await axiosIntance.post(`/fee-collection/create-collection`, data);
+    const collectionId = response.data.feeCollection?.CollectionID;
+
+    const householdRes = await axiosIntance.get(`/households/get-all-households`);
+    const households = householdRes.data.households || [];
+    const defaultAmountDue = response.data.feeCollection?.TotalAmount / households.length;
+
+    const createFeeDetailPromises = households.map(hh =>
+      axiosIntance.post(`/fee-detail/create-fee-detail`, {
+        CollectionID: collectionId,
+        HouseholdID: hh.HouseholdID,
+        AmountDue: defaultAmountDue,
+        AmountPaid: 0,
+        PaymentStatus: "Chưa đóng",
+        PaymentDate: null,
+        PaymentMethod: "Tiền mặt",
+      })
+    );
+
+    await Promise.all(createFeeDetailPromises);
+    
+    await fetchFeeCollection();
+    setShowAddFeeCollection(false);
+    setToast({ message: "Thêm đợt thu phí thành công!", type: "success" });
+  } catch (error) {
+    console.error("Error details:", error.response?.data || error);
+    setToast({ message: "Thêm đợt thu phí thất bại!", type: "error" });
+  }
+};
 
   const handleEditFeeCollection = async (data) => {
     try {
