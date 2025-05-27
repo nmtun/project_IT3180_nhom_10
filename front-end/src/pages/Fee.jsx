@@ -12,6 +12,7 @@ import FeeCollectionList from '../components/FeeCollectionList';
 import FeeDetailTable from '../components/FeeDetailTable';
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import { FaWindowClose } from "react-icons/fa";
 
 
 const safeArray = (input) => Array.isArray(input) ? input : [];
@@ -42,7 +43,7 @@ const Fee = () => {
     fetchFeeCollection();
   }, []);
 
-  const fetchFeeDetailsByCollectionId = async (collectionId) => {
+ const fetchFeeDetailsByCollectionId = async (collectionId) => {
     console.log("Fetching details for collection ID:", collectionId);
     try {
       const res = await axiosIntance.get(`/fee-detail/get-all-fee-detail?feeCollectionId=${collectionId}`);
@@ -55,8 +56,7 @@ const Fee = () => {
       setFeeDetails([]);
     }
   };
-
-  const handleStatusChange = async (detailId, isPaid) => {
+    const handleStatusChange = async (detailId, isPaid) => {
     try {
        // payload theo API backend của bạn
       await axiosIntance.put(
@@ -104,19 +104,7 @@ const Fee = () => {
   }
   };
 
-  // const handleAddFeeCollection = async (data) => {
-  //   try {
-  //     const response = await axiosIntance.post('/fee-collection/create-collection', data);
-  //     await fetchFeeCollection();
-  //     setShowAddFeeCollection(false);
-  //     setToast({ message: "Thêm đợt thu phí thành công!", type: "success" });
-  //   } catch (error) {
-  //     // alert('Thêm đợt thu phí thất bại!');
-  //     setToast({ message: "Thêm đợt thu phí thất bại!", type: "error" });
-
-  //   }
-  // };
-const handleAddFeeCollection = async (data) => {
+  const handleAddFeeCollection = async (data) => {
   try {
     const response = await axiosIntance.post(`/fee-collection/create-collection`, data);
     const collectionId = response.data.feeCollection?.CollectionID;
@@ -244,7 +232,7 @@ const handleAddFeeCollection = async (data) => {
                   )}
 
                   <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} />
-                  <button className="btn-close" onClick={() => setSelectedFeeCollection(null)}>×</button>
+                  <button className="btn-close" onClick={() => setSelectedFeeCollection(null)}>x</button>
                 </div>
               </>
             )}

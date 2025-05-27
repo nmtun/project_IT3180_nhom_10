@@ -40,16 +40,13 @@ export const getFeeDetailById = async (req, res) => {
 export const createFeeDetail = async (req, res) => {
   try {
     //console.log("CREATE FeeDetail req.body:", req.body);
-    const { CollectionID, HouseholdID, AmountDue, AmountPaid, PaymentDate, PaymentMethod, PaymentStatus, Notes } = req.body;
-    if (!CollectionID || !HouseholdID || !AmountDue || !PaymentMethod || !PaymentStatus) {
+    const { CollectionID, HouseholdID, Amount, PaymentDate, PaymentMethod, PaymentStatus, Notes } = req.body;
+    if (!CollectionID || !HouseholdID || !Amount || !PaymentMethod || !PaymentStatus) {
       return res.status(400).json({ error: true, message: 'Missing required fields' });
     }
-    // Kiểm tra logic
-    if (AmountPaid && parseFloat(AmountPaid) > parseFloat(AmountDue)) {
-      return res.status(400).json({ error: true, message: 'AmountPaid cannot be greater than AmountDue' });
-    }
+    
     const newFeeDetail = await feeDetailServices.createFeeDetail({
-      CollectionID, HouseholdID, AmountDue, AmountPaid, PaymentDate, PaymentMethod, PaymentStatus, Notes
+      CollectionID, HouseholdID, Amount, PaymentDate, PaymentMethod, PaymentStatus, Notes
     });
     res.status(201).json({ error: false, feeDetail: newFeeDetail });
   } catch (error) {

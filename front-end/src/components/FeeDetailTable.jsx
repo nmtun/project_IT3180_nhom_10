@@ -35,7 +35,7 @@ const FeeDetailTable = ({ details, onStatusChange }) => {
                 <input
                   type="checkbox"
                   checked={d.PaymentStatus === 'Đã đóng'}
-                  onChange={ e => onStatusChange(d.FeeDetailID, e.target.checked) }
+                  onChange={ e => onStatusChange(d.FeeDetailID, e.target.checked/*, d.HouseholdID */)}
                 />
               </td>  
               <td>{d.PaymentMethod || '—'}</td>
