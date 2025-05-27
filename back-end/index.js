@@ -62,7 +62,7 @@ app.use("/api/change", ChangeRoutes);
 (async () => {
   try {
     //await sequelize.sync(); // tạo bảng nếu chưa có
-    // wait sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
+    // await sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
     
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);

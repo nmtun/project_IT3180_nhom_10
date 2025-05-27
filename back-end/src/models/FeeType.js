@@ -18,6 +18,10 @@ const FeeType = sequelize.define("FeeType", {
     type: DataTypes.ENUM('Bắt buộc', 'Tự nguyện'), 
     allowNull: false 
   },
+  Scope: {
+    type: DataTypes.ENUM('Chung', 'Riêng'), 
+    allowNull: false
+  },
   UnitPrice: { 
     type: DataTypes.DECIMAL(10, 2) 
   },

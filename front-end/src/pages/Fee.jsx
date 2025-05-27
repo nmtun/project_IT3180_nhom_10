@@ -107,7 +107,6 @@ const Fee = () => {
   try {
     const response = await axiosIntance.post(`/fee-collection/create-collection`, data);
     const collectionId = response.data.feeCollection?.CollectionID;
-    console.log("🎯 Final collection ID:", collectionId);
 
     const householdRes = await axiosIntance.get(`/households/get-all-households`);
     const households = householdRes.data.households || [];
