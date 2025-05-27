@@ -13,7 +13,6 @@ const FeeDetailTable = ({ details, onStatusChange }) => {
           <tr>
             <th>Hộ gia đình</th>
             <th>Số tiền cần đóng</th>
-            <th>Số tiền đã đóng</th>
             <th>Trạng thái</th>
             <th>Đã thanh toán</th>
             <th>Phương thức</th>
@@ -24,8 +23,7 @@ const FeeDetailTable = ({ details, onStatusChange }) => {
           {details.map((d, i) => (
             <tr key={i}>
               <td>{d.Household?.HouseholdHead || `Hộ ID ${d.HouseholdID}`}</td>
-              <td>{parseInt(d.AmountDue || 0).toLocaleString()} VNĐ</td>
-              <td>{parseInt(d.AmountPaid || 0).toLocaleString()} VNĐ</td>
+              <td>{parseInt(d.Amount || 0).toLocaleString()} VNĐ</td>
               <td>
                 <span className={`payment-status ${d.PaymentStatus === 'Đã đóng' ? 'paid' : 'unpaid'}`}>
                   {d.PaymentStatus}

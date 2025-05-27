@@ -62,6 +62,7 @@ app.use("/api/change", ChangeRoutes);
 (async () => {
   try {
     //await sequelize.sync(); // tạo bảng nếu chưa có
+    // await sequelize.sync({ alter: true }); // tự động cập nhật bảng nếu có thay đổi trong model
     // await sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
     
     app.listen(PORT, () => {

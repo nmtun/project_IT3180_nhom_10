@@ -64,7 +64,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (form.collectionName.trim() === '' || form.startDate.trim() === '' || form.totalAmount.trim() === '') {
+        if (form.collectionName.trim() === '' || form.startDate.trim() === '' ) {
             alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
             return;
         } 
@@ -78,7 +78,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
             CollectionName: form.collectionName,
             StartDate: form.startDate,
             EndDate: form.endDate || null,
-            TotalAmount: parseFloat(form.totalAmount),
+            TotalAmount: form.totalAmount ? parseFloat(form.totalAmount) : null,
             Status: form.status,
             Notes: form.notes || ''
         };
@@ -130,7 +130,6 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                             name="totalAmount"
                             value={form.totalAmount}
                             onChange={handleChange}
-                            required
                         />
                     </div>
                     <div className="form-group">

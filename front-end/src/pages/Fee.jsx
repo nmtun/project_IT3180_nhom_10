@@ -11,8 +11,7 @@ import FeeCollectionList from '../components/FeeCollectionList';
 import FeeDetailTable from '../components/FeeDetailTable';
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
-import { FaWindowClose } from "react-icons/fa";
-
+import FeeDetailSpecial from '../components/FeeDetailSpecial';
 
 const safeArray = (input) => Array.isArray(input) ? input : [];
 
@@ -167,8 +166,6 @@ const Fee = () => {
   };
 
   const handleSelectedFeeCollection = (collection) => {
-    console.log("Selected collection:", collection);
-    console.log("Collection ID:", collection.CollectionID);
     setSelectedFeeCollection(collection);
     setStats(null);
     fetchFeeDetailsByCollectionId(collection.CollectionID);
@@ -229,8 +226,14 @@ const Fee = () => {
                       <button onClick={() => setStats(null)}>Đóng</button>
                     </div>
                   )}
+                  {/* <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} /> */}
 
-                  <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} />
+                  {selectedFeeCollection?.FeeType?.Category === 'Bắt buộc' &&
+                  selectedFeeCollection?.FeeType?.Scope === 'Riêng' ? (
+                    <FeeDetailSpecial details={feeDetails} onStatusChange={handleStatusChange} />
+                  ) : (
+                    <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} />
+                  )}
                   <button className="btn-close" onClick={() => setSelectedFeeCollection(null)}>x</button>
                 </div>
               </>

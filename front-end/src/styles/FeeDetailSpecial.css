@@ -1,0 +1,279 @@
+/* Styling cho bảng đặc biệt - Bắt buộc & Riêng */
+.special-table-header {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
+}
+
+.special-table-header h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.fee-type-description {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.9em;
+}
+
+.fee-detail-table.special {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fee-detail-table.special thead {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+}
+
+.fee-detail-table.special th {
+  padding: 12px 8px;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.9em;
+  border: none;
+}
+
+.fee-detail-table.special td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+  font-size: 0.85em;
+}
+
+/* Row colors */
+.paid-row {
+  background-color: #f8fff8;
+}
+
+.unpaid-row {
+  background-color: #fff8f8;
+}
+
+.paid-row:hover {
+  background-color: #f0fff0;
+}
+
+.unpaid-row:hover {
+  background-color: #fff0f0;
+}
+
+/* Cell specific styling */
+.household-info {
+  text-align: left !important;
+  min-width: 150px;
+}
+
+.household-info strong {
+  color: #333;
+}
+
+.household-info small {
+  color: #666;
+  font-size: 0.8em;
+}
+
+.amount-due {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.amount-paid {
+  font-weight: 600;
+  color: #388e3c;
+}
+
+.amount-remaining.debt {
+  font-weight: 600;
+  color: #d32f2f;
+}
+
+.amount-remaining.clear {
+  color: #666;
+}
+
+/* Payment status badge */
+.payment-status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.payment-status-badge.paid {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.payment-status-badge.unpaid {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+/* Custom checkbox */
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border-radius: 4px;
+  border: 2px solid #ddd;
+  transition: all 0.3s;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Payment method select */
+.payment-method-select {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.8em;
+  min-width: 100px;
+}
+
+.payment-method-select:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+}
+
+/* Date badge */
+.date-badge {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+/* Notes input */
+.notes-input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.8em;
+  min-width: 120px;
+}
+
+.notes-input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* Table summary */
+.table-summary {
+  display: flex;
+  justify-content: space-around;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.summary-item {
+  text-align: center;
+  min-width: 120px;
+}
+
+.summary-item span {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.summary-item strong {
+  color: #333;
+  font-size: 1.1em;
+}
+
+/* Fee type info styling */
+.fee-type-info {
+  background: #f8f9fa;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  border-left: 4px solid #4CAF50;
+}
+
+.fee-type-info p {
+  margin: 4px 0;
+  font-size: 0.9em;
+}
+
+.fee-type-info strong {
+  color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .fee-detail-table.special {
+    font-size: 0.8em;
+  }
+  
+  .fee-detail-table.special th,
+  .fee-detail-table.special td {
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-summary {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .summary-item {
+    min-width: auto;
+  }
+}
