@@ -53,6 +53,23 @@ html, body {
   justify-content: right;
   align-items: center;
 }
+
+.resident-title {
+  text-align: left;
+}
+
+.resident-title h1{
+  color: #000;
+  justify-content: left;
+  font-size: 30px;
+  text-align: left
+}
+
+.resident-search {
+  display: flex;
+  justify-content: space-between;
+}
+
 .resident-search input {
   padding: 8px;
   border-radius: 8px;
@@ -209,3 +226,36 @@ html, body {
   }
 }
 
+/* Tiêu đề phòng nổi bật, căn giữa */
+.resident-room-header {
+  background: #f5f7fa;
+  color: #1972bb;
+  font-weight: bold;
+  padding: 10px 0 6px 0;
+  margin-top: 18px;
+  margin-bottom: 4px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+/* Khoảng cách giữa các thành viên trong phòng */
+.resident-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+.resident-row:last-child {
+  border-bottom: none;
+}
+
+/* Đánh dấu đỏ cho nhân khẩu đã chuyển đi */
+.resident-row-leaved {
+  background: #ffeaea;
+  color: #d32f2f;
+}

@@ -99,6 +99,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                         <input
                             type="text"
                             name="collectionName"
+                            placeholder="Nhập tên đợt thu phí"
                             value={form.collectionName}
                             onChange={handleChange}
                             required
@@ -129,6 +130,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                             type="number"
                             name="totalAmount"
                             value={form.totalAmount}
+                            placeholder="Số tiền thu (VNĐ)"
                             onChange={handleChange}
                         />
                     </div>

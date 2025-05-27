@@ -9,7 +9,7 @@ const FeeType = sequelize.define("FeeType", {
   },
   FeeTypeName: { 
     type: DataTypes.STRING(100), 
-    allowNull: false  
+    allowNull: false 
   },
   Description: { 
     type: DataTypes.TEXT 
@@ -19,7 +19,7 @@ const FeeType = sequelize.define("FeeType", {
     allowNull: false 
   },
   Scope: {
-    type: DataTypes.ENUM('Chung', 'Riêng'), 
+    type: DataTypes.ENUM('Chung', 'Riêng'),
     allowNull: false
   },
   UnitPrice: { 

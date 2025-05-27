@@ -73,3 +73,4 @@ export const findHouseholdByRoomNumber = async (req, res) => {
     res.status(500).json({ error: true, message: 'Error finding household', error });
   }
 };
+
