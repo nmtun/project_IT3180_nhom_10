@@ -37,6 +37,7 @@ const Fee = () => {
   const [stats, setStats] = React.useState(null);
   const [toast, setToast] = React.useState({ message: '', type: 'info' });
   const [deletingFeeCollection, setDeletingFeeCollection] = React.useState(null);  
+  
 
   React.useEffect(() => {
     fetchFeeCollection();

@@ -12,6 +12,8 @@ const AddFeeType = ({ open, onClose, onSubmit, initialData = {} }) => {
   });
 
   useEffect(() => {
+    if (!open) return; // Không làm gì nếu form chưa mở
+
     if (initialData && Object.keys(initialData).length > 0) {
       setForm({
         feeTypeName: initialData.FeeTypeName || "",
@@ -31,7 +33,7 @@ const AddFeeType = ({ open, onClose, onSubmit, initialData = {} }) => {
         description: ""
       });
     }
-  }, [initialData, open]);
+  }, [open]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,7 +70,7 @@ const AddFeeType = ({ open, onClose, onSubmit, initialData = {} }) => {
   if (!open) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay-feetype">
       <div className="modal-form-new">
         <h2>{initialData && Object.keys(initialData).length > 0 ? "Chỉnh sửa loại phí" : "Thêm loại phí"}</h2>
         <form onSubmit={handleSubmit} className="add-fee-type-form">

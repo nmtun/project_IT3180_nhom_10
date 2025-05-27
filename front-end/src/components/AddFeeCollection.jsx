@@ -2,8 +2,10 @@ import React from 'react';
 import{ useState, useEffect } from 'react';
 import axiosInstance from '../untils/axiosIntance';
 import '../styles/AddFeeCollection.css';
+import AddFeeType from './AddFeeType';
 const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
     const [feeType, setFeeType] = React.useState([]);
+    const [showAddFeeType, setShowAddFeeType] = React.useState(false);
 
     React.useEffect(() => {
         const fetchFeeType = async () => {
@@ -90,6 +92,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
     if (!open) return null;
 
     return (
+        <>
         <div className="modal-overlay">
             <div className="modal-form-new">
                 <h2>{initialData ? 'Chỉnh sửa đợt thu phí' : 'Thêm đợt thu phí'}</h2>
@@ -162,6 +165,15 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                             ))} 
                         </select>
                     </div>
+                    <div className="form-group">
+                        <button
+                            type="button"
+                            className="add-fee-type-inline-btn"
+                            onClick={() => setShowAddFeeType(true)}
+                            >
+                            + Thêm loại phí mới
+                        </button>
+                    </div>
                     <div>
                         <div className="form-actions">
                             <button type='submit'>Lưu</button>
@@ -171,6 +183,29 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                 </form>   
             </div>
         </div>
+        <AddFeeType
+                open={showAddFeeType}
+                initialData={null} 
+                onClose={() => setShowAddFeeType(false)}
+                onSubmit={async (data) => {
+                    try {
+                        const res = await axiosInstance.post('/fee-type/create-fee-type', data);
+                        const created = res.data.feeType || res.data;
+
+                        //✅ Thêm loại mới vào dropdown và chọn nó luôn
+                        setFeeType((prev) => [...prev, created]);
+                        setForm((prev) => ({
+                            ...prev,
+                            feeTypeId: String(created.FeeTypeID),
+                    }));
+
+                    setShowAddFeeType(false);
+                    } catch (err) {
+                    console.error("Lỗi khi thêm loại phí:", err);
+                    }
+                }}
+            />
+        </>
     );
 };
 
