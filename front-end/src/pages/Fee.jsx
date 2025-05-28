@@ -37,6 +37,7 @@ const Fee = () => {
   const [stats, setStats] = React.useState(null);
   const [toast, setToast] = React.useState({ message: '', type: 'info' });
   const [deletingFeeCollection, setDeletingFeeCollection] = React.useState(null);  
+  const [selectedFeeType, setSelectedFeeType] = React.useState(null);
   
 
   React.useEffect(() => {
@@ -232,7 +233,9 @@ const Fee = () => {
 
                   {selectedFeeCollection?.FeeType?.Category === 'Bắt buộc' &&
                   selectedFeeCollection?.FeeType?.Scope === 'Riêng' ? (
-                    <FeeDetailSpecial details={feeDetails} onStatusChange={handleStatusChange} />
+                    <FeeDetailSpecial 
+                      selectedFeeType={selectedFeeType}
+                      details={feeDetails} onStatusChange={handleStatusChange} />
                   ) : (
                     <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} />
                   )}

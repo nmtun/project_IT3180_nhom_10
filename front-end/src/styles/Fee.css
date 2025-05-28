@@ -1,3 +1,9 @@
+:root {
+  --sidebar-open-width: 220px; /* Chiều rộng sidebar khi mở */
+  --sidebar-closed-width: 60px; /* Chiều rộng sidebar khi đóng */
+  --fee-modal-padding: 32px;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -142,9 +148,19 @@ html, body {
   z-index: 1001;
 }
 
-/* FeeDetail modal riêng */
+/* FeeDetail modal riêng
 .fee-detail-modal {
   width: 80vw;
+} */
+
+/* Khi sidebar dang mo */
+.fee-content.sidebar-open .fee-detail-modal {
+  width: calc(80vw - var(--sidebar-open-width) - (var(--fee-modal-padding)*2)); /* Trừ sidebar và padding */
+}
+
+/* Khi sidebar dang dong */
+.fee-content.sidebar-closed .fee-detail-modal {
+  width: calc(80vw - var(--sidebar-closed-width) - (var(--fee-modal-padding)*2)); /* Trừ sidebar và padding */
 }
 
 /* Stats modal */
