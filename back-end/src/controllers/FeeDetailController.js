@@ -41,7 +41,7 @@ export const createFeeDetail = async (req, res) => {
   try {
     //console.log("CREATE FeeDetail req.body:", req.body);
     const { CollectionID, HouseholdID, Amount, PaymentDate, PaymentMethod, PaymentStatus, Notes } = req.body;
-    if (!CollectionID || !HouseholdID || !Amount || !PaymentMethod || !PaymentStatus) {
+    if (!CollectionID || !HouseholdID || !PaymentMethod || !PaymentStatus) {
       return res.status(400).json({ error: true, message: 'Missing required fields' });
     }
     

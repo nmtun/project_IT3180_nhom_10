@@ -19,7 +19,7 @@ const FeeDetail = sequelize.define("FeeDetail", {
   },
   Amount: { 
     type: DataTypes.DECIMAL(10, 2), 
-    allowNull: false 
+    allowNull: true
   },
   PaymentDate: { 
     type: DataTypes.DATEONLY 

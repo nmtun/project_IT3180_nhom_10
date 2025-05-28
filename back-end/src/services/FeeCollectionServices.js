@@ -6,7 +6,7 @@ export const getAllFeeCollections = async () => {
   return await FeeCollection.findAll({
     include: {
       model: FeeType,
-      attributes: ['FeeTypeName', 'Category', 'Scope'], // Lấy những gì bạn cần từ FeeType
+      attributes: ['FeeTypeName', 'Category', 'Scope', 'UnitPrice'], // Lấy những gì bạn cần từ FeeType
     },
     order: [['StartDate', 'DESC']], // Sắp xếp theo ngày bắt đầu mới nhất
   });

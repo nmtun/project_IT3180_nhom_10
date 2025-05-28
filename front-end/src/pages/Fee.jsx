@@ -108,25 +108,42 @@ const Fee = () => {
   const handleAddFeeCollection = async (data) => {
   try {
     const response = await axiosIntance.post(`/fee-collection/create-collection`, data);
+    console.log("API create collection response:", response.data);
     const collectionId = response.data.feeCollection?.CollectionID;
+    console.log("Created collection ID:", collectionId);
+    const sc = response.data.feeCollection?.FeeType?.Scope;
+    const ct = response.data.feeCollection?.FeeType?.Category;
 
     const householdRes = await axiosIntance.get(`/households/get-all-households`);
     const households = householdRes.data.households || [];
-    const defaultAmountDue = response.data.feeCollection?.TotalAmount / households.length;
+    const defaultAmount = response.data.feeCollection?.FeeType?.UnitPrice;
+    
 
-    const createFeeDetailPromises = households.map(hh =>
-      axiosIntance.post(`/fee-detail/create-fee-detail`, {
-        CollectionID: collectionId,
-        HouseholdID: hh.HouseholdID,
-        AmountDue: defaultAmountDue,
-        AmountPaid: 0,
-        PaymentStatus: "Chưa đóng",
-        PaymentDate: null,
-        PaymentMethod: "Tiền mặt",
-      })
-    );
-
-    await Promise.all(createFeeDetailPromises);
+    if(sc === 'Riêng' && ct === 'Bắt buộc') {
+      const createFeeDetailPromises = households.map(hh =>
+        axiosIntance.post(`/fee-detail/create-fee-detail`, {
+          CollectionID: collectionId,
+          HouseholdID: hh.HouseholdID,
+          Amount: defaultAmount,
+          PaymentStatus: "Chưa đóng",
+          PaymentDate: null,
+          PaymentMethod: "Tiền mặt",
+        })
+      );
+      await Promise.all(createFeeDetailPromises);
+    }else {
+      const createFeeDetailPromises = households.map(hh =>
+        axiosIntance.post(`/fee-detail/create-fee-detail`, {
+          CollectionID: collectionId,
+          HouseholdID: hh.HouseholdID,
+          Amount: defaultAmount,
+          PaymentStatus: "Chưa đóng",
+          PaymentDate: null,
+          PaymentMethod: "Tiền mặt",
+        })
+      );
+      await Promise.all(createFeeDetailPromises);
+    }
     
     await fetchFeeCollection();
     setShowAddFeeCollection(false);
