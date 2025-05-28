@@ -60,6 +60,7 @@ const Sidebar = ({ open, setOpen }) => {
             key={idx}
             onClick={() => navigate(item.path)}
             style={{ cursor: 'pointer' }}
+            title={!open ? item.label : undefined} 
           >
             {item.icon}
             {open && <span className="sidebar-label">{item.label}</span>}

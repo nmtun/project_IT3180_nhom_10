@@ -57,9 +57,15 @@ html, body {
 .fee-search {
   margin-bottom: 20px;
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   align-items: center;
+
 }
+
+.fee-title h1{
+  color: #000;
+}
+
 .fee-search input {
   padding: 8px;
   border-radius: 8px;
@@ -191,4 +197,28 @@ html, body {
 }
 .btn-stats:hover {
   background-color: #0056b3;
+}
+
+.fee-detail-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.fee-detail-title {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.fee-detail-meta {
+  display: block;
+  text-align: left;
+  font-size: 1rem;
+  color: #444;
+  margin: 0;      /* Xóa căn giữa */
+  max-width: none; /* Xóa giới hạn chiều rộng */
+}
+
+.fee-detail-meta p {
+  margin: 4px 0;
 }

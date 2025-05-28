@@ -32,9 +32,6 @@ const FeeDetail = sequelize.define("FeeDetail", {
     type: DataTypes.ENUM('Chưa đóng', 'Đã đóng'), 
     allowNull: false 
   },
-  Notes: { 
-    type: DataTypes.TEXT 
-  }
 }, {
   tableName: "FeeDetails",
   timestamps: false

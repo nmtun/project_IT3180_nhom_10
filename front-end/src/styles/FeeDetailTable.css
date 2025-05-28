@@ -40,3 +40,66 @@
 .fee-detail-table tbody tr:hover {
   background-color: #f9f9f9;
 }
+
+/* Style cho select */
+.fee-detail-table select {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #bdbdbd;
+  background: #f8f9fa;
+  font-size: 15px;
+  color: #333;
+  transition: border 0.2s;
+  outline: none;
+  min-width: 120px;
+}
+
+.fee-detail-table select:focus {
+  border: 1.5px solid #1976d2;
+  background: #fff;
+}
+
+/* Style cho option */
+.fee-detail-table option {
+  background: #fff;
+  color: #333;
+  font-size: 15px;
+}
+
+/* Khi select bị disabled */
+.fee-detail-table select:disabled {
+  background: #eee;
+  color: #aaa;
+  cursor: not-allowed;
+}
+.fee-detail-table td:nth-child(2),
+.fee-detail-table th:nth-child(2) {
+  text-align: center;
+}
+.fee-detail-table td:nth-child(3),
+.fee-detail-table th:nth-child(3) {
+  text-align: center;
+}
+
+.fee-detail-table td:nth-child(4),
+.fee-detail-table th:nth-child(4) {
+  text-align: center;
+}
+.fee-detail-table td:nth-child(5),
+.fee-detail-table th:nth-child(5) {
+  text-align: center;
+}
+
+.fee-detail-table td:nth-child(6),
+.fee-detail-table th:nth-child(6) {
+  text-align: center;
+}
+
+.fee-detail-table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1976d2; 
+  cursor: pointer;
+  margin: 0;
+  vertical-align: middle;
+}

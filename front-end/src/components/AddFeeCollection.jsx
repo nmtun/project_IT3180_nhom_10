@@ -24,7 +24,6 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
         collectionName: '',
         startDate: '',
         endDate: '',
-        totalAmount: '',
         status: 'Đang thu',
         notes: '',
         feeTypeId: ''
@@ -36,7 +35,6 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                 collectionName: initialData.CollectionName || '',
                 startDate: initialData.StartDate || '',
                 endDate: initialData.EndDate || '',
-                totalAmount: initialData.TotalAmount || '',
                 status: initialData.Status || 'Đang thu',
                 notes: initialData.Notes || '',
                 feeTypeId: initialData.FeeTypeID ? String(initialData.FeeTypeID) : ''
@@ -47,7 +45,6 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                 collectionName: '',
                 startDate: '',
                 endDate: '',
-                totalAmount: '',
                 status: 'Đang thu',
                 notes: '',
                 feeTypeId: ''
@@ -80,7 +77,6 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
             CollectionName: form.collectionName,
             StartDate: form.startDate,
             EndDate: form.endDate || null,
-            TotalAmount: form.totalAmount ? parseFloat(form.totalAmount) : null,
             Status: form.status,
             Notes: form.notes || ''
         };
@@ -127,7 +123,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label>Số tiền:</label>
                         <input
                             type="number"
@@ -136,7 +132,7 @@ const AddFeeCollection = ({ open, onClose, onSubmit, initialData = {} }) => {
                             placeholder="Số tiền thu (VNĐ)"
                             onChange={handleChange}
                         />
-                    </div>
+                    </div> */}
                     <div className="form-group">
                         <label>Trạng thái:</label>
                         <select name="status" value={form.status} onChange={handleChange}>
