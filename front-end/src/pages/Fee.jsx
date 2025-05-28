@@ -251,7 +251,7 @@ const Fee = () => {
                   {selectedFeeCollection?.FeeType?.Category === 'Bắt buộc' &&
                   selectedFeeCollection?.FeeType?.Scope === 'Riêng' ? (
                     <FeeDetailSpecial 
-                      selectedFeeType={selectedFeeType}
+                      COllectionID = {selectedFeeCollection.CollectionID}
                       details={feeDetails} onStatusChange={handleStatusChange} />
                   ) : (
                     <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} />

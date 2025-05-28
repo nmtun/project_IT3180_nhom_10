@@ -1,7 +1,7 @@
 import React from 'react';
 import axiosInstance from '../untils/axiosIntance';
 
-const FeeDetailSpecial = ({ details, selectedFeeType }) => {
+const FeeDetailSpecial = ({ details, CollectionID }) => {
   if (!details || details.length === 0) {
     return <p>Chưa có dữ liệu nộp phí cho đợt thu này.</p>;
   }
@@ -34,11 +34,14 @@ const FeeDetailSpecial = ({ details, selectedFeeType }) => {
     try {
       // build payload: mỗi phần tử có HouseholdID, AmountDue, FeeTypeID (từ props)
       const payload = households.map(hh => ({
+        CollectionID, 
         HouseholdID: hh.HouseholdID,
-        AmountDue: parseFloat(amounts[hh.HouseholdID]) || 0,
-        FeeTypeID: props.selectedFeeType.FeeTypeID,  // hoặc prop bạn truyền vào
+        Amount: parseFloat(amounts[hh.HouseholdID]) || 0,
+        PaymentStatus: "Chưa đóng",
+        PaymentDate: null,
+        PaymentMethod: "Tiền mặt"
       }));
-      await axiosInstance.post('/fee-amounts/create-batch', payload);
+      await axiosInstance.post(`fee-detail/create-fee-detail`, payload);
       alert('Gửi thành công!');
     } catch (err) {
       console.error(err);
@@ -56,7 +59,7 @@ const FeeDetailSpecial = ({ details, selectedFeeType }) => {
           <thead>
             <tr>
               <th>Household</th>
-              <th>Amount Due</th>
+              <th>Amount</th>
             </tr>
           </thead>
           <tbody>
