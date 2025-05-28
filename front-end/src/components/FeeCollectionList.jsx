@@ -19,9 +19,6 @@ const FeeCollectionList = ({ feeCollections, onEdit, onDeleteRequest, onSelect }
           <span><b>Loại phí:</b> {item.FeeType?.FeeTypeName || '-'}</span>
           <span><b>Danh mục:</b> {item.FeeType?.Category || '-'}</span>
           <span><b>Trạng thái:</b> {item.Status}</span>
-          <span><b>Ngày bắt đầu:</b> {item.StartDate || '—'}</span>
-          <span><b>Ngày kết thúc:</b> {item.EndDate || '—'}</span>
-          <span><b>Tổng tiền:</b> {item.TotalAmount?.toLocaleString()} VNĐ</span>
           <span className="fee-actions">
             <FaEdit
               className="icon-action edit"

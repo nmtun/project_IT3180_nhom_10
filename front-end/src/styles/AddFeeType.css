@@ -1,0 +1,111 @@
+/* Overlay nền mờ */
+.modal-overlay-feetype {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 4000 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Form modal */
+.modal-form-new {
+  background: #fff;
+  border-radius: 10px;
+  padding: 32px 28px 24px 28px;
+  min-width: 340px;
+  max-width: 95vw;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  position: relative;
+  animation: fadeIn 0.2s;
+   z-index: 4100 !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.modal-form-new h2 {
+  margin-top: 0;
+  margin-bottom: 18px;
+  font-size: 22px;
+  color: #1972bb;
+  text-align: center;
+  font-weight: 600;
+}
+
+.add-fee-type-form .form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-fee-type-form label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.add-fee-type-form input,
+.add-fee-type-form select,
+.add-fee-type-form textarea {
+  padding: 8px 10px;
+  border: 1px solid #bfc9d1;
+  border-radius: 5px;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s;
+  background: #fafbfc;
+}
+
+.add-fee-type-form input:focus,
+.add-fee-type-form select:focus,
+.add-fee-type-form textarea:focus {
+  border-color: #1972bb;
+  background: #fff;
+}
+
+.add-fee-type-form textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.form-actions button {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 5px;
+  background: #1972bb;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-actions button[type="button"] {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.form-actions button:hover {
+  background: #145a99;
+}
+
+.form-actions button[type="button"]:hover {
+  background: #bfc9d1;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #bfc9d1;
+  font-size: 14px;
+}

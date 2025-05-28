@@ -17,13 +17,9 @@ const FeeDetail = sequelize.define("FeeDetail", {
     type: DataTypes.INTEGER, 
     references: { model: Household, key: "HouseholdID" } 
   },
-  AmountDue: { 
+  Amount: { 
     type: DataTypes.DECIMAL(10, 2), 
-    allowNull: false 
-  },
-  AmountPaid: { 
-    type: DataTypes.DECIMAL(10, 2), 
-    defaultValue: 0 
+    allowNull: true
   },
   PaymentDate: { 
     type: DataTypes.DATEONLY 
@@ -36,9 +32,6 @@ const FeeDetail = sequelize.define("FeeDetail", {
     type: DataTypes.ENUM('Chưa đóng', 'Đã đóng'), 
     allowNull: false 
   },
-  Notes: { 
-    type: DataTypes.TEXT 
-  }
 }, {
   tableName: "FeeDetails",
   timestamps: false

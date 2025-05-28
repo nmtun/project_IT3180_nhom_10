@@ -16,3 +16,108 @@ back-end/
 |---README.md           (Tài liệu hướng dẫn)
 |---CHANGELOG           (Liệt kê tính năng mới, phiên bản sửa đổi,...)
 |---LICENSE             (...)
+
+
+use ktpm_20241;
+select * from Users;
+select * from FeeTypes;
+select * from FeeDetails;
+select * from FeeCollections;
+select * from Vehicles;
+
+insert into FeeDetails (CollectionID, HouseholdID, PaymentMethod, PaymentStatus, Amount)
+values (26, 10, 'Tiền mặt', 'Chưa đóng', 0);
+
+ALTER TABLE FeeDetails DROP COLUMN AmountDue;
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_delete_feecollection
+BEFORE DELETE ON FeeCollections
+FOR EACH ROW
+BEGIN
+  DELETE FROM FeeDetails WHERE CollectionID = OLD.CollectionID;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_after_insert_vehicle
+AFTER INSERT ON Vehicles
+FOR EACH ROW
+BEGIN
+  UPDATE Households
+  SET HasVehicle = TRUE
+  WHERE HouseholdID = NEW.HouseholdID;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_after_delete_vehicle
+AFTER DELETE ON Vehicles
+FOR EACH ROW
+BEGIN
+  DECLARE vehicle_count INT;
+
+  SELECT COUNT(*) INTO vehicle_count
+  FROM Vehicles
+  WHERE HouseholdID = OLD.HouseholdID;
+
+  IF vehicle_count = 0 THEN
+    UPDATE Households
+    SET HasVehicle = FALSE
+    WHERE HouseholdID = OLD.HouseholdID;
+  END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_after_insert_fee_details
+AFTER INSERT ON FeeDetails
+FOR EACH ROW
+BEGIN
+  DECLARE fee_type_name VARCHAR(100);
+  DECLARE oto_count INT DEFAULT 0;
+  DECLARE xemay_count INT DEFAULT 0;
+  DECLARE total_fee DECIMAL(15,2) DEFAULT 0;
+
+  -- Lấy FeeTypeName từ CollectionID
+  SELECT ft.FeeTypeName
+  INTO fee_type_name
+  FROM FeeCollections fc
+  JOIN FeeTypes ft ON ft.FeeTypeID = fc.FeeTypeID
+  WHERE fc.CollectionID = NEW.CollectionID;
+
+  -- Nếu là phí gửi xe thì tính lại phí
+  IF fee_type_name = 'Phí gửi xe' THEN
+
+    -- Đếm số xe ô tô
+    SELECT COUNT(*) INTO oto_count
+    FROM Vehicles
+    WHERE HouseholdID = NEW.HouseholdID AND VehicleType = 'Ô tô';
+
+    -- Đếm số xe máy
+    SELECT COUNT(*) INTO xemay_count
+    FROM Vehicles
+    WHERE HouseholdID = NEW.HouseholdID AND VehicleType = 'Xe máy';
+
+    -- Tính tổng phí
+    SET total_fee = (oto_count * 1000000) + (xemay_count * 55000);
+
+    -- Cập nhật lại AmountDue trong FeeDetails
+    UPDATE FeeDetails
+    SET AmountDue = total_fee
+    WHERE FeeDetailID = NEW.FeeDetailID;
+
+  END IF;
+END$$
+
+DELIMITER ;
+
+

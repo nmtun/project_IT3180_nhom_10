@@ -10,5 +10,6 @@ router.post('/create-fee-detail', feeDetailController.createFeeDetail);
 router.put('/update-fee-detail/:id', feeDetailController.updateFeeDetail);
 router.delete('/delete-fee-detail/:id', feeDetailController.deleteFeeDetail);
 router.get('/stats/:collectionId', feeDetailController.getFeeDetailStats);
+router.put('/update-vehicle-fee/:id', feeDetailController.updateVehicleFeedetail);
 
 export default router;

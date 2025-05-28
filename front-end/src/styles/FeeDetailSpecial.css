@@ -1,0 +1,62 @@
+.side-modal-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  padding: 32px 24px;
+  z-index: 1001;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.add-record-relative {
+  position: relative;
+}
+
+.side-modal-form select,
+.side-modal-form input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.form-save-btn, .form-cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.form-save-btn {
+  background: #1976d2;
+  color: #fff;
+}
+
+.form-cancel-btn {
+  background: #eee;
+  color: #333;
+}
+
+.payment-status.paid {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.payment-status.unpaid {
+  color: #721c24;
+  background-color: #f8d7da;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.fee-detail-table input[type="checkbox"]:checked:disabled {
+  accent-color: #1976d2; 
+}

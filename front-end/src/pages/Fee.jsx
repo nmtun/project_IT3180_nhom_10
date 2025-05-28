@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import '../styles/Fee.css';
 import Header from '../components/Header';
@@ -11,7 +12,7 @@ import FeeCollectionList from '../components/FeeCollectionList';
 import FeeDetailTable from '../components/FeeDetailTable';
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
-
+import FeeDetailSpecial from '../components/FeeDetailSpecial';
 
 const safeArray = (input) => Array.isArray(input) ? input : [];
 
@@ -36,12 +37,14 @@ const Fee = () => {
   const [stats, setStats] = React.useState(null);
   const [toast, setToast] = React.useState({ message: '', type: 'info' });
   const [deletingFeeCollection, setDeletingFeeCollection] = React.useState(null);  
+  const [selectedFeeType, setSelectedFeeType] = React.useState(null);
+  
 
   React.useEffect(() => {
     fetchFeeCollection();
   }, []);
 
-  const fetchFeeDetailsByCollectionId = async (collectionId) => {
+ const fetchFeeDetailsByCollectionId = async (collectionId) => {
     console.log("Fetching details for collection ID:", collectionId);
     try {
       const res = await axiosIntance.get(`/fee-detail/get-all-fee-detail?feeCollectionId=${collectionId}`);
@@ -54,26 +57,31 @@ const Fee = () => {
       setFeeDetails([]);
     }
   };
+    const handleStatusChange = async (detailId, isPaid, paymentMethod) => {
+      try {
+        // Lấy bản ghi hiện tại
+        const detail = feeDetails.find(d => d.FeeDetailID === detailId);
+        // Lấy unit price nếu là phí chung
+        const isChung = selectedFeeCollection?.FeeType?.Scope === "Chung";
+        const amount = isChung
+          ? selectedFeeCollection?.FeeType?.UnitPrice
+          : detail?.Amount;
 
-  const handleStatusChange = async (detailId, isPaid) => {
-    try {
-       // payload theo API backend của bạn
-      await axiosIntance.put(
-        `/fee-detail/update-fee-detail/${detailId}`,
-        {
-          AmountPaid:    isPaid
-                          ? feeDetails.find(d => d.FeeDetailID === detailId).AmountDue
-                          : 0,
-          PaymentStatus: isPaid ? 'Đã đóng' : 'Chưa đóng',
-          PaymentDate:   isPaid ? new Date().toISOString().split('T')[0] : null
-        }
-      );
-      // reload lại details
-      fetchFeeDetailsByCollectionId(selectedFeeCollection.CollectionID);
-    } catch (err) {
-      console.error('Cập nhật thanh toán lỗi:', err);
-    }
-  };
+        await axiosIntance.put(
+          `/fee-detail/update-fee-detail/${detailId}`,
+          {
+            Amount: amount, // <-- cập nhật amount đúng cho phí chung
+            AmountPaid: isPaid ? amount : 0,
+            PaymentStatus: isPaid ? 'Đã đóng' : 'Chưa đóng',
+            PaymentDate: isPaid ? new Date().toISOString().split('T')[0] : null,
+            PaymentMethod: paymentMethod || detail?.PaymentMethod || "Tiền mặt"
+          }
+        );
+        fetchFeeDetailsByCollectionId(selectedFeeCollection.CollectionID);
+      } catch (err) {
+        console.error('Cập nhật thanh toán lỗi:', err);
+      }
+    };
 
   const handleFetchStats = async () => {
     try {
@@ -103,16 +111,64 @@ const Fee = () => {
   }
   };
 
+  const handleVehicleFeeDetailUpdate = async (collectionId) => {
+    try {
+      await axiosIntance.put(`/fee-detail/update-vehicle-fee/${collectionId}`);
+      setToast({ message: "Cập nhật phí gửi xe thành công!", type: "success" });
+    } catch (error) {
+      console.error("Lỗi khi cập nhật phí gửi xe:", error);
+      setToast({ message: "Cập nhật phí gửi xe thất bại!", type: "error" });
+    }
+  };
+
   const handleAddFeeCollection = async (data) => {
     try {
-      const response = await axiosIntance.post('/fee-collection/create-collection', data);
+      const response = await axiosIntance.post(`/fee-collection/create-collection`, data);
+      const collectionId = response.data.feeCollection?.CollectionID;
+      const sc = response.data.feeCollection?.FeeType?.Scope;
+      const ct = response.data.feeCollection?.FeeType?.Category;
+      const ftn = response.data.feeCollection?.FeeType?.FeeTypeName;
+
+      // Lấy danh sách hộ gia đình và amount mặc định
+      const householdRes = await axiosIntance.get(`/households/get-all-households`);
+      const households = householdRes.data.households || [];
+      const defaultAmount = response.data.feeCollection?.FeeType?.UnitPrice;
+
+      // Chỉ tạo FeeDetail tự động nếu scope là "Chung"
+      if (sc === 'Chung') {
+        const createFeeDetailPromises = households.map(hh =>
+          axiosIntance.post(`/fee-detail/create-fee-detail`, {
+            CollectionID: collectionId,
+            HouseholdID: hh.HouseholdID,
+            Amount: defaultAmount,
+            PaymentStatus: "Chưa đóng",
+            PaymentDate: null,
+            PaymentMethod: "Tiền mặt",
+          })
+        );
+        await Promise.all(createFeeDetailPromises);
+      } else if (ftn === 'Phí gửi xe') {
+          const createFeeDetailPromises = households.map(hh =>
+          axiosIntance.post(`/fee-detail/create-fee-detail`, {
+            CollectionID: collectionId,
+            HouseholdID: hh.HouseholdID,
+            Amount: 0, 
+            PaymentStatus: "Chưa đóng",
+            PaymentDate: null,
+            PaymentMethod: "Tiền mặt",
+          })
+        );
+        await Promise.all(createFeeDetailPromises);
+        handleVehicleFeeDetailUpdate(collectionId);
+      }  
+      //console.log("FeeType Scope:", response.data.feeCollection?.FeeType?.Scope);
+      
       await fetchFeeCollection();
       setShowAddFeeCollection(false);
       setToast({ message: "Thêm đợt thu phí thành công!", type: "success" });
     } catch (error) {
-      // alert('Thêm đợt thu phí thất bại!');
+      console.error("Error details:", error.response?.data || error);
       setToast({ message: "Thêm đợt thu phí thất bại!", type: "error" });
-
     }
   };
 
@@ -148,8 +204,6 @@ const Fee = () => {
   };
 
   const handleSelectedFeeCollection = (collection) => {
-    console.log("Selected collection:", collection);
-    console.log("Collection ID:", collection.CollectionID);
     setSelectedFeeCollection(collection);
     setStats(null);
     fetchFeeDetailsByCollectionId(collection.CollectionID);
@@ -168,6 +222,9 @@ const Fee = () => {
           <Sidebar open={open} setOpen={setOpen} />
           <div className={`fee-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
             <div className="fee-search">
+              <div className="fee-title">
+                <h1>Danh sách các đợt thu phí:</h1>
+              </div> 
               <SearchBar
                 placeholder="Tìm kiếm đợt thu phí"
                 value={searchInput}
@@ -194,10 +251,22 @@ const Fee = () => {
 
                 {/* 2️⃣ Modal chính FeeDetail */}
                 <div className="modal-content fee-detail-modal">
-                  <h3>Chi tiết phí: {selectedFeeCollection.CollectionName}</h3>
+                  <div className="fee-detail-header">
+                    <h3 className="fee-detail-title">
+                      Thông tin đợt thu {selectedFeeCollection.CollectionName}
+                    </h3>
+                    <div className="fee-detail-meta">
+                      <p><strong>Loại phí:</strong> {selectedFeeCollection?.FeeType?.FeeTypeName}</p>
+                      <p><strong>Phạm vi:</strong> {selectedFeeCollection?.FeeType?.Scope}</p>
+                      <p><strong>Hình thức:</strong> {selectedFeeCollection?.FeeType?.Category}</p>
+                      <p><strong>Thời gian bắt đầu:</strong> {selectedFeeCollection?.StartDate ? new Date(selectedFeeCollection.StartDate).toLocaleDateString() : '—'}</p>
+                      <p><strong>Thời gian kết thúc:</strong> {selectedFeeCollection?.EndDate ? new Date(selectedFeeCollection.EndDate).toLocaleDateString() : '—'}</p>
+                      <p><strong>Trạng thái:</strong> {selectedFeeCollection?.Status}</p>
+                    </div>
+                  </div>
                   <button className="btn-stats" onClick={handleFetchStats}>
                     Xem Thống kê
-                  </button>
+                  </button> 
 
                   {stats && (
                     <div className="modal-content stats-modal">
@@ -205,14 +274,30 @@ const Fee = () => {
                       <p><strong>Tổng hộ:</strong> {stats.totalHouseholds}</p>
                       <p><strong>Đã đóng:</strong> {stats.paidCount}</p>
                       <p><strong>Chưa đóng:</strong> {stats.unpaidCount}</p>
-                      <p><strong>Tổng thu:</strong> {stats.totalCollected.toLocaleString()} VNĐ</p>
-                      <p><strong>Còn thiếu:</strong> {stats.totalRemaining.toLocaleString()} VNĐ</p>
+                      <p><strong>Đã thu:</strong> {stats.totalCollected.toLocaleString()} VNĐ</p>
+                      <p><strong>Chưa thu:</strong> {stats.totalRemaining.toLocaleString()} VNĐ</p>
                       <button onClick={() => setStats(null)}>Đóng</button>
                     </div>
                   )}
+                  {/* <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} /> */}
 
-                  <FeeDetailTable details={feeDetails} onStatusChange={handleStatusChange} />
-                  <button className="btn-close" onClick={() => setSelectedFeeCollection(null)}>×</button>
+                  {(((selectedFeeCollection?.FeeType?.Category === 'Bắt buộc' &&
+                  selectedFeeCollection?.FeeType?.Scope === 'Riêng') ||
+                  (selectedFeeCollection?.FeeType?.Category === 'Tự nguyện' &&
+                  selectedFeeCollection?.FeeType?.Scope === 'Riêng')) && 
+                  selectedFeeCollection?.FeeType?.FeeTypeName !== 'Phí gửi xe' ) ? (
+                    <FeeDetailSpecial
+                      CollectionID = {selectedFeeCollection.CollectionID}
+                      FeeTypeName={selectedFeeCollection?.FeeType?.FeeTypeName}
+                    />
+                  ) : (
+                    <FeeDetailTable 
+                      details={feeDetails} 
+                      onStatusChange={handleStatusChange} 
+                      feeType={selectedFeeCollection?.FeeType}
+                    />
+                  )}
+                  <button className="btn-close" onClick={() => setSelectedFeeCollection(null)}>x</button>
                 </div>
               </>
             )}
@@ -237,7 +322,7 @@ const Fee = () => {
               title="Xác nhận xóa"
               message={
                 deletingFeeCollection
-                  ? <>Bạn có chắc chắn muốn xóa đợt thu phí <strong>{deletingFeeCollection.CollectionName}</strong>?</>
+                  ? <> Dữ liệu thu phí của các hộ gia đình của đợu thu phí này cũng sẽ bị xóa, bạn có chắc chắn muốn xóa đợt thu phí<strong>{deletingFeeCollection.CollectionName}</strong>?</>
                   : ""
               }
               onConfirm={async () => {
@@ -255,4 +340,4 @@ const Fee = () => {
   );
 };
 
-export default Fee; 
+export default Fee;

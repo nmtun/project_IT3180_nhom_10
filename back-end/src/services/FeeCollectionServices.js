@@ -6,7 +6,7 @@ export const getAllFeeCollections = async () => {
   return await FeeCollection.findAll({
     include: {
       model: FeeType,
-      attributes: ['FeeTypeName', 'Category'], // Lấy những gì bạn cần từ FeeType
+      attributes: ['FeeTypeName', 'Category', 'Scope', 'UnitPrice'], // Lấy những gì bạn cần từ FeeType
     },
     order: [['StartDate', 'DESC']], // Sắp xếp theo ngày bắt đầu mới nhất
   });
@@ -19,7 +19,14 @@ export const getFeeCollectionById = async (id) => {
 
 // Thêm đợt thu phí mới
 export const createFeeCollection = async (data) => {
-  return await FeeCollection.create(data);
+  const created = await FeeCollection.create(data);
+  // Lấy lại bản ghi kèm FeeType
+  return await FeeCollection.findByPk(created.CollectionID, {
+    include: {
+      model: FeeType,
+      attributes: ['FeeTypeName', 'Category', 'Scope', 'UnitPrice'],
+    }
+  });
 };
 
 // Cập nhật đợt thu phí

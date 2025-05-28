@@ -1,4 +1,5 @@
 import * as feeDetailServices from '../services/FeeDetailServices.js';
+import sequelize from '../config/dbsetup.js';
 
 // Lấy tất cả chi tiết phí
 export const getAllFeeDetails = async (req, res) => {
@@ -40,16 +41,13 @@ export const getFeeDetailById = async (req, res) => {
 export const createFeeDetail = async (req, res) => {
   try {
     //console.log("CREATE FeeDetail req.body:", req.body);
-    const { CollectionID, HouseholdID, AmountDue, AmountPaid, PaymentDate, PaymentMethod, PaymentStatus, Notes } = req.body;
-    if (!CollectionID || !HouseholdID || !AmountDue || !PaymentMethod || !PaymentStatus) {
+    const { CollectionID, HouseholdID, Amount, PaymentDate, PaymentMethod, PaymentStatus } = req.body;
+    if (!CollectionID || !HouseholdID ) {
       return res.status(400).json({ error: true, message: 'Missing required fields' });
     }
-    // Kiểm tra logic
-    if (AmountPaid && parseFloat(AmountPaid) > parseFloat(AmountDue)) {
-      return res.status(400).json({ error: true, message: 'AmountPaid cannot be greater than AmountDue' });
-    }
+    
     const newFeeDetail = await feeDetailServices.createFeeDetail({
-      CollectionID, HouseholdID, AmountDue, AmountPaid, PaymentDate, PaymentMethod, PaymentStatus, Notes
+      CollectionID, HouseholdID, Amount, PaymentDate, PaymentMethod, PaymentStatus
     });
     res.status(201).json({ error: false, feeDetail: newFeeDetail });
   } catch (error) {
@@ -88,5 +86,25 @@ export const getFeeDetailStats = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: true, message: 'Error getting stats' });
+  }
+};
+
+// Cập nhật Amount cho các hóa đơn phí gửi xe dựa trên số lượng xe của từng hộ
+export const updateVehicleFeedetail = async (req, res) => {
+  try {
+    const cid = req.params.id;
+    // SQL thuần: cập nhật Amount = số xe * phí/xe cho các FeeDetail có CollectionID > 0
+    await sequelize.query(`
+      UPDATE FeeDetails
+      SET Amount = calculate_parking_fee_by_household( HouseholdID )
+      WHERE CollectionID = :cid;
+    `, {
+      replacements: { cid }
+    });
+
+    return res.status(200).json({ error: false, message: 'Cập nhật thành công phí gửi xe cho các hóa đơn.' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: true, message: 'Lỗi khi cập nhật phí gửi xe', error });
   }
 };

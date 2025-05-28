@@ -26,7 +26,7 @@ const FeeCollection = sequelize.define("FeeCollection", {
   },
   TotalAmount: { 
     type: DataTypes.DECIMAL(15, 2), 
-    allowNull: false 
+    allowNull: true
   },
   Status: { 
     type: DataTypes.ENUM('Đang thu', 'Hoàn thành', 'Kết thúc'), 

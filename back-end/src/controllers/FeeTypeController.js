@@ -24,11 +24,11 @@ export const getFeeTypeById = async (req, res) => {
 // Thêm loại phí mới
 export const createFeeType = async (req, res) => {
   try {
-    const { FeeTypeName, Description, Category, UnitPrice, Unit } = req.body;
-    if (!FeeTypeName || !Category) {
+    const { FeeTypeName, Description, Category, Scope, UnitPrice, Unit } = req.body;
+    if (!FeeTypeName || !Category || !Scope) {
       return res.status(400).json({ error: true, message: 'Missing required fields' });
     }
-    const newFeeType = await feeTypeServices.createFeeType({ FeeTypeName, Description, Category, UnitPrice, Unit });
+    const newFeeType = await feeTypeServices.createFeeType({ FeeTypeName, Description, Category, Scope, UnitPrice, Unit });
     res.status(201).json({ error: false, feeType: newFeeType });
   } catch (error) {
     res.status(500).json({ error: true, message: 'Error creating fee type', error });
@@ -56,3 +56,4 @@ export const deleteFeeType = async (req, res) => {
     res.status(500).json({ error: true, message: 'Error deleting fee type', error });
   }
 };
+

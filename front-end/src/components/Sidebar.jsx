@@ -5,10 +5,10 @@ import {
   FaUserFriends,
   FaMoneyBill,
   FaCar,
-  FaCog,
   FaBars,
   FaUser,
-  FaAddressBook
+  FaAddressBook,
+  FaMoneyCheck,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Sidebar.css';
@@ -30,11 +30,17 @@ const Sidebar = ({ open, setOpen }) => {
   // Tạo bản sao menuItems, thêm mục Account nếu là Tổ trưởng
   const sidebarMenu = [...menuItems];
   if (userRole === 'Tổ trưởng') {
-    const settingsIndex = sidebarMenu.findIndex(item => item.label === 'Profile');
+    const settingsIndex = sidebarMenu.findIndex(item => item.label === 'Trang cá nhân');
     sidebarMenu.splice(settingsIndex, 0, {
       icon: <FaUser />,
       label: 'Quản lý người dùng',
       path: '/account',
+    });
+    // Thêm trang Quản lý loại phí
+    sidebarMenu.splice(settingsIndex, 0, {
+      icon: <FaMoneyCheck />,
+      label: 'Quản lý các loại phí',
+      path: '/fee-type',
     });
   }
 
@@ -54,6 +60,7 @@ const Sidebar = ({ open, setOpen }) => {
             key={idx}
             onClick={() => navigate(item.path)}
             style={{ cursor: 'pointer' }}
+            title={!open ? item.label : undefined} 
           >
             {item.icon}
             {open && <span className="sidebar-label">{item.label}</span>}

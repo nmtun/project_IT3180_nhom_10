@@ -27,7 +27,7 @@ export const createFeeCollection = async (req, res) => {
   try {
     console.log(">>> req.body:", JSON.stringify(req.body));
     const { FeeTypeID, CollectionName, StartDate,EndDate, TotalAmount, Status, Notes } = req.body;
-    if (!CollectionName || !StartDate || !TotalAmount || !Status) {
+    if (!CollectionName || !StartDate || !Status) {
       return res.status(400).json({ error: true, message: 'Missing required fields' });
     }
     const newFeeCollection = await feeCollectionServices.createFeeCollection({ FeeTypeID, CollectionName, StartDate,EndDate, TotalAmount, Status, Notes });

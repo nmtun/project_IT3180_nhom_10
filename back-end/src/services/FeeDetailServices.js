@@ -1,5 +1,6 @@
 import FeeDetail from '../models/FeeDetail.js'; 
 import Household from '../models/Household.js';
+import Vehicle from '../models/Vehicle.js';
 
 // Lấy tất cả chi tiết phí
 export const getAllFeeDetails = async () => {
@@ -63,22 +64,25 @@ export const getFeeDetailStatsByCollectionId = async (feeCollectionId) => {
   const unpaidCount = totalHouseholds - paidCount;
 
   // tổng tiền thu được
-  const totalCollected = await FeeDetail.sum('AmountPaid', {
-    where: { CollectionID: feeCollectionId }
+  const totalCollected = await FeeDetail.sum('Amount', {
+    where: {
+      CollectionID: feeCollectionId,
+      PaymentStatus: 'Đã đóng'
+    }
   });
 
-  // tổng tiền phải thu
-  const totalDue = await FeeDetail.sum('AmountDue', {
-    where: { CollectionID: feeCollectionId }
+  const totalRemaining = await FeeDetail.sum('Amount',{
+    where: {
+      CollectionID: feeCollectionId,
+      PaymentStatus: 'Chưa đóng'
+    }
   });
-
-  const totalRemaining = (totalDue || 0) - (totalCollected || 0);
 
   return {
     totalHouseholds,
     paidCount,
     unpaidCount,
     totalCollected: totalCollected || 0,
-    totalRemaining
+    totalRemaining: totalRemaining || 0
   };
 };
