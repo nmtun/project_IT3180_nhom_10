@@ -60,10 +60,16 @@ const Resident = () => {
 
   const filteredResidents = residents.filter(item => {
     const room = roomNumbers[String(item.HouseholdID)] || '';
+    const searchLower = search.toLowerCase();
+
+    // Tách full name thành các phần, kiểm tra từng phần
+    const nameParts = (item.FullName || '').toLowerCase().split(' ').filter(Boolean);
+    const nameMatch = nameParts.some(part => part.includes(searchLower));
+
     return (
-      item.FullName.toLowerCase().includes(search.toLowerCase()) ||
-      item.PhoneNumber.toLowerCase().includes(search.toLowerCase()) ||
-      room.toLowerCase().includes(search.toLowerCase())
+      nameMatch ||
+      (item.PhoneNumber || '').toLowerCase().includes(searchLower) ||
+      room.toLowerCase().includes(searchLower)
     );
   });
 
