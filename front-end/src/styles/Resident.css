@@ -115,6 +115,14 @@ html, body {
   background-color: #f5f5f5;
 }
 
+.resident-table tr.household-head-row td {
+  background-color: #f5f5f5;
+}
+
+.resident-table tr.household-head-row:hover td {
+  background-color: #eeeeee;
+}
+
 .resident-table tr.resident-row-leaved td {
   background-color: #f0f0f0;
   color: #666;
@@ -130,14 +138,6 @@ html, body {
 
 .resident-table tr.search-match:hover td {
   background-color: #e6f2ff;
-}
-
-.resident-table tr.household-head-row td {
-  background-color: #f5f5f5;
-}
-
-.resident-table tr.household-head-row:hover td {
-  background-color: #eeeeee;
 }
 
 .resident-table tr.household-head-row.search-match td {
