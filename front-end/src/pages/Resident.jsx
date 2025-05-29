@@ -7,7 +7,7 @@ import '../styles/Resident.css';
 import SearchBar from '../components/SearchBar';
 import AddButton from '../components/AddButton';
 import AddResident from '../components/AddResident';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import axiosIntance from '../untils/axiosIntance';
 import Toast from '../components/Toast';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
@@ -33,6 +33,7 @@ const Resident = () => {
   const [roomNumbers, setRoomNumbers] = React.useState({});
   const [toast, setToast] = React.useState({ message: '', type: 'info' });
   const [deletingResident, setDeletingResident] = React.useState(null);
+  const [expandedRooms, setExpandedRooms] = React.useState({});
 
   React.useEffect(() => {
     fetchResidents();
@@ -58,31 +59,92 @@ const Resident = () => {
     return residents.filter(r => r.HouseholdID === householdId).length;
   };
 
-  const filteredResidents = residents.filter(item => {
-    const room = roomNumbers[String(item.HouseholdID)] || '';
-    const searchLower = search.toLowerCase();
+  const toggleRoom = (room) => {
+    setExpandedRooms(prev => ({
+      ...prev,
+      [room]: !prev[room]
+    }));
+  };
 
-    // Tách full name thành các phần, kiểm tra từng phần
-    const nameParts = (item.FullName || '').toLowerCase().split(' ').filter(Boolean);
-    const nameMatch = nameParts.some(part => part.includes(searchLower));
+  const filteredResidents = React.useMemo(() => {
+    return residents.filter(item => {
+      const room = roomNumbers[String(item.HouseholdID)] || '';
+      const searchLower = search.toLowerCase();
 
-    return (
-      nameMatch ||
-      (item.PhoneNumber || '').toLowerCase().includes(searchLower) ||
-      room.toLowerCase().includes(searchLower)
-    );
-  });
+      // Tách full name thành các phần, kiểm tra từng phần
+      const nameParts = (item.FullName || '').toLowerCase().split(' ').filter(Boolean);
+      const nameMatch = nameParts.some(part => part.includes(searchLower));
 
-  const sortedResidents = [...filteredResidents].sort((a, b) => {
-    const roomA = roomNumbers[String(a.HouseholdID)] || '';
-    const roomB = roomNumbers[String(b.HouseholdID)] || '';
-    const numA = parseInt(roomA, 10);
-    const numB = parseInt(roomB, 10);
-    if (!isNaN(numA) && !isNaN(numB)) {
-      return numA - numB;
+      return (
+        nameMatch ||
+        (item.PhoneNumber || '').toLowerCase().includes(searchLower) ||
+        room.toLowerCase().includes(searchLower)
+      );
+    });
+  }, [residents, roomNumbers, search]);
+
+  const sortedResidents = React.useMemo(() => {
+    return [...filteredResidents].sort((a, b) => {
+      const roomA = roomNumbers[String(a.HouseholdID)] || '';
+      const roomB = roomNumbers[String(b.HouseholdID)] || '';
+      const numA = parseInt(roomA, 10);
+      const numB = parseInt(roomB, 10);
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      }
+      return roomA.localeCompare(roomB);
+    });
+  }, [filteredResidents, roomNumbers]);
+
+  // Nhóm nhân khẩu theo phòng và tìm chủ hộ
+  const residentsByRoom = React.useMemo(() => {
+    const result = {};
+    sortedResidents.forEach(resident => {
+      const room = roomNumbers[String(resident.HouseholdID)] || '---';
+      if (!result[room]) {
+        result[room] = {
+          householdHead: null,
+          members: []
+        };
+      }
+      
+      if (resident.Relationship === 'Chủ hộ') {
+        result[room].householdHead = resident;
+      }
+      result[room].members.push(resident);
+    });
+    return result;
+  }, [sortedResidents, roomNumbers]);
+
+  // Tự động mở rộng phòng khi tìm kiếm
+  React.useEffect(() => {
+    if (search) {
+      const searchLower = search.toLowerCase();
+      const newExpandedRooms = {};
+      
+      Object.entries(residentsByRoom).forEach(([room, data]) => {
+        // Kiểm tra nếu chủ hộ hoặc bất kỳ thành viên nào khớp với từ khóa tìm kiếm
+        const householdHead = data.householdHead;
+        const members = data.members;
+        
+        const isMatch = 
+          (householdHead?.FullName || '').toLowerCase().includes(searchLower) ||
+          (householdHead?.PhoneNumber || '').toLowerCase().includes(searchLower) ||
+          members.some(member => 
+            (member.FullName || '').toLowerCase().includes(searchLower) ||
+            (member.PhoneNumber || '').toLowerCase().includes(searchLower)
+          );
+        
+        if (isMatch) {
+          newExpandedRooms[room] = true;
+        }
+      });
+      
+      setExpandedRooms(newExpandedRooms);
+    } else {
+      setExpandedRooms({});
     }
-    return roomA.localeCompare(roomB);
-  });
+  }, [search, residentsByRoom]);
 
   const fetchResidents = async () => {
     const response = await axiosIntance.get('/residents/get-all-residents');
@@ -160,16 +222,6 @@ const Resident = () => {
     });
   };
 
-  // Nhóm nhân khẩu theo HouseholdID
-  const residentsByRoom = {};
-  sortedResidents.forEach(resident => {
-    const room = roomNumbers[String(resident.HouseholdID)] || '---';
-    if (!residentsByRoom[room]) {
-      residentsByRoom[room] = [];
-    }
-    residentsByRoom[room].push(resident);
-  });
-
   return (
     <>
       <Toast
@@ -197,71 +249,192 @@ const Resident = () => {
               />
             </div>
             <div className="resident-list">
-              {Object.entries(residentsByRoom).map(([room, residentsInRoom]) => {
-                // Sắp xếp: nhân khẩu chưa chuyển đi lên trước, đã chuyển đi xuống cuối
-                const sortedInRoom = [...residentsInRoom].sort((a, b) => {
-                  if (a.ResidencyStatus === "Đã chuyển đi" && b.ResidencyStatus !== "Đã chuyển đi") return 1;
-                  if (a.ResidencyStatus !== "Đã chuyển đi" && b.ResidencyStatus === "Đã chuyển đi") return -1;
-                  return 0;
-                });
-                return (
-                  <React.Fragment key={room}>
-                    <div className="resident-room-header">
-                      <b>Phòng: {room}</b>
-                    </div>
-                    {sortedInRoom.map((item, idx) => (
-                      <div
-                        className={
-                          "resident-row" +
-                          (item.ResidencyStatus === "Đã chuyển đi" ? " resident-row-leaved" : "")
-                        }
-                        key={item.ResidentID || idx}
-                        onClick={() => setSelectedResident(item)}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <span><b>Họ tên: </b>{item.FullName}</span>
-                        <span><b>Giới tính: </b>{item.Sex}</span>
-                        <span><b>Quan hệ với chủ hộ: </b>{item.Relationship}</span>
-                        <span><b>SĐT: </b>{item.PhoneNumber}</span>
-                        <span className="resident-actions">
-                          <FaEdit
-                            className="icon-action edit"
-                            title="Sửa"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setEditResident(item);
+              <table className="resident-table">
+                <thead>
+                  <tr>
+                    <th>Số phòng</th>
+                    <th>Họ tên</th>
+                    <th>Giới tính</th>
+                    <th>Quan hệ với chủ hộ</th>
+                    <th>Số điện thoại</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(residentsByRoom).map(([room, data]) => {
+                    const householdHead = data.householdHead;
+                    const isExpanded = expandedRooms[room];
+                    const searchLower = search.toLowerCase();
+                    
+                    // Kiểm tra xem phòng này có chứa kết quả tìm kiếm không
+                    const hasSearchMatch = search && (
+                      (householdHead?.FullName || '').toLowerCase().includes(searchLower) ||
+                      (householdHead?.PhoneNumber || '').toLowerCase().includes(searchLower) ||
+                      data.members.some(member => 
+                        (member.FullName || '').toLowerCase().includes(searchLower) ||
+                        (member.PhoneNumber || '').toLowerCase().includes(searchLower)
+                      )
+                    );
+                    
+                    // Nếu đang tìm kiếm và phòng này không có kết quả, bỏ qua
+                    if (search && !hasSearchMatch) {
+                      return null;
+                    }
+
+                    // Nếu đang tìm kiếm, hiển thị tất cả thành viên
+                    const shouldShowMembers = search || isExpanded;
+                    
+                    // Kiểm tra xem có cần hiển thị dòng chủ hộ không
+                    const shouldShowHouseholdHead = !search || (householdHead && (
+                      householdHead.FullName.toLowerCase().includes(searchLower) ||
+                      householdHead.PhoneNumber?.toLowerCase().includes(searchLower)
+                    ));
+                    
+                    return (
+                      <React.Fragment key={room}>
+                        {/* Hiển thị chủ hộ */}
+                        {shouldShowHouseholdHead && (
+                          <tr
+                            className={`household-head-row ${hasSearchMatch ? 'search-match' : ''}`}
+                            onClick={() => {
+                              if (householdHead) {
+                                setSelectedResident(householdHead);
+                              } else if (!search && data.members.length > 1) {
+                                toggleRoom(room);
+                              }
                             }}
-                          />
-                          <FaTrash
-                            className="icon-action delete"
-                            title="Xóa"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setDeletingResident(item);
-                            }}
-                          />
-                        </span>
-                      </div>
-                    ))}
-                  </React.Fragment>
-                );
-              })}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <td>
+                              {!search && data.members.length > 1 ? (
+                                <div className="room-cell" onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleRoom(room);
+                                }}>
+                                  {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
+                                  <span>{room}</span>
+                                </div>
+                              ) : (
+                                <div className="room-cell">
+                                  <span style={{ visibility: 'hidden' }}><FaChevronDown /></span>
+                                  <span>{room}</span>
+                                </div>
+                              )}
+                            </td>
+                            <td>{householdHead?.FullName || 'Chưa có chủ hộ'}</td>
+                            <td>{householdHead?.Sex || '-'}</td>
+                            <td>Chủ hộ</td>
+                            <td>{householdHead?.PhoneNumber || '-'}</td>
+                            <td className="resident-actions">
+                              {householdHead && (
+                                <>
+                                  <FaEdit
+                                    className="icon-action edit"
+                                    title="Sửa"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setEditResident(householdHead);
+                                    }}
+                                  />
+                                  <FaTrash
+                                    className="icon-action delete"
+                                    title="Xóa"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDeletingResident(householdHead);
+                                    }}
+                                  />
+                                </>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+                        {/* Hiển thị các thành viên khác */}
+                        {shouldShowMembers && data.members
+                          .filter(member => member.ResidentID !== householdHead?.ResidentID)
+                          .map((member, idx) => {
+                            // Kiểm tra xem thành viên này có khớp với từ khóa tìm kiếm không
+                            const isMemberMatch = search && (
+                              (member.FullName || '').toLowerCase().includes(searchLower) ||
+                              (member.PhoneNumber || '').toLowerCase().includes(searchLower)
+                            );
+                            
+                            // Nếu đang tìm kiếm và thành viên này không khớp, bỏ qua
+                            if (search && !isMemberMatch) {
+                              return null;
+                            }
+                            
+                            return (
+                              <tr
+                                key={member.ResidentID || idx}
+                                className={`${member.ResidencyStatus === "Đã chuyển đi" ? "resident-row-leaved" : ""} ${isMemberMatch ? 'search-match' : ''}`}
+                                onClick={() => setSelectedResident(member)}
+                                style={{ cursor: 'pointer' }}
+                              >
+                                <td>
+                                  <div className="room-cell">
+                                    <span style={{ visibility: 'hidden' }}><FaChevronDown /></span>
+                                    <span>{room}</span>
+                                  </div>
+                                </td>
+                                <td>{member.FullName}</td>
+                                <td>{member.Sex}</td>
+                                <td>{member.Relationship}</td>
+                                <td>{member.PhoneNumber || '-'}</td>
+                                <td className="resident-actions">
+                                  <FaEdit
+                                    className="icon-action edit"
+                                    title="Sửa"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setEditResident(member);
+                                    }}
+                                  />
+                                  <FaTrash
+                                    className="icon-action delete"
+                                    title="Xóa"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDeletingResident(member);
+                                    }}
+                                  />
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
 
             {selectedResident && (
-              <div className="resident-detail-overlay">
-                <div className="resident-detail-modal">
+              <div className="resident-detail-overlay" onClick={() => setSelectedResident(null)}>
+                <div className="resident-detail-modal" onClick={e => e.stopPropagation()}>
                   <h3>Thông tin chi tiết nhân khẩu</h3>
-                  <p><strong>Họ tên:</strong> {selectedResident.FullName}</p>
-                  <p><strong>Giới tính:</strong> {selectedResident.Sex}</p>
-                  <p><strong>Ngày sinh:</strong> {selectedResident.DateOfBirth}</p>
-                  <p><strong>Quan hệ với chủ hộ:</strong> {selectedResident.Relationship}</p>
-                  <p><strong>SĐT:</strong> {selectedResident.PhoneNumber}</p>
-                  <p><strong>Trình độ học vấn:</strong> {selectedResident.EducationLevel}</p>
-                  <p><strong>Nghề nghiệp:</strong> {selectedResident.Occupation}</p>
-                  <p><strong>Phòng:</strong> {roomNumbers[String(selectedResident.HouseholdID)] || '---'}</p>
-                  <p><strong>Tình trạng cư trú:</strong> {selectedResident.ResidencyStatus}</p>
-                  <p><strong>Ngày đăng ký:</strong> {selectedResident.RegistrationDate}</p>
+                  <div className="resident-detail-content">
+                    <div className="detail-row">
+                      <p><strong>Họ tên:</strong> {selectedResident.FullName}</p>
+                      <p><strong>Giới tính:</strong> {selectedResident.Sex}</p>
+                    </div>
+                    <div className="detail-row">
+                      <p><strong>Ngày sinh:</strong> {selectedResident.DateOfBirth}</p>
+                      <p><strong>Quan hệ với chủ hộ:</strong> {selectedResident.Relationship}</p>
+                    </div>
+                    <div className="detail-row">
+                      <p><strong>Số điện thoại:</strong> {selectedResident.PhoneNumber || '-'}</p>
+                      <p><strong>Trình độ học vấn:</strong> {selectedResident.EducationLevel || '-'}</p>
+                    </div>
+                    <div className="detail-row">
+                      <p><strong>Nghề nghiệp:</strong> {selectedResident.Occupation || '-'}</p>
+                      <p><strong>Phòng:</strong> {roomNumbers[String(selectedResident.HouseholdID)] || '---'}</p>
+                    </div>
+                    <div className="detail-row">
+                      <p><strong>Tình trạng cư trú:</strong> {selectedResident.ResidencyStatus}</p>
+                      <p><strong>Ngày đăng ký:</strong> {selectedResident.RegistrationDate}</p>
+                    </div>
+                  </div>
                   <button className="close-detail-btn" onClick={() => setSelectedResident(null)}>Đóng</button>
                 </div>
               </div>
