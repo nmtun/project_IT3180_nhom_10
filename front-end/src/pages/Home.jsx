@@ -140,18 +140,16 @@ const Home = () => {
     );
 
     // Tính thống kê thanh toán
-    const totalFeeDetails = currentMonthFeeDetails.length;
+    const totalFeeDetails = currentMonthFeeDetails.filter(detail =>
+      Number(detail.Amount) !== 0
+    ).length;
     const paidFeeDetails = currentMonthFeeDetails.filter(detail => 
       detail.PaymentStatus === 'Đã đóng'
     ).length;
     
-    const paymentPercentage = totalFeeDetails > 0 ? (paidFeeDetails / totalFeeDetails) * 100 : 0;
+    console.log('Tổng số FeeDetail trong tháng hiện tại:', totalFeeDetails);
 
-    console.log('Thống kê thanh toán:', {
-      totalFeeDetails: totalFeeDetails,
-      paidFeeDetails: paidFeeDetails,
-      paymentPercentage: paymentPercentage.toFixed(2) + '%'
-    });
+    const paymentPercentage = totalFeeDetails > 0 ? (paidFeeDetails / totalFeeDetails) * 100 : 0;
 
     // Đếm số loại phí đã thu
     const uniqueFeeTypes = new Set(currentMonthCollections.map(c => c.FeeType)).size;

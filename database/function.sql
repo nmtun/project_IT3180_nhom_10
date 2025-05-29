@@ -10,8 +10,8 @@ BEGIN
 
   SELECT SUM(
     CASE VehicleType
-      WHEN 'Xe máy' THEN 30000
-      WHEN 'Ô tô' THEN 100000
+      WHEN 'Xe máy' THEN 70000
+      WHEN 'Ô tô' THEN 1200000
       ELSE 0
     END
   ) INTO fee
