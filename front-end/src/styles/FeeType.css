@@ -1,3 +1,17 @@
+:root {
+  --sidebar-open-width: 220px;
+  --sidebar-closed-width: 60px;
+  --primary-color: #1a73e8;
+  --primary-hover: #174ea6;
+  --text-color: #333;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+  --bg-light: #fafafa;
+  --bg-hover: #f5f5f5;
+  --success-color: #27ae60;
+  --error-color: #e74c3c;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -27,37 +41,38 @@ html, body {
   padding: 32px 24px 24px 24px;
   transition: margin-left 0.3s ease;
   overflow-x: hidden;
-  margin-top: 60px;
+  margin-top: 65px;
   margin-bottom: -120px;
 }
 
 .fee-type-content h1 {
-  font-size: 2rem;
-  color: #102eb4;
+  font-size: 2.5rem;
+  color: var(--primary-color);
   font-weight: 600;
   letter-spacing: 1px;
 }
 
 /* Khi sidebar mở */
 .fee-type-content.sidebar-open {
-  margin-left: 220px;
+  margin-left: var(--sidebar-open-width);
 }
 
 /* Khi sidebar đóng */
 .fee-type-content.sidebar-closed {
-  margin-left: 60px;
+  margin-left: var(--sidebar-closed-width);
 }
 
 .fee-type-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 }
 
 .fee-type-title h1 {
-  color: #000;
-  font-size: 30px;
-  font-weight: 600;
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -72,32 +87,41 @@ html, body {
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 8px;
+  padding-right: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .fee-type-list::-webkit-scrollbar {
   width: 8px;
-  background: #d3d8e0;
+  background: var(--bg-light);
   border-radius: 8px;
 }
 
 .fee-type-list::-webkit-scrollbar-thumb {
-  background: #1972bb;
+  background: var(--primary-color);
   border-radius: 8px;
   min-height: 40px;
 }
 
 .fee-type-list::-webkit-scrollbar-thumb:hover {
-  background: #125299;
+  background: var(--primary-hover);
 }
 
 .fee-type-row {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
-  color: #000;
-  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 15px;
+  color: var(--text-color);
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.fee-type-row:hover {
+  background: var(--bg-hover);
 }
 
 .fee-type-row > span {
@@ -111,7 +135,9 @@ html, body {
 }
 
 .fee-type-row > span b {
-  margin-right: 4px;
+  margin-right: 8px;
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
 .fee-type-actions {
@@ -126,30 +152,45 @@ html, body {
 .icon-action {
   cursor: pointer;
   font-size: 1.2rem;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
 }
 
 .icon-action.edit {
-  color: #1972bb;
+  color: var(--primary-color);
 }
 
 .icon-action.edit:hover {
-  color: #125299;
+  background: var(--bg-hover);
+  color: var(--primary-hover);
+  transform: scale(1.1);
 }
 
 .icon-action.delete {
-  color: #e74c3c;
+  color: var(--error-color);
 }
 
 .icon-action.delete:hover {
-  color: #b71c1c;
+  background: var(--bg-hover);
+  color: #c0392b;
+  transform: scale(1.1);
 }
 
 /* Modal overlay và modal box dùng chung với Account nếu cần */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,82 +200,115 @@ html, body {
 .modal {
   background: #fff;
   border-radius: 12px;
-  min-width: 320px;
+  min-width: 400px;
   max-width: 95vw;
-  padding: 32px 28px 24px 28px;
-  box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   position: relative;
-  animation: modalShow 0.25s;
+  animation: modalShow 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
 @keyframes modalShow {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { 
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal h2 {
   margin-top: 0;
-  margin-bottom: 18px;
-  font-size: 1.5rem;
-  color: #102eb4;
+  margin-bottom: 24px;
+  font-size: 1.75rem;
+  color: var(--primary-color);
   font-weight: 600;
   text-align: center;
 }
 
 .modal p {
-  margin: 8px 0;
-  font-size: 1.08rem;
-  color: #222;
+  margin: 12px 0;
+  font-size: 15px;
+  color: var(--text-color);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  line-height: 1.5;
 }
 
 .modal p b {
   min-width: 120px;
   display: inline-block;
-  color: #1976d2;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
 .modal-cancel {
-  margin-top: 18px;
-  background: #1976d2;
+  margin-top: 24px;
+  background: var(--primary-color);
   color: #fff;
   border: none;
-  padding: 8px 22px;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
 .modal-cancel:hover {
-  background: #0d47a1;
+  background: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
-@media (max-width: 500px) {
-  .modal {
-    min-width: 90vw;
-    padding: 16px 8px;
-  }
-  .modal h2 {
-    font-size: 1.1rem;
-  }
-  .modal p {
-    font-size: 0.98rem;
-  }
+.modal-cancel:active {
+  transform: translateY(0);
+}
+
+.fee-type-category {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .fee-type-category.compulsory {
-  color: #e74c3c;
-  font-weight: 600;
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--error-color);
 }
 
 .fee-type-category.voluntary {
-  color: #27ae60;
-  font-weight: 600;
+  background: rgba(39, 174, 96, 0.1);
+  color: var(--success-color);
+}
+
+@media (max-width: 768px) {
+  .modal {
+    min-width: 90vw;
+    padding: 24px;
+  }
+  
+  .modal h2 {
+    font-size: 1.5rem;
+  }
+  
+  .modal p {
+    font-size: 14px;
+  }
+  
+  .fee-type-title {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .fee-type-title h1 {
+    font-size: 1.75rem;
+  }
 }

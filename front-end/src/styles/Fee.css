@@ -2,6 +2,13 @@
   --sidebar-open-width: 220px; /* Chiều rộng sidebar khi mở */
   --sidebar-closed-width: 60px; /* Chiều rộng sidebar khi đóng */
   --fee-modal-padding: 32px;
+  --primary-color: #1a73e8;
+  --primary-hover: #174ea6;
+  --text-color: #333;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+  --bg-light: #fafafa;
+  --bg-hover: #f5f5f5;
 }
 
 html, body {
@@ -38,120 +45,149 @@ html, body {
 }
 
 .fee-content h1 {
-  font-size: 2rem;
-  color: #102eb4;
+  font-size: 2.5rem;
+  color: var(--primary-color);
   font-weight: 600;
   letter-spacing: 1px;
 }
 
 /* Khi sidebar mở */
 .fee-content.sidebar-open {
-  margin-left: 220px; /* width của sidebar khi open */
+  margin-left: var(--sidebar-open-width);
 }
 
 /* Khi sidebar đóng */
 .fee-content.sidebar-closed {
-  margin-left: 60px; /* width của sidebar khi closed */
+  margin-left: var(--sidebar-closed-width);
 }
 
 .fee-search {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 
-.fee-title h1{
-  color: #000;
+.fee-title h1 {
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
 }
 
 .fee-search input {
-  padding: 8px;
+  padding: 12px 16px;
   border-radius: 8px;
   font-size: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-light);
+  transition: all 0.2s ease;
+}
+
+.fee-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
 }
 
 .fee-list {
   margin-top: 36px;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 8px;
+  padding-right: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
+
 .fee-list::-webkit-scrollbar {
   width: 8px;
-  background: #d3d8e0;
+  background: var(--bg-light);
   border-radius: 8px;
 }
 
 .fee-list::-webkit-scrollbar-thumb {
-  background: #1972bb;
+  background: var(--primary-color);
   border-radius: 8px;
   min-height: 40px;
 }
 
 .fee-list::-webkit-scrollbar-thumb:hover {
-  background: #125299;
+  background: var(--primary-hover);
 }
 
 .fee-row {
-  height: 48px;
+  height: 56px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
-  color: #000;
-  padding: 12px 0;
-  gap: 14px;
-  }
+  border-bottom: 1px solid var(--border-color);
+  font-size: 16px;
+  color: var(--text-color);
+  padding: 16px;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.fee-row:hover {
+  background: var(--bg-hover);
+}
 
 .fee-row > span {
   min-width: 150px;
   flex: 1 1 0;
-  /* Có thể căn chỉnh text cho đẹp */
   display: flex;
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   height: 100%;
+  font-size: 15px;
 }
 
 .fee-row > span b {
-  margin-right: 4px;
+  margin-right: 8px;
+  color: var(--primary-color);
+  font-weight: 500;
 }
+
 .fee-actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   justify-content: flex-end;
-  margin-left: auto; /* đẩy nó ra sát phải */
+  margin-left: auto;
 }
 
 /* Overlay fullscreen mờ */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   z-index: 1000;
 }
 
 /* Modal chung */
 .modal-content {
   position: fixed;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   background: #fff;
-  border-radius: 8px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
   z-index: 1001;
+  border: 1px solid var(--border-color);
 }
 
 /* FeeDetail modal riêng
@@ -172,53 +208,83 @@ html, body {
 /* Stats modal */
 .stats-modal {
   width: 400px;
-  margin-top: 16px;
+  margin-top: 24px;
+  background: var(--bg-light);
+  border-radius: 8px;
+  padding: 24px;
 }
 
 /* Nút đóng modal */
 .btn-close {
   position: absolute;
-  top: 8px; right: 12px;
+  top: 16px;
+  right: 16px;
   background: transparent;
   border: none;
   font-size: 24px;
   cursor: pointer;
+  color: var(--text-light);
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.btn-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-color);
 }
 
 /* Nút xem thống kê */
 .btn-stats {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
-  padding: 8px 16px;
-  margin-bottom: 16px;
-  border-radius: 4px;
+  padding: 12px 24px;
+  margin-bottom: 24px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
+
 .btn-stats:hover {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
 .fee-detail-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 .fee-detail-title {
-  margin-bottom: 8px;
-  font-size: 1.5rem;
+  margin-bottom: 16px;
+  font-size: 1.75rem;
   font-weight: 600;
+  color: var(--primary-color);
 }
 
 .fee-detail-meta {
   display: block;
   text-align: left;
-  font-size: 1rem;
-  color: #444;
-  margin: 0;      /* Xóa căn giữa */
-  max-width: none; /* Xóa giới hạn chiều rộng */
+  font-size: 15px;
+  color: var(--text-light);
+  margin: 0;
+  max-width: none;
 }
 
 .fee-detail-meta p {
-  margin: 4px 0;
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.fee-detail-meta p strong {
+  color: var(--text-color);
+  font-weight: 500;
+  margin-right: 8px;
 }
