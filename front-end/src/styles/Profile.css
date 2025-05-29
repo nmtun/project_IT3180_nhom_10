@@ -35,7 +35,20 @@ html, body {
   min-height: calc(100vh - 65px - 90px);
 }
 
-
+.settings-content {
+  flex-grow: 1;
+  background-color: #fff;
+  padding: 32px 24px 24px 24px;
+  transition: margin-left 0.3s ease;
+  overflow-x: hidden;
+  margin-top: 65px;
+  margin-bottom: -120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: calc(100vh - 65px - 90px);
+  overflow-y: auto;
+}
 
 .settings-content::-webkit-scrollbar {
   width: 8px;
