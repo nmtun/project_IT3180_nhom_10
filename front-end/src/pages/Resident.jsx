@@ -197,33 +197,39 @@ const Resident = () => {
               />
             </div>
             <div className="resident-list">
-              {Object.entries(residentsByRoom).map(([room, residentsInRoom]) => {
-                // Sắp xếp: nhân khẩu chưa chuyển đi lên trước, đã chuyển đi xuống cuối
-                const sortedInRoom = [...residentsInRoom].sort((a, b) => {
-                  if (a.ResidencyStatus === "Đã chuyển đi" && b.ResidencyStatus !== "Đã chuyển đi") return 1;
-                  if (a.ResidencyStatus !== "Đã chuyển đi" && b.ResidencyStatus === "Đã chuyển đi") return -1;
-                  return 0;
-                });
-                return (
-                  <React.Fragment key={room}>
-                    <div className="resident-room-header">
-                      <b>Phòng: {room}</b>
-                    </div>
-                    {sortedInRoom.map((item, idx) => (
-                      <div
+              <table className="resident-table">
+                <thead>
+                  <tr>
+                    <th>Số phòng</th>
+                    <th>Họ tên</th>
+                    <th>Giới tính</th>
+                    <th>Quan hệ với chủ hộ</th>
+                    <th>Số điện thoại</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(residentsByRoom).map(([room, residentsInRoom]) => {
+                    const sortedInRoom = [...residentsInRoom].sort((a, b) => {
+                      if (a.ResidencyStatus === "Đã chuyển đi" && b.ResidencyStatus !== "Đã chuyển đi") return 1;
+                      if (a.ResidencyStatus !== "Đã chuyển đi" && b.ResidencyStatus === "Đã chuyển đi") return -1;
+                      return 0;
+                    });
+                    return sortedInRoom.map((item, idx) => (
+                      <tr
                         className={
-                          "resident-row" +
-                          (item.ResidencyStatus === "Đã chuyển đi" ? " resident-row-leaved" : "")
+                          item.ResidencyStatus === "Đã chuyển đi" ? "resident-row-leaved" : ""
                         }
                         key={item.ResidentID || idx}
                         onClick={() => setSelectedResident(item)}
                         style={{ cursor: 'pointer' }}
                       >
-                        <span><b>Họ tên: </b>{item.FullName}</span>
-                        <span><b>Giới tính: </b>{item.Sex}</span>
-                        <span><b>Quan hệ với chủ hộ: </b>{item.Relationship}</span>
-                        <span><b>SĐT: </b>{item.PhoneNumber}</span>
-                        <span className="resident-actions">
+                        <td>{room}</td>
+                        <td>{item.FullName}</td>
+                        <td>{item.Sex}</td>
+                        <td>{item.Relationship}</td>
+                        <td>{item.PhoneNumber}</td>
+                        <td className="resident-actions">
                           <FaEdit
                             className="icon-action edit"
                             title="Sửa"
@@ -240,12 +246,12 @@ const Resident = () => {
                               setDeletingResident(item);
                             }}
                           />
-                        </span>
-                      </div>
-                    ))}
-                  </React.Fragment>
-                );
-              })}
+                        </td>
+                      </tr>
+                    ));
+                  })}
+                </tbody>
+              </table>
             </div>
 
             {selectedResident && (
