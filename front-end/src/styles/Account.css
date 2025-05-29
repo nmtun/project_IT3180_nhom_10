@@ -1,3 +1,17 @@
+:root {
+  --sidebar-open-width: 220px;
+  --sidebar-closed-width: 60px;
+  --primary-color: #1a73e8;
+  --primary-hover: #174ea6;
+  --text-color: #333;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+  --bg-light: #fafafa;
+  --bg-hover: #f5f5f5;
+  --success-color: #27ae60;
+  --error-color: #e74c3c;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -27,40 +41,45 @@ html, body {
   padding: 32px 24px 24px 24px;
   transition: margin-left 0.3s ease;
   overflow-x: hidden;
-  margin-top: 60px;    /* Đẩy xuống dưới Header */
+  margin-top: 65px;    /* Đẩy xuống dưới Header */
   margin-bottom: -120px; /* Để trên Navbar */
 }
 
 .account-content h1 {
-  font-size: 2rem;
-  color: #102eb4;
+  font-size: 2.5rem;
+  color: var(--primary-color);
   font-weight: 600;
   letter-spacing: 1px;
 }
 
 /* Khi sidebar mở */
 .account-content.sidebar-open {
-  margin-left: 220px; /* width của sidebar khi open */
+  margin-left: var(--sidebar-open-width);
 }
 
 /* Khi sidebar đóng */
 .account-content.sidebar-closed {
-  margin-left: 60px; /* width của sidebar khi closed */
+  margin-left: var(--sidebar-closed-width);
 }
 
 .account-title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 .account-title h1 {
-  color: #000;
-  justify-content: left;
-  font-size: 30px;
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
 }
 
 .account-search {
-  justify-content: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .account-list {
@@ -68,33 +87,41 @@ html, body {
   max-height: 70vh;      /* hoặc giá trị phù hợp, ví dụ 400px, 70vh,... */
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 8px; 
+  padding-right: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .account-list::-webkit-scrollbar {
   width: 8px;
-  background: #d3d8e0;
+  background: var(--bg-light);
   border-radius: 8px;
 }
 
 .account-list::-webkit-scrollbar-thumb {
-  background: #1972bb;
+  background: var(--primary-color);
   border-radius: 8px;
   min-height: 40px;
 }
 
 .account-list::-webkit-scrollbar-thumb:hover {
-  background: #125299;
+  background: var(--primary-hover);
 }
 
 .account-row {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
-  color: #000;
-  padding: 12px 0;
-  /* Sử dụng grid hoặc flex-grow cho các cột */
+  border-bottom: 1px solid var(--border-color);
+  font-size: 15px;
+  color: var(--text-color);
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.account-row:hover {
+  background: var(--bg-hover);
 }
 
 .account-row > span {
@@ -109,7 +136,9 @@ html, body {
 }
 
 .account-row > span b {
-  margin-right: 4px;
+  margin-right: 8px;
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
 .account-actions {
@@ -124,30 +153,45 @@ html, body {
 .icon-action {
   cursor: pointer;
   font-size: 1.2rem;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
 }
 
 .icon-action.edit {
-  color: #1972bb;
+  color: var(--primary-color);
 }
 
 .icon-action.edit:hover {
-  color: #125299;
+  background: var(--bg-hover);
+  color: var(--primary-hover);
+  transform: scale(1.1);
 }
 
 .icon-action.delete {
-  color: #e74c3c;
+  color: var(--error-color);
 }
 
 .icon-action.delete:hover {
-  color: #b71c1c;
+  background: var(--bg-hover);
+  color: #c0392b;
+  transform: scale(1.1);
 }
 
 /* Modal overlay */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,83 +202,115 @@ html, body {
 .modal {
   background: #fff;
   border-radius: 12px;
-  min-width: 320px;
+  min-width: 400px;
   max-width: 95vw;
-  padding: 32px 28px 24px 28px;
-  box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   position: relative;
-  animation: modalShow 0.25s;
+  animation: modalShow 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
 @keyframes modalShow {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { 
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal h2 {
   margin-top: 0;
-  margin-bottom: 18px;
-  font-size: 1.5rem;
-  color: #102eb4;
+  margin-bottom: 24px;
+  font-size: 1.75rem;
+  color: var(--primary-color);
   font-weight: 600;
   text-align: center;
 }
 
 .modal p {
-  margin: 8px 0;
-  font-size: 1.08rem;
-  color: #222;
+  margin: 12px 0;
+  font-size: 15px;
+  color: var(--text-color);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  line-height: 1.5;
 }
 
 .modal p b {
   min-width: 120px;
   display: inline-block;
-  color: #1976d2;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
 .modal-cancel {
-  margin-top: 18px;
-  background: #1976d2;
+  margin-top: 24px;
+  background: var(--primary-color);
   color: #fff;
   border: none;
-  padding: 8px 22px;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
 .modal-cancel:hover {
-  background: #0d47a1;
+  background: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
-@media (max-width: 500px) {
-  .modal {
-    min-width: 90vw;
-    padding: 16px 8px;
-  }
-  .modal h2 {
-    font-size: 1.1rem;
-  }
-  .modal p {
-    font-size: 0.98rem;
-  }
+.modal-cancel:active {
+  transform: translateY(0);
 }
 
 .status-active {
-  color: #219653;
-  font-weight: 600;
+  color: var(--success-color);
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(39, 174, 96, 0.1);
 }
 
 .status-inactive {
-  color: #e53935;
-  font-weight: 600;
+  color: var(--error-color);
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgba(231, 76, 60, 0.1);
+}
+
+@media (max-width: 768px) {
+  .modal {
+    min-width: 90vw;
+    padding: 24px;
+  }
+  
+  .modal h2 {
+    font-size: 1.5rem;
+  }
+  
+  .modal p {
+    font-size: 14px;
+  }
+  
+  .account-title {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .account-title h1 {
+    font-size: 1.75rem;
+  }
 }
 
