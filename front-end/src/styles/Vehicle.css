@@ -217,18 +217,21 @@ html, body {
 }
 
 .search-input {
-  padding: 8px 12px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 200px;
-  transition: all 0.3s;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
 }
 
 .search-input:focus {
-  border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   outline: none;
+}
+
+.search-input::placeholder {
+  color: #999;
+  font-size: 16px;
 }
 
 .search-button,

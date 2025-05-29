@@ -52,39 +52,46 @@ const AddHousehold = ({ open, onClose, onSubmit, initialData }) => {
         <h2>{initialData ? 'Cập nhật hộ gia đình' : 'Thêm mới hộ gia đình'}</h2>
         <form onSubmit={handleSubmit} className="add-household-form">
           <div className="form-group">
-            <label>Số phòng</label>
+            <label htmlFor="roomNumber">Số phòng</label>
             <input
+              id="roomNumber"
               type="text"
               name="roomNumber"
               value={form.roomNumber}
               onChange={handleChange}
               placeholder="Nhập số phòng"
+              required
             />
           </div>
           <div className="form-group">
-            <label>Loại phòng</label>
+            <label htmlFor="type">Loại phòng</label>
             <select
+              id="type"
               name="type"
               value={form.type}
               onChange={handleChange}
+              required
             >
               <option value="Đơn">Đơn</option>
               <option value="Đôi">Đôi</option>
             </select>
           </div>
           <div className="form-group">
-            <label>Tên chủ hộ</label>
+            <label htmlFor="householdHead">Tên chủ hộ</label>
             <input
+              id="householdHead"
               type="text"
               name="householdHead"
               value={form.householdHead}
               onChange={handleChange}
               placeholder="Nhập tên chủ hộ"
+              required
             />
           </div>
           <div className="form-group">
-            <label>Số người</label>
+            <label htmlFor="members">Số người</label>
             <input
+              id="members"
               type="number"
               name="members"
               min={1}
@@ -92,14 +99,16 @@ const AddHousehold = ({ open, onClose, onSubmit, initialData }) => {
               value={form.members}
               onChange={handleChange}
               placeholder="Nhập số người"
+              required
             />
-            <span className="input-note" style={{ fontSize: '0.92em', color: '#d32f2f', marginLeft: 6 }}>
+            <span className="input-note">
               {form.type === 'Đơn' ? 'Tối đa 3 người' : 'Tối đa 6 người'}
             </span>
           </div>
           <div className="form-group">
-            <label>Ghi chú</label>
+            <label htmlFor="notes">Ghi chú</label>
             <textarea
+              id="notes"
               name="notes"
               value={form.notes}
               onChange={handleChange}
@@ -107,11 +116,11 @@ const AddHousehold = ({ open, onClose, onSubmit, initialData }) => {
             />
           </div>
           <div className="household-modal-actions">
-            <button type="submit" className="household-modal-submit">
-              {initialData ? 'Cập nhật' : 'Thêm'}
-            </button>
             <button type="button" className="household-modal-cancel" onClick={onClose}>
               Hủy
+            </button>
+            <button type="submit" className="household-modal-submit">
+              {initialData ? 'Cập nhật' : 'Thêm'}
             </button>
           </div>
         </form>

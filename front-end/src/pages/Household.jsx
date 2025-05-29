@@ -158,64 +158,81 @@ const Household = () => {
         <Sidebar open={open} setOpen={setOpen} />
         <div className={`household-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
           <div className="household-search">
-            <div className="household-title"><h1>Danh sách hộ gia đình: </h1></div>
-            <div className="search-bar">
-              <SearchBar
-                placeholder="Tìm kiếm hộ gia đình"
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+            <div className="household-title"><h1>Danh sách hộ gia đình:</h1></div>
+            <SearchBar
+              placeholder="Tìm kiếm hộ gia đình"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
           <div className="household-list">
-            {filteredHouseholds.map((item, idx) => (
-              <div
-                className="household-row"
-                key={item.HouseholdID || idx}
-                onClick={() => setSelectedHousehold(item)}
-                style={{ cursor: 'pointer' }}
-              >
-                <span><b>Số phòng: </b>{item.RoomNumber}</span>
-                <span><b>Loại phòng: </b>{item.Type}</span>
-                <span><b>Chủ hộ: </b>{item.HouseholdHead}</span>
-                <span><b>Số người: </b>{item.Members}</span>
-                <span><b>Ghi chú: </b>{item.Notes}</span>
-                <span className="household-actions">
-                  <FaEdit
-                    className="icon-action edit"
-                    title="Sửa"
-                    onClick={e => { e.stopPropagation(); setEditHousehold(item); }}
-                  />
-                  <FaTrash
-                    className="icon-action delete"
-                    title="Xóa"
-                    onClick={e => {
-                      e.stopPropagation();
-                      setDeletingHousehold(item);
-                    }}
-                  />
-                </span>
-              </div>
-            ))}
-            {filteredHouseholds.length === 0 && (
-              <div className="household-row">Không có hộ gia đình nào.</div>
-            )}
+            <table className="household-table">
+              <thead>
+                <tr>
+                  <th>Số phòng</th>
+                  <th>Loại phòng</th>
+                  <th>Chủ hộ</th>
+                  <th>Số người</th>
+                  <th>Ghi chú</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredHouseholds.map((item, idx) => (
+                  <tr
+                    key={item.HouseholdID || idx}
+                    onClick={() => setSelectedHousehold(item)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <td>{item.RoomNumber}</td>
+                    <td>{item.Type}</td>
+                    <td>{item.HouseholdHead}</td>
+                    <td>{item.Members}</td>
+                    <td>{item.Notes || '-'}</td>
+                    <td className="household-actions">
+                      <FaEdit
+                        className="icon-action edit"
+                        title="Sửa"
+                        onClick={e => { e.stopPropagation(); setEditHousehold(item); }}
+                      />
+                      <FaTrash
+                        className="icon-action delete"
+                        title="Xóa"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setDeletingHousehold(item);
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))}
+                {filteredHouseholds.length === 0 && (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>
+                      Không có hộ gia đình nào.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
 
           {/* Modal hiển thị thành viên hộ gia đình */}
           {selectedHousehold && (
-            <div className="modal-overlay" onClick={() => setSelectedHousehold(null)}>
-              <div className="modal" onClick={e => e.stopPropagation()}>
-                <h2>Thành viên phòng: {selectedHousehold.RoomNumber}</h2>
-                <ul>
+            <div className="household-detail-overlay" onClick={() => setSelectedHousehold(null)}>
+              <div className="household-detail-modal" onClick={e => e.stopPropagation()}>
+                <h3>Thành viên phòng: {selectedHousehold.RoomNumber}</h3>
+                <div className="household-detail-content">
                   {residents
                     .filter(r => String(r.HouseholdID) === String(selectedHousehold.HouseholdID))
                     .map(r => (
-                      <li key={r.ResidentID}>
-                        <b>{r.FullName}</b> - {r.Relationship}
-                      </li>
+                      <div key={r.ResidentID} className="detail-row">
+                        <p><strong>Họ tên:</strong> {r.FullName}</p>
+                        <p><strong>Quan hệ:</strong> {r.Relationship}</p>
+                      </div>
                     ))}
-                </ul>
-                <button className="modal-cancel" onClick={() => setSelectedHousehold(null)}>Đóng</button>
+                </div>
+                <button className="close-detail-btn" onClick={() => setSelectedHousehold(null)}>Đóng</button>
               </div>
             </div>
           )}
@@ -235,7 +252,6 @@ const Household = () => {
             }}
             initialData={editHousehold}
           />
-          {/* Hiển thị form thêm nhân khẩu chủ hộ ngay sau khi thêm hộ */}
           {showAddResident && (
             <AddResident
               open={!!showAddResident}
