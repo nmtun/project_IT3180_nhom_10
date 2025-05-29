@@ -50,7 +50,11 @@ html, body {
   overflow-y: auto;
 }
 
-
+.settings-content::-webkit-scrollbar {
+  width: 8px;
+  background: var(--bg-light);
+  border-radius: 8px;
+}
 
 .settings-content::-webkit-scrollbar-thumb {
   background: var(--primary-color);
