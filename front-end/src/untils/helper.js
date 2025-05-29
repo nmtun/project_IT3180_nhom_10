@@ -11,6 +11,9 @@ export const validatePassword = (password) => {
 
 export const validatePhoneNumber = (phoneNumber) => {
   // Phone number must be 10 digits and start with 0
+  if (phoneNumber == '') {
+    return true;
+  }
   const regex = /^0\d{9}$/;
   return regex.test(phoneNumber);
 }
