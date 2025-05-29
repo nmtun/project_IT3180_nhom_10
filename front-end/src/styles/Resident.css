@@ -50,7 +50,7 @@ html, body {
 .resident-search {
   margin-bottom: 20px;
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -58,16 +58,11 @@ html, body {
   text-align: left;
 }
 
-.resident-title h1{
+.resident-title h1 {
   color: #000;
-  justify-content: left;
-  font-size: 30px;
-  text-align: left
-}
-
-.resident-search {
-  display: flex;
-  justify-content: space-between;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
 }
 
 .resident-search input {
@@ -78,86 +73,120 @@ html, body {
 
 .resident-list {
   margin-top: 36px;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 70vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 8px;
-}
-.resident-list::-webkit-scrollbar {
-  width: 8px;
-  background: #d3d8e0;
-  border-radius: 8px;
-}
-
-.resident-list::-webkit-scrollbar-thumb {
-  background: #1972bb;
-  border-radius: 8px;
-  min-height: 40px;
-}
-
-.resident-list::-webkit-scrollbar-thumb:hover {
-  background: #125299;
-}
-/* Mỗi dòng nhân khẩu */
-
-  .resident-row {
-    height: 48px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
-  color: #000;
-  padding: 12px 0;
-  }
-
-.resident-row > span {
-  min-width: 120px;
-  flex: 1 1 0;
-  /* Có thể căn chỉnh text cho đẹp */
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  height: 100%;
 }
 
-.resident-row > span b {
-  margin-right: 4px;
+.resident-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #000;
 }
 
-/* Các hành động (sửa, xóa) */
+.resident-table th {
+  background: #cddffd;
+  color: #000;
+  font-weight: 500;
+  text-align: left;
+  padding: 16px;
+  border-bottom: 1px solid #b3c9f7;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.resident-table td {
+  padding: 16px;
+  border-bottom: 1px solid #d4e0f7;
+  vertical-align: middle;
+  background: #eaf0f9;
+}
+
+.resident-table tr:hover td {
+  background: #e0e9f7;
+}
+
+.resident-table tr.resident-row-leaved td {
+  background: #f5f7fa;
+  color: #666;
+}
+
+.resident-table tr.resident-row-leaved:hover td {
+  background: #eef1f7;
+}
+
 .resident-actions {
   display: flex;
   gap: 16px;
+  justify-content: flex-start;
   align-items: center;
-  margin-left: 0;
-  justify-content: flex-end;
-  flex: 0 0 90px; /* Đảm bảo cố định chiều rộng cho icon */
+  min-width: 120px;
+  padding-left: 16px;
 }
 
 .icon-action {
   cursor: pointer;
   font-size: 1.2rem;
-  transition: color 0.2s;
-}
-
-.icon-action.edit {
-  color: #1972bb;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 4px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
 }
 
 .icon-action.edit:hover {
-  color: #125299;
-}
-
-.icon-action.delete {
-  color: #e74c3c;
+  background: #cddffd;
+  color: #000;
+  transform: scale(1.1);
 }
 
 .icon-action.delete:hover {
-  color: #b71c1c;
+  background: #cddffd;
+  color: #d32f2f;
+  transform: scale(1.1);
+}
+
+/* Thêm style cho tooltip */
+.icon-action[title] {
+  position: relative;
+}
+
+.icon-action[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.resident-room-header {
+  background: #cddffd;
+  color: #000;
+  font-weight: 500;
+  padding: 16px;
+  margin-top: 24px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #b3c9f7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Overlay mờ nền */
@@ -224,38 +253,4 @@ html, body {
     transform: translateY(0);
     opacity: 1;
   }
-}
-
-/* Tiêu đề phòng nổi bật, căn giữa */
-.resident-room-header {
-  background: #f5f7fa;
-  color: #1972bb;
-  font-weight: bold;
-  padding: 10px 0 6px 0;
-  margin-top: 18px;
-  margin-bottom: 4px;
-  text-align: center;
-  border-radius: 6px;
-  font-size: 17px;
-  letter-spacing: 1px;
-}
-
-/* Khoảng cách giữa các thành viên trong phòng */
-.resident-row {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 10px 12px;
-  border-bottom: 1px solid #e0e0e0;
-  background: #fff;
-}
-
-.resident-row:last-child {
-  border-bottom: none;
-}
-
-/* Đánh dấu đỏ cho nhân khẩu đã chuyển đi */
-.resident-row-leaved {
-  background: #ffeaea;
-  color: #d32f2f;
 }
