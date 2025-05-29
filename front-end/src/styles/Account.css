@@ -82,6 +82,24 @@ html, body {
   align-items: center;
 }
 
+.account-search input {
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.account-search input:focus {
+  outline: none;
+}
+
+.account-search input::placeholder {
+  color: #999;
+  font-size: 16px;
+}
+
 .account-list {
   margin-top: 36px;
   max-height: 70vh;      /* hoặc giá trị phù hợp, ví dụ 400px, 70vh,... */

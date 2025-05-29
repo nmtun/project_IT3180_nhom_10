@@ -251,3 +251,21 @@ html, body {
     opacity: 1;
   }
 }
+
+.household-search input {
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.household-search input:focus {
+  outline: none;
+}
+
+.household-search input::placeholder {
+  color: #999;
+  font-size: 16px;
+}
