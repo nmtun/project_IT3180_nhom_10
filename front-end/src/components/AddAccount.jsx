@@ -115,7 +115,7 @@ const AddAccount = ({ open, onClose, onSubmit, initialData, mode }) => {
               value={form.role}
               onChange={handleChange}
             >
-              <option value="Tổ trưởng">Tổ trưởng</option>
+              {/* <option value="Tổ trưởng">Tổ trưởng</option> */}
               <option value="Tổ phó">Tổ phó</option>
               <option value="Thủ quỹ">Thủ quỹ</option>
             </select>
