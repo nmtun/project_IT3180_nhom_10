@@ -18,7 +18,6 @@ const menuItems = [
   { icon: <FaUsers />, label: 'Quản lý hộ gia đình', path: '/household' },
   { icon: <FaUserFriends />, label: 'Quản lý nhân khẩu', path: '/resident' },
   { icon: <FaMoneyBill />, label: 'Quản lý thu phí', path: '/fee' },
-  { icon: <FaCar />, label: 'Quản lý phương tiện', path: '/vehicle' },
   { icon: <FaAddressBook />, label: 'Trang cá nhân', path: '/profile' },
 ];
 

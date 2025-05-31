@@ -24,10 +24,6 @@ const Household = sequelize.define("Household", {
     type: DataTypes.INTEGER, 
     defaultValue: 0 
   },
-  HasVehicle: {
-    type: DataTypes.BOOLEAN, 
-    defaultValue: false 
-  },
   Notes: { 
     type: DataTypes.TEXT 
   }

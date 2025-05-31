@@ -8,7 +8,6 @@ import sequelize from "./src/config/dbsetup.js";
 // Model
 import User from "./src/models/User.js";
 import Household from "./src/models/Household.js";
-import Vehicle from "./src/models/Vehicle.js";
 import FeeCollection from "./src/models/FeeCollection.js";
 import FeeDetail from "./src/models/FeeDetail.js";
 import FeeType from "./src/models/FeeType.js";
@@ -21,7 +20,6 @@ import ResidentRoutes from "./src/routes/ResidentRoutes.js";
 import FeeTypeRoutes from "./src/routes/FeeTypeRoutes.js";
 import FeeDetailRoutes from "./src/routes/FeeDetailRoutes.js";
 import FeeCollectionRoutes from "./src/routes/FeeCollectionRoutes.js";
-import VehicleRoutes from "./src/routes/VehicleRoutes.js";  
 
 dotenv.config();
 
@@ -53,12 +51,11 @@ app.use("/api/residents", ResidentRoutes);
 app.use("/api/fee-type", FeeTypeRoutes);
 app.use("/api/fee-detail", FeeDetailRoutes);
 app.use("/api/fee-collection", FeeCollectionRoutes);
-app.use("/api/vehicle", VehicleRoutes);
 
 // Tạo bảng và chạy server
 (async () => {
   try {
-    // await sequelize.sync(); // tạo bảng nếu chưa có
+     await sequelize.sync(); // tạo bảng nếu chưa có
     // await sequelize.sync({ alter: true }); // tự động cập nhật bảng nếu có thay đổi trong model
     // await sequelize.sync({ force: true }); // xóa bảng và tạo lại - dùng khi cần làm mới cơ sở dữ liệu, sẽ bị mất dữ liệu
     

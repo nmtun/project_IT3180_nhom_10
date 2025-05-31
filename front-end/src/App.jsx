@@ -6,7 +6,6 @@ import Household from './pages/Household';
 import Fee from './pages/Fee';
 import Profile from './pages/Profile';
 import Resident from './pages/Resident';
-import Vehicle from './pages/Vehicle';
 import Account from './pages/Account';
 import './App.css';
 import FeeType from './pages/FeeType';
@@ -24,7 +23,6 @@ const App = () => {
             <Route path="/fee" element={<Fee />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/resident" element={<Resident />} />
-            <Route path="/vehicle" element={<Vehicle />} />
             <Route path="/account" element={<Account />} />
             <Route path="/fee-type" element={<FeeType />} />
             {/* Thêm các route khác nếu cần */}
