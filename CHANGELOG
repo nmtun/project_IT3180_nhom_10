@@ -14,3 +14,6 @@
 - Thống kê, báo cáo cơ bản.
 - Đăng nhập, phân quyền, bảo mật thông tin.
 
+## Lịch sử phiên bản
+- Phiên bản V1.0 được lưu trữ ở nhánh `dev/v1.0`.
+- Phiên bản V2.0 được lưu trữ ở nhánh `main`.
