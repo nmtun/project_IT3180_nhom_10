@@ -10,11 +10,6 @@ let MAX_HOUSEHOLD = 100;
 let MAX_SINGLE_ROOMS = 50;
 let MAX_DOUBLE_ROOMS = 50;
 
-const dataBar = [
-  { name: 'Đã nộp', value: 12 },
-  { name: 'Chưa nộp', value: 3 },
-];
-
 const COLORS = ['#27ae60', '#e74c3c', '#ff9900', '#1972bb', '#8e44ad']; // 5 màu cho 5 nhóm tuổi
 
 // Hàm tính tuổi từ ngày sinh
@@ -235,7 +230,16 @@ const Home = () => {
       <Header />
       <div className="home-body">
         <Sidebar open={open} setOpen={setOpen} />
-        <div className={`home-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <div 
+          className={`home-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}
+          style={{
+            overflowY: 'auto',
+            maxHeight: 'calc(100vh - 90px)', // Trừ đi chiều cao của header
+            paddingBottom: '20px',
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#49aac0 #f1f1f1'
+          }}
+        >
           <div className="dashboard">
             {/* Hàng trên - 3 khối nhỏ */}
             <div className="dashboard-top">
