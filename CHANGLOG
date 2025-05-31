@@ -1,4 +1,16 @@
-Phiên bản V1.0
+# Changelog
 
-Phiên bản V2.0
+## Phiên bản V2.0
+- Thêm chức năng quản lý phương tiện (xe máy, ô tô, biển số, trạng thái đăng ký).
+- Thêm chức năng quản lý các loại phí liên quan đến phương tiện.
+- Cải tiến giao diện sidebar, bổ sung các mục mới cho tổ trưởng.
+- Sửa một số lỗi nhỏ và tối ưu hiệu năng hệ thống.
+
+## Phiên bản V1.0
+- Quản lý hộ gia đình (thêm, sửa, xóa, tìm kiếm).
+- Quản lý nhân khẩu (thêm, sửa, xóa, tìm kiếm, phân loại tình trạng cư trú).
+- Quản lý các loại phí cơ bản (không bao gồm phí phương tiện).
+- Quản lý tài khoản ban quản lý (phân quyền, trạng thái hoạt động).
+- Thống kê, báo cáo cơ bản.
+- Đăng nhập, phân quyền, bảo mật thông tin.
 
