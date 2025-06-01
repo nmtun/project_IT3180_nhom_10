@@ -23,8 +23,3 @@ END;
 //
 
 DELIMITER ;
-
--- test 
-UPDATE FeeDetails
-SET Amount = calculate_parking_fee_by_household( HouseholdID )
-WHERE CollectionID = 14;

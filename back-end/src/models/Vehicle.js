@@ -13,7 +13,7 @@ const Vehicle = sequelize.define("Vehicle", {
     references: { model: Household, key: "HouseholdID" } 
   },
   VehicleType: { 
-    type: DataTypes.ENUM('Xe đạp', 'Xe đạp điện', 'Xe máy', 'Ô tô'), 
+    type: DataTypes.ENUM('Xe máy', 'Ô tô'), 
     allowNull: false 
   },
   LicensePlate: { 
