@@ -49,11 +49,8 @@ const Login = () => {
 
       const data = await response.data;
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('role', data.role);
-      localStorage.setItem('id', data.id);
-      // console.log("id", data.id);
-      // console.log(data);
+      // Lưu thông tin user vào localStorage
+      localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/home');
     } catch (err) {
       const msg = err.response?.data?.message || 'Đăng nhập thất bại';
@@ -85,7 +82,6 @@ const Login = () => {
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="Nhập tên đăng nhập"
-                //required
                 disabled={loading}
               />
             </div>
@@ -99,7 +95,6 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Nhập mật khẩu"
-                  //required
                   disabled={loading}
                 />
                 <button

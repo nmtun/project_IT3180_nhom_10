@@ -57,10 +57,8 @@ const Home = () => {
     return saved === null ? false : JSON.parse(saved);
   });
 
-  useEffect(() => {
-    localStorage.setItem('sidebarOpen', JSON.stringify(open));
-  }, [open]);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [households, setHouseholds] = useState([]);
   const [residents, setResidents] = useState([]);
   const [feeCollections, setFeeCollections] = useState([]);
@@ -76,23 +74,33 @@ const Home = () => {
   });
 
   useEffect(() => {
-    // Lấy dữ liệu hộ gia đình và cư dân
-    axiosInstance.get('/households/get-all-households').then(res => {
-      setHouseholds(res.data.households || res.data);
-    });
-    axiosInstance.get('/residents/get-all-residents').then(res => {
-      setResidents(res.data.residents || res.data);
-    });
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    // Lấy dữ liệu thu phí
-    axiosInstance.get('/fee-collection/get-all-collection').then(res => {
-      setFeeCollections(res.data.feeCollections || res.data);
-    });
-    axiosInstance.get('/fee-detail/get-all-fee-detail').then(res => {
-      // In ra cấu trúc dữ liệu của một FeeDetail để kiểm tra
-      console.log('Cấu trúc dữ liệu FeeDetail:', res.data.feeDetails?.[0]);
-      setFeeDetails(res.data.feeDetails);
-    });
+        // Lấy dữ liệu hộ gia đình và cư dân
+        const [householdsRes, residentsRes, feeCollectionsRes, feeDetailsRes] = await Promise.all([
+          axiosInstance.get('/households/get-all-households'),
+          axiosInstance.get('/residents/get-all-residents'),
+          axiosInstance.get('/fee-collection/get-all-collection'),
+          axiosInstance.get('/fee-detail/get-all-fee-detail')
+        ]);
+
+        setHouseholds(householdsRes.data.households || householdsRes.data);
+        setResidents(residentsRes.data.residents || residentsRes.data);
+        setFeeCollections(feeCollectionsRes.data.feeCollections || feeCollectionsRes.data);
+        setFeeDetails(feeDetailsRes.data.feeDetails || feeDetailsRes.data);
+
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError(err.message || 'Có lỗi xảy ra khi tải dữ liệu');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   // Tính toán thống kê phí theo tháng hiện tại
@@ -224,6 +232,36 @@ const Home = () => {
 
   const permanentCount = residents.filter(r => r.ResidencyStatus === "Thường trú").length;
   const temporaryCount = residents.filter(r => r.ResidencyStatus === "Tạm trú").length;
+
+  if (loading) {
+    return (
+      <div className="home-container">
+        <Header />
+        <div className="home-body">
+          <Sidebar open={open} setOpen={setOpen} />
+          <div className={`home-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
+            <div className="loading">Đang tải dữ liệu...</div>
+          </div>
+        </div>
+        <Navbar />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="home-container">
+        <Header />
+        <div className="home-body">
+          <Sidebar open={open} setOpen={setOpen} />
+          <div className={`home-content ${open ? 'sidebar-open' : 'sidebar-closed'}`}>
+            <div className="error">Lỗi: {error}</div>
+          </div>
+        </div>
+        <Navbar />
+      </div>
+    );
+  }
 
   return (
     <div className="home-container">
