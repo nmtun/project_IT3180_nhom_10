@@ -101,7 +101,7 @@ const AddResident = ({ open, onClose, onSubmit, initialData = {} }) => {
     <div className="modal-overlay">
       <div className="modal-form">
         <h2>{initialData ? 'Cập nhật nhân khẩu' : 'Thêm nhân khẩu'}</h2>
-        <form onSubmit={handleSubmit} classname="add-ressident-form">
+        <form onSubmit={handleSubmit} className="add-ressident-form">
           <div className="form-grid">
             <div className="form-column">
               <div className='form-group'>
