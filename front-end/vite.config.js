@@ -7,13 +7,18 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    cors: true,
     allowedHosts: [
       "c5a1-14-232-229-113.ngrok-free.app",
-      "e878-14-232-229-113.ngrok-free.app",
+      "6b16-171-224-178-46.ngrok-free.app",
     ],
+    hmr: {
+      clientPort: 443,
+      host: "localhost",
+    },
     proxy: {
       "/api": {
-        target: "https://e92c-171-224-178-46.ngrok-free.app",
+        target: "https://6b16-171-224-178-46.ngrok-free.app",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""),

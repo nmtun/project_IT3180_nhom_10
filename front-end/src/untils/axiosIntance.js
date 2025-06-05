@@ -7,6 +7,8 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
+    "Cache-Control": "no-cache",
+    Pragma: "no-cache",
   },
   withCredentials: false,
 });
@@ -20,12 +22,22 @@ axiosInstance.interceptors.request.use(
         username: user.username,
       };
     }
+
+    // Thêm timestamp để tránh cache
+    if (config.method === "get") {
+      config.params = {
+        ...config.params,
+        _t: new Date().getTime(),
+      };
+    }
+
     // Log request để debug
     console.log("Request:", {
       url: config.url,
       method: config.method,
       headers: config.headers,
       data: config.data,
+      params: config.params,
     });
     return config;
   },
@@ -57,6 +69,10 @@ axiosInstance.interceptors.response.use(
 
       // Xử lý các lỗi cụ thể
       switch (error.response.status) {
+        case 304:
+          // Xử lý lỗi 304 Not Modified
+          console.log("Resource not modified, using cached version");
+          return Promise.resolve(error.response);
         case 401:
           // Xóa thông tin user và chuyển về trang login
           localStorage.removeItem("user");
