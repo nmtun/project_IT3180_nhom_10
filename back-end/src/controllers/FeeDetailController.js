@@ -93,8 +93,9 @@ export const getFeeDetailStats = async (req, res) => {
 export const updateVehicleFeedetail = async (req, res) => {
   try {
     const cid = req.params.id;
-    // SQL thuần: cập nhật Amount = số xe * phí/xe cho các FeeDetail có CollectionID > 0
-    await sequelize.query(`
+    // SQL thuần: cập nhật Amount = số xe * phí/xe cho các FeeDetail có CollectionID 
+    await sequelize.query(
+    `
       UPDATE FeeDetails
       SET Amount = calculate_parking_fee_by_household( HouseholdID )
       WHERE CollectionID = :cid;
