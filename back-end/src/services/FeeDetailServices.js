@@ -1,6 +1,5 @@
 import FeeDetail from '../models/FeeDetail.js'; 
 import Household from '../models/Household.js';
-import Vehicle from '../models/Vehicle.js';
 
 // Lấy tất cả chi tiết phí
 export const getAllFeeDetails = async () => {
