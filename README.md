@@ -43,33 +43,94 @@ docs/             # Tài liệu báo cáo, hướng dẫn
 design/           # Sơ đồ, hình ảnh thiết kế
 ```
 
-## Hướng dẫn cài đặt & chạy dự án
+## Hướng Dẫn Cài Đặt và Khởi Chạy Phần Mềm
 
-### 1. Khởi tạo cơ sở dữ liệu
+## Mục Lục
 
-- Tạo database MySQL
+### 1. Yêu Cầu Hệ Thống
 
-### 2. Chạy backend (API server)
+- Node.js (phiên bản 18.0.0 trở lên)
+- MySQL (phiên bản 8.0 trở lên)
+- npm hoặc yarn
 
-```sh
-cd back-end
-npm install
-npm start
+### 2. Cài Đặt Backend
+
+1. Cài đặt các dependencies
+   ```bash
+   cd back-end
+   npm install
+   ```
+2. Cấu hình môi trường
+
+   - Tạo file `.env` trong thư mục back-end
+   - Cấu hình các biến môi trường cần thiết
+
+3. Khởi chạy server
+   ```bash
+   npm run dev
+   ```
+
+### 3. Cài Đặt Frontend
+
+1. Cài đặt các dependencies
+
+   ```bash
+   cd front-end
+   npm install
+   ```
+
+2. Khởi chạy ứng dụng
+   ```bash
+   npm run dev
+   ```
+
+### 4. Các Dependencies Chính
+
+#### Backend
+
+- Express.js
+- Sequelize (ORM)
+- MySQL2
+- JWT (JSON Web Token)
+- Bcrypt
+- CORS
+- Helmet
+- Morgan
+- Dotenv
+
+#### Frontend
+
+- React
+- Ant Design
+- React Router DOM
+- Axios
+- Recharts
+- React Icons
+
+### 5. Cấu Trúc Thư Mục
+
 ```
-- Cấu hình kết nối DB trong file `.env` (xem mẫu `.env.example`).
-- Khi server kết nối với DB và chạy thành công, sequelize sẽ tự động tạo các bảng liên quan cho bạn.
-- Sau đó hãy import các function và trigger liên quan.
-  - `function.sql`
-  - `trigger.sql`
-
-### 3. Chạy frontend (React client)
-
-```sh
-cd front-end
-npm install
-npm run dev
+project_IT3180_nhom_10/
+├── back-end/
+│   ├── src/
+│   ├── test/
+│   └── index.js
+└── front-end/
+    ├── src/
+    ├── public/
+    └── index.html
 ```
-- Truy cập [http://localhost:5173](http://localhost:5173) (hoặc port Vite báo).
+
+### 6. Xử Lý Lỗi Thường Gặp
+
+- Kiểm tra phiên bản Node.js
+- Kiểm tra kết nối database
+- Kiểm tra các biến môi trường
+- Kiểm tra port đang sử dụng
+
+### 7. Liên Hệ Hỗ Trợ
+
+[Thông tin liên hệ hỗ trợ]
 
 ## Công nghệ sử dụng
 
@@ -83,6 +144,4 @@ Mọi đóng góp, báo lỗi hoặc đề xuất vui lòng gửi issue hoặc p
 
 ---
 
-**Tác giả:** Nhóm 10 - KTPM 2024-2.  
-
-
+**Tác giả:** Nhóm 10 - KTPM 2024-2.
